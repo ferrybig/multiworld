@@ -82,7 +82,7 @@ public class ChunkGeneratorEpicCaves extends MultiWorldChunkGen
 						}
 						else
 						{
-							chunk.setBlock(x, y, z, STONE);
+							chunk.setBlock(x, y, z, (short)STONE);
 						}
 						grassCounter++;
 					}
