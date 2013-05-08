@@ -235,13 +235,13 @@ public class MultiWorldPlugin extends JavaPlugin
 		ChunkGenerator gen = WorldGenerator.getGen(id);
 		if (gen == null)
 		{
-			this.getServer().getLogger().log(Level.SEVERE, "[ {0} ] illegal or unknown worldGenerator, use ''FLATLAND'' or ''PIXELARTROOM''", getDescription().getFullName());
+			//this.getServer().getLogger().log(Level.SEVERE, "[ {0} ] illegal or unknown worldGenerator, use ''FLATLAND'' or ''PIXELARTROOM''", getDescription().getFullName());
 			return null;
 		}
-		this.getServer().getLogger().log(Level.INFO, "[ {0} ] using world gen {1} for world {2}", new Object[]
-			{
-				getDescription().getFullName(), id, worldName
-			});
+		//this.getServer().getLogger().log(Level.INFO, "[ {0} ] using world gen {1} for world {2}", new Object[]
+		//	{
+		//		getDescription().getFullName(), id, worldName
+		//	});
 		return gen;
 	}
 
