@@ -4,12 +4,9 @@
  */
 package multiworld.command.world;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import multiworld.ArgumentException;
 import multiworld.CommandException;
 import multiworld.ConfigException;
-import multiworld.InvalidWorldGenException;
 import multiworld.InvalidWorldNameException;
 import multiworld.Utils;
 import multiworld.WorldGenException;
@@ -17,7 +14,6 @@ import multiworld.command.Command;
 import multiworld.data.DataHandler;
 import multiworld.data.MyLogger;
 import multiworld.worldgen.WorldGenerator;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

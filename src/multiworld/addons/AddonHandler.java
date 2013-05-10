@@ -4,13 +4,8 @@
  */
 package multiworld.addons;
 
-import multiworld.MultiWorldPlugin;
 import multiworld.data.DataHandler;
 import multiworld.data.VersionHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.PluginManager;
 
 /**
  *

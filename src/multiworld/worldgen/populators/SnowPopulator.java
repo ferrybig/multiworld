@@ -4,14 +4,10 @@
  */
 package multiworld.worldgen.populators;
 
-import java.util.Random;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.generator.BlockPopulator;
 
 /**
  * Add snow and ice to worlds
@@ -37,11 +33,9 @@ public class SnowPopulator extends SurfacePopulator
 				{
 					block.setType(Material.ICE);
 				}
-				return;
 			}
 			else if ((block.getType() == Material.LAVA) || (block.getType() == Material.STATIONARY_LAVA) || (block.getType() == Material.GLOWSTONE))
 			{
-				return;
 			}
 			else if (block.getType() != Material.AIR)
 			{

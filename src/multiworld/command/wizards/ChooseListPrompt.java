@@ -6,7 +6,6 @@ package multiworld.command.wizards;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.MessagePrompt;
 import org.bukkit.conversations.Prompt;

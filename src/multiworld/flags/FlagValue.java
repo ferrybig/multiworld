@@ -4,9 +4,9 @@
  */
 package multiworld.flags;
 
-import multiworld.api.flag.FlagName;
 import java.util.Locale;
 import multiworld.InvalidFlagValueException;
+import multiworld.api.flag.FlagName;
 
 /**
  *

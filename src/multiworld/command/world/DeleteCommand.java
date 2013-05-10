@@ -4,8 +4,6 @@
  */
 package multiworld.command.world;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import multiworld.ArgumentException;
 import multiworld.CommandException;
 import multiworld.ConfigException;

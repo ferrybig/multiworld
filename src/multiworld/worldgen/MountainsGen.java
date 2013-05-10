@@ -4,12 +4,8 @@
  */
 package multiworld.worldgen;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 import org.bukkit.*;
-import org.bukkit.generator.*;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**

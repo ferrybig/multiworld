@@ -4,8 +4,8 @@
  */
 package multiworld.flags;
 
-import multiworld.api.flag.FlagName;
 import java.util.EnumMap;
+import multiworld.api.flag.FlagName;
 
 /**
  *

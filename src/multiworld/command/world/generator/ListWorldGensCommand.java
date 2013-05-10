@@ -4,7 +4,6 @@
  */
 package multiworld.command.world.generator;
 
-import multiworld.CommandException;
 import multiworld.Utils;
 import multiworld.chat.Formatter;
 import multiworld.command.Command;

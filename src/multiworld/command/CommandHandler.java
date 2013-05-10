@@ -1,36 +1,33 @@
 package multiworld.command;
 
-import multiworld.command.other.HelpCommand;
-import multiworld.command.other.DebugCommand;
-import multiworld.command.plugin.LinkCommand;
-import multiworld.command.spawn.SpawnCommand;
-import multiworld.command.spawn.SetSpawnCommand;
-import multiworld.command.config.SaveCommand;
+import java.util.HashMap;
+import java.util.Map;
+import multiworld.addons.AddonHandler;
 import multiworld.command.config.LoadCommand;
-import multiworld.command.world.ListCommand;
-import multiworld.command.world.generator.ListWorldGensCommand;
+import multiworld.command.config.SaveCommand;
 import multiworld.command.flag.FlagListCommand;
-import multiworld.command.flag.SetFlagCommand;
 import multiworld.command.flag.GetFlagCommand;
-import multiworld.command.move.MoveCommand;
+import multiworld.command.flag.SetFlagCommand;
 import multiworld.command.move.GotoCommand;
+import multiworld.command.move.MoveCommand;
+import multiworld.command.other.DebugCommand;
+import multiworld.command.other.HelpCommand;
+import multiworld.command.plugin.LinkCommand;
+import multiworld.command.spawn.SetSpawnCommand;
+import multiworld.command.spawn.SpawnCommand;
 import multiworld.command.world.CreateCommand;
 import multiworld.command.world.DeleteCommand;
 import multiworld.command.world.InfoCommand;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import multiworld.CommandException;
+import multiworld.command.world.ListCommand;
 import multiworld.command.world.LoadWorldCommand;
 import multiworld.command.world.UnloadWorldCommand;
+import multiworld.command.world.generator.ListWorldGensCommand;
 import multiworld.data.DataHandler;
-import multiworld.data.VersionHandler;
 import multiworld.data.PlayerHandler;
 import multiworld.data.ReloadHandler;
+import multiworld.data.VersionHandler;
 import multiworld.data.WorldHandler;
-import multiworld.addons.AddonHandler;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 
 /**
  * The class that handle the commands

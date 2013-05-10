@@ -1,6 +1,5 @@
 package multiworld.worldgen;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import multiworld.InvalidWorldGenOptionsException;

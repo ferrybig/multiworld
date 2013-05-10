@@ -5,7 +5,6 @@
 package multiworld.command.world;
 
 import multiworld.CommandException;
-import multiworld.Utils;
 import multiworld.chat.Formatter;
 import multiworld.command.Command;
 import multiworld.data.DataHandler;

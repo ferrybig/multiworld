@@ -5,7 +5,6 @@
 package multiworld.worldgen;
 
 import java.util.List;
-import multiworld.worldgen.util.ChunkMaker;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;

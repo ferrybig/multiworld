@@ -25,16 +25,18 @@ public class SpawnWorldControl
 		groupToWorldSpawn.put("defaultGroup", Bukkit.getWorlds().get(0).getName());
 		//System.out.print("Loading spawn groupes");
 		if(spawnGroups != null)
-		for (String name : spawnGroups.getKeys(false))
 		{
-			//System.out.print(" - Found "+name);
-			String spawnWorld = spawnGroups.getString(name + ".spawn");
-			if (spawnWorld == null)
+			for (String name : spawnGroups.getKeys(false))
 			{
-				continue;
+				//System.out.print(" - Found "+name);
+				String spawnWorld = spawnGroups.getString(name + ".spawn");
+				if (spawnWorld == null)
+				{
+					continue;
+				}
+				//System.out.print(" - Registered "+name + " to "+ spawnWorld);
+				groupToWorldSpawn.put(name, spawnWorld);
 			}
-			//System.out.print(" - Registered "+name + " to "+ spawnWorld);
-			groupToWorldSpawn.put(name, spawnWorld);
 		}
 		this.data = data;
 	}

@@ -77,7 +77,7 @@ public class LangStrings
 	{
 		private final Plugin main;
 
-		public Controller(Plugin m)
+		Controller(Plugin m)
 		{
 			this.main = m;
 		}

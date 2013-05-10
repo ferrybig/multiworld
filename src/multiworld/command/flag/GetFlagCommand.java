@@ -4,11 +4,10 @@
  */
 package multiworld.command.flag;
 
-import java.util.Arrays;
 import multiworld.ArgumentException;
 import multiworld.CommandException;
-import multiworld.api.flag.FlagName;
 import multiworld.Utils;
+import multiworld.api.flag.FlagName;
 import multiworld.chat.Formatter;
 import multiworld.command.Command;
 import multiworld.data.DataHandler;

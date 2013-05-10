@@ -4,8 +4,6 @@
  */
 package multiworld.data;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import multiworld.ConfigException;
 import multiworld.MultiWorldPlugin;
 import multiworld.api.ConfigurationSaveException;

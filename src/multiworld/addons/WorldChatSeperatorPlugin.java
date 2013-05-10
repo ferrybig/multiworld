@@ -4,10 +4,8 @@
  */
 package multiworld.addons;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import multiworld.api.flag.FlagName;
 import multiworld.data.DataHandler;
 import multiworld.data.InternalWorld;
@@ -37,7 +35,10 @@ public class WorldChatSeperatorPlugin implements Listener, MultiworldAddon
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onChat(AsyncPlayerChatEvent evt)
 	{
-		if(!isEnabled)return;
+		if(!isEnabled)
+		{
+			return;
+		}
 		InternalWorld w = d.getInternalWorld(evt.getPlayer().getWorld().getName(), true);
 		boolean maySendChat = d.getFlag(w.getName(), FlagName.SENDCHAT).getAsBoolean();
 		if (!maySendChat)

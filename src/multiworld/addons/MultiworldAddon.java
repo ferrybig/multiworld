@@ -4,9 +4,6 @@
  */
 package multiworld.addons;
 
-import multiworld.data.DataHandler;
-import multiworld.data.MyLogger;
-
 /**
  *
  * @author Fernando

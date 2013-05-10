@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import multiworld.CommandException;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 /**

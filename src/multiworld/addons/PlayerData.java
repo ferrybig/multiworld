@@ -1,9 +1,8 @@
 package multiworld.addons;
 
-import java.util.Arrays;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 /**
  * The class that saves the inventories got from players

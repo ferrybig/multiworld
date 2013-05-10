@@ -1,8 +1,8 @@
 package multiworld.worldgen;
 
-import org.bukkit.World;
 import java.util.Random;
 import multiworld.worldgen.util.ChunkMaker;
+import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 
 /**

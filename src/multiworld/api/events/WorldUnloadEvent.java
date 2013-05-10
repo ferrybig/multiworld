@@ -5,9 +5,6 @@
 package multiworld.api.events;
 
 import multiworld.api.MultiWorldWorldData;
-import multiworld.api.flag.FlagName;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**

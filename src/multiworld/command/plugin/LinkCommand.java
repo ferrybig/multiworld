@@ -9,11 +9,11 @@ import multiworld.CommandException;
 import multiworld.ConfigException;
 import multiworld.NotEnabledException;
 import multiworld.Utils;
-import multiworld.command.Command;
-import multiworld.data.DataHandler;
 import multiworld.addons.AddonHandler;
 import multiworld.addons.AddonHolder;
 import multiworld.addons.PortalHandler;
+import multiworld.command.Command;
+import multiworld.data.DataHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 

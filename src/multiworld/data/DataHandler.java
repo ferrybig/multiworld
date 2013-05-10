@@ -1,10 +1,10 @@
 package multiworld.data;
 
 import multiworld.ConfigException;
-import multiworld.api.MultiWorldWorldData;
-import multiworld.api.flag.FlagName;
 import multiworld.MultiWorldPlugin;
 import multiworld.WorldGenException;
+import multiworld.api.MultiWorldWorldData;
+import multiworld.api.flag.FlagName;
 import multiworld.flags.FlagValue;
 import multiworld.worldgen.WorldGenerator;
 import org.bukkit.Bukkit;
@@ -308,7 +308,7 @@ public final class DataHandler implements WorldUntils
 		private final ConfigurationSection insideNodes;
 		private final String groupName;
 
-		public ConfigGroup(String groupName, ConfigurationSection insideNodes)
+		ConfigGroup(String groupName, ConfigurationSection insideNodes)
 		{
 			this.groupName = groupName;
 			this.insideNodes = insideNodes;

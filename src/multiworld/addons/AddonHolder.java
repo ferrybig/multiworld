@@ -4,9 +4,6 @@
  */
 package multiworld.addons;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import multiworld.MultiWorldPlugin;
 import multiworld.data.ConfigNode;
 import multiworld.data.DataHandler;

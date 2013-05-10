@@ -5,8 +5,8 @@
 package multiworld.command.flag;
 
 import multiworld.CommandException;
-import multiworld.api.flag.FlagName;
 import multiworld.Utils;
+import multiworld.api.flag.FlagName;
 import multiworld.command.Command;
 import org.bukkit.command.CommandSender;
 
