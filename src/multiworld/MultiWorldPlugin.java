@@ -89,7 +89,7 @@ public class MultiWorldPlugin extends JavaPlugin
 		catch (ConfigException e)
 		{
 			this.getServer().getLogger().log(Level.SEVERE, "[MultiWorld] error while enabling:".concat(e.toString())); //NOI18N
-			this.getServer().getLogger().severe("[MultiWorld] plz check the configuration for anny misplaced tabs, full error:"); //NOI18N
+			this.getServer().getLogger().severe("[MultiWorld] plz check the configuration for any misplaced tabs, full error:"); //NOI18N
 			e.printStackTrace(System.err);
 			this.errorStatus = true;
 			this.setEnabled(false);

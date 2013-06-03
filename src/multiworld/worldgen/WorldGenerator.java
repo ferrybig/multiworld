@@ -34,6 +34,7 @@ public enum WorldGenerator implements ChunkGen
 	PIXELARTROOM(new PixelArtRoomChunkGenerator(), "PixelArtRoom", "Makes a world from wool with big walls for pixelart", SpeedLevel.FAST),
 	PLANETS(new SmallPlanetGen(), "Planets", "Makes worlds out of planets", SpeedLevel.NORMAL),
 	SOLARSYSTEM(new BigPlanetGen(), "SolarSystem", "Makes a world with a few, big planets", SpeedLevel.NORMAL),
+	ISLANDS(new FlyingIslandsGenerator(), "Islands", "Flying islands", SpeedLevel.NORMAL),
 	NULLGEN(NullGen.get(), "NullGen", "An dummy gen to says that the world is made by another plugin", false, SpeedLevel.UNKNOWN),
 	PLUGIN(new PluginGen(World.Environment.NORMAL), "Plugin", "Makes the world with another plugin.", SpeedLevel.UNKNOWN),
 	PLUGIN_NETHER(new PluginGen(World.Environment.NETHER), "Plugin_Nether", "Makes the world with another plugin (nether version).", SpeedLevel.UNKNOWN),
