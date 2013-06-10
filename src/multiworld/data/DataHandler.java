@@ -108,7 +108,7 @@ public final class DataHandler implements WorldUntils
 			String tmp1;
 			String tmp2 = "";
 			String tmp3 = "";
-			String[] tmp4 = this.config.getString(getNode(OPTIONS_LOCALE), "en_US").split("_");
+			String[] tmp4 = getNode(OPTIONS_LOCALE).split("_");
 			switch (tmp4.length)
 			{
 				case 3:
