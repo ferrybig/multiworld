@@ -6,7 +6,9 @@ package multiworld.command.world;
 
 import multiworld.ArgumentException;
 import multiworld.CommandException;
+import multiworld.CommandFailedException;
 import multiworld.ConfigException;
+import multiworld.InvalidWorldGenOptionsException;
 import multiworld.InvalidWorldNameException;
 import multiworld.Utils;
 import multiworld.WorldGenException;
@@ -34,6 +36,27 @@ public class CreateCommand extends Command
 	}
 
 	@Override
+	public String[] calculateMissingArguments(CommandSender sender, String commandName, String[] split)
+	{
+		if (split.length == 0)
+		{
+			return this.calculateMissingArgumentsWorld("");
+		}
+		else if (split.length == 1)
+		{
+			return this.calculateMissingArgumentsWorld(split[0]);
+		}
+		else if(split.length == 2)
+		{
+			return this.calculateMissingArgumentsWorldGenerator(split[1]);
+		}
+		else
+		{
+			return EMPTY_STRING_ARRAY;
+		}
+	}
+
+	@Override
 	public void runCommand(CommandSender sender, String[] split) throws CommandException
 	{
 		if (split.length == 0)
@@ -45,18 +68,15 @@ public class CreateCommand extends Command
 			try
 			{
 				Utils.checkWorldName(split[0]);
-
-
 				if (data.getInternalWorld(split[0], false) != null)
 				{
 					sender.sendMessage(ChatColor.RED + this.data.getLang().getString("WORLD CREATE ERR WORLD EXISTS"));
 					return;
 				}
-
 				long seed = (new java.util.Random()).nextLong();
 				WorldGenerator env = WorldGenerator.NORMAL;
 				String genOptions = ""; //NOI18N
-				String genName = env.name();
+				String genName;
 				if (split.length > 1)
 				{
 
@@ -68,7 +88,6 @@ public class CreateCommand extends Command
 						genName = genName.substring(0, index);
 					}
 					env = WorldGenerator.getGenByName(genName);
-
 					if (split.length > 2)
 					{
 						try
@@ -83,7 +102,6 @@ public class CreateCommand extends Command
 
 				}
 				sender.sendMessage(ChatColor.GREEN + this.data.getLang().getString("WORLD CREATE MAKING"));
-
 				if (!this.data.makeWorld(split[0], env, seed, genOptions))
 				{
 					sender.sendMessage(ChatColor.RED + this.data.getLang().getString("WORLD CREATE ERR NULL"));
@@ -91,7 +109,6 @@ public class CreateCommand extends Command
 				else
 				{
 					this.data.loadWorld(split[0], true);
-
 					sender.sendMessage(ChatColor.GREEN + this.data.getLang().getString("WORLD CREATE SUCCES", new Object[]
 						{
 							split[0], env.getName(), seed
@@ -104,11 +121,15 @@ public class CreateCommand extends Command
 			}
 			catch (InvalidWorldNameException e)
 			{
-				throw new CommandException("The input world name dont contain a valid syntaxs.", e);
+				throw new CommandFailedException("The input world isn't a valid world name!");
+			}
+			catch(InvalidWorldGenOptionsException e)
+			{
+				throw new CommandFailedException(e.getMessage());
 			}
 			catch (WorldGenException ex)
 			{
-				throw new CommandException("Do /mw listgens for a list of valid world gens", ex);
+				throw new CommandFailedException("Do /mw listgens for a list of valid world gens");
 			}
 		}
 	}

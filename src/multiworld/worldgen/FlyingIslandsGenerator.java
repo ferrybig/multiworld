@@ -36,7 +36,7 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 	 * 16 by 16 by 16 blocks.
 	 * @param material The material to set the block to.
 	 */
-	void setBlock(int x, int y, int z, byte[][] chunk, Material material)
+	private void setBlock(int x, int y, int z, byte[][] chunk, Material material)
 	{
 		//if the Block section the block is in hasn't been used yet, allocate it
 		if (chunk[y >> 4] == null)
@@ -58,7 +58,7 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 		}
 	}
 
-	byte getBlock(int x, int y, int z, byte[][] chunk)
+	private byte getBlock(int x, int y, int z, byte[][] chunk)
 	{
 		if (!(y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0))
 		{
@@ -188,22 +188,17 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 					{
 						if (blockabove == Material.AIR.getId())
 						{
-							if (random.nextBoolean())
+							if (random.nextInt(8) == 0)
 							{
 								if (random.nextBoolean())
 								{
-									if (random.nextBoolean())
-									{
-										if (random.nextBoolean())
-										{
-											setBlock(x, y + 1, z, chunk, Material.YELLOW_FLOWER);
-										}
-										else
-										{
-											setBlock(x, y + 1, z, chunk, Material.RED_ROSE);
-										}
-									}
+									setBlock(x, y + 1, z, chunk, Material.YELLOW_FLOWER);
 								}
+								else
+								{
+									setBlock(x, y + 1, z, chunk, Material.RED_ROSE);
+								}
+
 							}
 							setBlock(x, y, z, chunk, Material.GRASS);
 							if (getBlock(x, y - 1, z, chunk) == Material.STONE.getId())
@@ -258,6 +253,5 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 	public void makeWorld(InternalWorld options) throws WorldGenException
 	{
 		options.setWorldGen(this);
-
 	}
 }

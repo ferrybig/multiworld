@@ -84,7 +84,6 @@ public class MultiWorldPlugin extends JavaPlugin
 			this.pluginHandler.onSettingsChance();
 			this.submitStats();
 			this.log.info("v" + this.version + " enabled."); //NOI18N
-
 		}
 		catch (ConfigException e)
 		{
@@ -189,6 +188,10 @@ public class MultiWorldPlugin extends JavaPlugin
 					e.correctUsage()
 				}));
 		}
+		catch (CommandFailedException ex)
+		{
+			Utils.sendMessage(sender, ChatColor.RED + "Problem detected: \n" + ex.getMessage());
+		}
 		catch (CommandException ex)
 		{
 			Utils.sendMessage(sender, ChatColor.RED + "Error: " + ex.getMessage());
@@ -235,13 +238,8 @@ public class MultiWorldPlugin extends JavaPlugin
 		ChunkGenerator gen = WorldGenerator.getGen(id);
 		if (gen == null)
 		{
-			//this.getServer().getLogger().log(Level.SEVERE, "[ {0} ] illegal or unknown worldGenerator, use ''FLATLAND'' or ''PIXELARTROOM''", getDescription().getFullName());
 			return null;
 		}
-		//this.getServer().getLogger().log(Level.INFO, "[ {0} ] using world gen {1} for world {2}", new Object[]
-		//	{
-		//		getDescription().getFullName(), id, worldName
-		//	});
 		return gen;
 	}
 

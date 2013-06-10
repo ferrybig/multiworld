@@ -13,6 +13,7 @@ import multiworld.data.InternalWorld;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.util.ChatPaginator;
 
 /**
  *
@@ -32,6 +33,7 @@ public class Utils implements java.io.Serializable
 
 	/**
 	 * Gets the name of the input CommandSender
+	 *
 	 * @param sender The CommandSender obj to get the name from
 	 * @return The name of it
 	 */
@@ -42,6 +44,7 @@ public class Utils implements java.io.Serializable
 
 	/**
 	 * Have the player the permission?
+	 *
 	 * @param player The player to test whit
 	 * @param permission
 	 * @return The result
@@ -64,7 +67,6 @@ public class Utils implements java.io.Serializable
 			if (quotes == 0)
 			{
 				hasFoundToken = !hasFoundToken;
-
 				if (hasFoundToken)
 				{
 					numberOfArguments--;
@@ -112,17 +114,9 @@ public class Utils implements java.io.Serializable
 		}
 	}
 
-	public static void main(String[] arg) throws IOException
-	{
-		System.out.print("Testing: ");
-		for (String test : parseArguments(new BufferedReader(new InputStreamReader(System.in)).readLine().split(" ")))
-		{
-			System.out.println(test);
-		}
-	}
-
 	/**
 	 * Can the follwing commandsender use the command?
+	 *
 	 * @param sender to test whit
 	 * @param command The command to test
 	 * @throws PermissionException If the sender dont have the permission
@@ -149,36 +143,53 @@ public class Utils implements java.io.Serializable
 		}
 		return worldObj;
 	}
-
+	
 	public static void sendMessage(CommandSender s, String msg)
 	{
+
 		sendMessage(s, msg, 5);
 	}
 
+	/**
+	 *Sends a command sender a message in a friendly way
+	 * @param s the commandsender to send to
+	 * @param msg the message
+	 * @param spaces The amount of spaces before the message if it doesn't fit
+	 */
 	public static void sendMessage(CommandSender s, String msg, int spaces)
 	{
+		char[] spaceChars = new char[spaces];
+		for (int i = 0; i < spaceChars.length; i++)
+		{
+			spaceChars[i] = ' ';
+		}
+		String spaceString = new String(spaceChars);
+		sendMessage(s, msg, spaceString);
+	}
+
+	public static void sendMessage(CommandSender s, String msg, String prefix)
+	{
+		if (msg.contains("\n"))
+		{
+			for(String str : msg.split("\n"))
+			{
+				sendMessage(s,str,prefix);// recursion
+			}
+			return;
+		}
 		if (s instanceof ConsoleCommandSender)
 		{
 			s.sendMessage(msg);
 			return;
 		}
-		final int maxLineLenght = 60;
+		final int maxLineLenght = ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH;
 		if (msg.length() > maxLineLenght)
 		{
-			if (spaces > maxLineLenght)
-			{
-				throw new IllegalArgumentException();
-			}
-			char[] spaceChars = new char[spaces];
-			for (int i = 0; i < spaceChars.length; i++)
-			{
-				spaceChars[i] = ' ';
-			}
-			String spaceString = new String(spaceChars);
 			char color = 'f';
 			int charsLeft = 60;
 			String[] parts = msg.split(" ");
 			StringBuilder b = new StringBuilder(maxLineLenght);
+			int spaces = prefix.length();
 			for (String i : parts)
 			{
 				if (i.lastIndexOf(0x00A7) != -1)
@@ -190,12 +201,11 @@ public class Utils implements java.io.Serializable
 					s.sendMessage(b.toString());
 					charsLeft = maxLineLenght - spaces;
 					b = new StringBuilder(maxLineLenght);
-					b.append(spaceString);
+					b.append(prefix);
 					b.append('\u00A7').append(color);
 				}
 				charsLeft -= i.length() + 1;
 				b.append(i).append(" ");
-
 			}
 			if (b.length() != 0)
 			{

@@ -9,6 +9,7 @@ import java.util.Set;
 import multiworld.CommandException;
 import multiworld.Utils;
 import multiworld.api.flag.FlagName;
+import multiworld.worldgen.WorldGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -63,7 +64,7 @@ public abstract class Command
 		return EMPTY_STRING_ARRAY;
 	}
 
-	protected String[] calculateMissingArgumentsWorld(String worldName)
+	protected final String[] calculateMissingArgumentsWorld(String worldName)
 	{
 		Set<World> worlds = new HashSet<World>();
 		worlds.addAll(Bukkit.getWorlds());
@@ -79,7 +80,33 @@ public abstract class Command
 		return found.toArray(new String[found.size()]);
 	}
 
-	protected String[] calculateMissingArgumentsPlayer(String playerName)
+	protected final String[] calculateMissingArgumentsWorldGenerator(String worldGen)
+	{
+		String lowerName = worldGen.toLowerCase();
+		String otherPart = "";
+		if(lowerName.contains(":"))
+		{
+			String[] spl = lowerName.split(":",2);
+			lowerName = spl[0];
+			otherPart = ":" + spl[1];
+			// TODO: other logic
+		}
+		Set<String> found = new HashSet<String>(WorldGenerator.values().length);
+		for (WorldGenerator gen : WorldGenerator.values())
+		{
+			if (!gen.mayInList())
+			{
+				continue;
+			}
+			if (gen.getName().toLowerCase().startsWith(lowerName))
+			{
+				found.add(gen.getName()+otherPart);
+			}
+		}
+		return found.toArray(new String[found.size()]);
+	}
+
+	protected final String[] calculateMissingArgumentsPlayer(String playerName)
 	{
 		Player[] players = Bukkit.getOnlinePlayers();
 
@@ -95,7 +122,7 @@ public abstract class Command
 		return found.toArray(new String[found.size()]);
 	}
 
-	protected String[] calculateMissingArgumentsFlagName(String flagName)
+	protected final String[] calculateMissingArgumentsFlagName(String flagName)
 	{
 		FlagName[] flags = FlagName.values();
 
@@ -111,7 +138,7 @@ public abstract class Command
 		return found.toArray(new String[found.size()]);
 	}
 
-	protected String[] calculateMissingArgumentsBoolean(String bool)
+	protected final String[] calculateMissingArgumentsBoolean(String bool)
 	{
 		if (bool.startsWith("t") || bool.startsWith("tr") || bool.startsWith("tru") || bool.startsWith("true"))
 		{

@@ -26,6 +26,23 @@ public class InfoCommand extends Command
 	}
 
 	@Override
+	public String[] calculateMissingArguments(CommandSender sender, String commandName, String[] split)
+	{
+		if (split.length == 0)
+		{
+			return this.calculateMissingArgumentsWorld("");
+		}
+		else if (split.length == 1)
+		{
+			return this.calculateMissingArgumentsWorld(split[0]);
+		}
+		else
+		{
+			return EMPTY_STRING_ARRAY;
+		}
+	}
+
+	@Override
 	public void runCommand(CommandSender s, String[] arg) throws CommandException
 	{
 		String worldName = null;

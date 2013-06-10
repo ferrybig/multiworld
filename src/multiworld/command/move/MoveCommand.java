@@ -51,27 +51,28 @@ public class MoveCommand extends Command
 				s.sendMessage(ChatColor.RED + this.d.getLang().getString("PLAYER NOT FOUND"));
 				return;
 			}
-
 			this.p.movePlayer(targetPlayer, destinationWorld.getWorld());
 			targetPlayer.sendMessage("You are been moved to world \"" + destinationWorld.getName() + "\" by: " + Utils.getPlayerName(s));
 			s.sendMessage("Moved player");
-
 		}
 	}
+
 	@Override
 	public String[] calculateMissingArguments(CommandSender sender, String commandName, String[] split)
 	{
 		if (split.length == 0)
 		{
-			return this.calculateMissingArgumentsWorld("");
+			return this.calculateMissingArgumentsPlayer("");
 		}
 		else if (split.length == 1)
 		{
 			return this.calculateMissingArgumentsPlayer(split[0]);
-		}else if (split.length == 2)
+		}
+		else if (split.length == 2)
 		{
 			return this.calculateMissingArgumentsWorld(split[1]);
-		}else
+		}
+		else
 		{
 			return EMPTY_STRING_ARRAY;
 		}

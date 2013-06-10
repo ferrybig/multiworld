@@ -30,9 +30,9 @@ public class WorldSpawnControll extends AddonBase implements MultiworldAddon, Li
 		{
 			return;
 		}
+		assert this.data.getSpawns() != null; // This class may not be initized when the spawn if turned to false
 		World to = this.data.getSpawns().resolveWorld(event.getPlayer().getWorld().getName());
 		this.data.getLogger().fine("Chanced spawn of player "+event.getPlayer().getName()+" to world "+to.getName());
 		event.setRespawnLocation(to.getSpawnLocation());
-		
 	}
 }

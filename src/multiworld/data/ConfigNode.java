@@ -51,7 +51,10 @@ public final class ConfigNode<T>
 		return defaultValue;
 	}
 
-	@SuppressWarnings({"unchecked", "unchecked"})
+	@SuppressWarnings(
+	{
+		"unchecked", "unchecked"
+	})
 	public T get(ConfigurationSection from)
 	{
 		MyLogger logger = null;
@@ -78,7 +81,7 @@ public final class ConfigNode<T>
 					logger.warning(conf.getCurrentPath() + " != " + this.getFullPath());
 				}
 			}
-			return (T) conf;
+			return this.type.cast(conf);
 		}
 		else
 		{
@@ -106,9 +109,8 @@ public final class ConfigNode<T>
 				{
 					if (logger != null)
 					{
-						logger.warning("Error with node \"" + this.getFullPath()+"\" plz fix it, it has been replaced by the default value");
+						logger.warning("Error with node \"" + this.getFullPath() + "\" plz fix it, it has been replaced by the default value");
 					}
-
 					this.set1(from, defaultValue);
 					return defaultValue1;
 				}

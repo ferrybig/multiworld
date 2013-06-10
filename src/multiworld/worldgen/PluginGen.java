@@ -21,7 +21,7 @@ public class PluginGen extends MultiWorldChunkGen
 {
 	private final Environment environment;
 
-	PluginGen(Environment environment)
+	public PluginGen(Environment environment)
 	{
 		this.environment = environment;
 		
@@ -48,7 +48,6 @@ public class PluginGen extends MultiWorldChunkGen
 		{
 			throw new InvalidWorldGenOptionsException("Unknown plugin");
 		}
-
 		try
 		{
 			final ChunkGenerator generator = p.getDefaultWorldGenerator(options.getName(), genId);

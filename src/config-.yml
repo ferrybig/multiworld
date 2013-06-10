@@ -1,7 +1,0 @@
-options:
-  debug: false
-  difficulty: 2
-  usecreativemode: false
-  usecreativemodeinv: true
-  useportalhandler: false
-  locale: us_US

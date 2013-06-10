@@ -36,11 +36,10 @@ public final class DataHandler implements WorldUntils
 	public final static ConfigNode<Boolean> OPTIONS_WORLD_CHAT = new ConfigNode<Boolean>(OPTIONS_NODE, "useWorldChatSeperator", false, Boolean.class);
 	public final static ConfigNode<Boolean> OPTIONS_GAMEMODE = new ConfigNode<Boolean>(OPTIONS_NODE, "usecreativemode", false, Boolean.class);
 	public final static ConfigNode<Boolean> OPTIONS_GAMEMODE_INV = new ConfigNode<Boolean>(OPTIONS_NODE, "usecreativemodeinv", true, Boolean.class);
+	public final static ConfigNode<Boolean> OPTIONS_WORLD_SPAWN = new ConfigNode<Boolean>(OPTIONS_NODE, "useWorldSpawnHandler", false, Boolean.class);
 	public final static ConfigNode<Boolean> OPTIONS_DEBUG = new ConfigNode<Boolean>(OPTIONS_NODE, "debug", false, Boolean.class);
-	//public final static ConfigNode<Boolean> OPTIONS_USE_SPAWN_CONTROL = new ConfigNode<Boolean>(OPTIONS_NODE, "spawnControl", false, Boolean.class);
 	public final static ConfigNode<Integer> OPTIONS_DIFFICULTY = new ConfigNode<Integer>(OPTIONS_NODE, "difficulty", 2, Integer.class);
 	public final static ConfigNode<String> OPTIONS_LOCALE = new ConfigNode<String>(OPTIONS_NODE, "locale", "en_US", String.class);
-	public final static ConfigNode<Boolean> OPTIONS_WORLD_SPAWN = new ConfigNode<Boolean>(OPTIONS_NODE, "useWorldSpawnHandler", false, Boolean.class);
 
 	/**
 	 * Makes the object
@@ -66,19 +65,9 @@ public final class DataHandler implements WorldUntils
 	public void save() throws ConfigException
 	{
 		this.config.options().header("# options.debug: must the debug output be printed?\n"
-			+ "# options.difficulty: what is the server diffecalty?\n"
+			+ "# options.difficulty: what is the server diffeculty?\n"
 			+ "# options.locale: what set of lang files must be used, supported: en_US, nl_NL, de_DE, it_IT\n"
-			+ "# spawnGroup: used to set whits worlds have whits spawn, difficult to use");
-		//this.config.set("options.debug", this.logger.getDebug());
-		//this.config.set("options.difficulty", this.difficulty.getValue());
-		//this.config.set("options.usecreativemode", this.isCreativeEnabled);
-		//this.config.set("options.usecreativemodeinv", this.isCreativeInvEnabled);
-		//this.config.set("options.useportalhandler", this.isPortalHandlerEnabled);
-		//this.config.set("options.useEndPortalHandler", this.endPortalHandlerEnabled);
-		//this.config.set("options.useWorldChatSeperator", this.useWorldChat);
-		//this.config.set("options.blockEnderChestInCrea", this.blockEnderChests);
-		//this.config.set("options.locale", this.lang.getLocale().toString());
-
+			+ "# spawnGroup: used to set withs worlds have what spawn, difficult to use. see official site for details");
 		ConfigurationSection l1;
 		l1 = this.config.createSection("worlds");
 		saveWorlds(l1, logger, this.spawn);
@@ -87,8 +76,6 @@ public final class DataHandler implements WorldUntils
 			this.spawn.save(config.createSection("spawnGroup"));
 		}
 		this.plugin.saveConfig();
-
-
 	}
 
 	@Override
@@ -118,7 +105,7 @@ public final class DataHandler implements WorldUntils
 
 		/* locale setting */
 		{
-			String tmp1 = "";
+			String tmp1;
 			String tmp2 = "";
 			String tmp3 = "";
 			String[] tmp4 = this.config.getString(getNode(OPTIONS_LOCALE), "en_US").split("_");
@@ -145,20 +132,20 @@ public final class DataHandler implements WorldUntils
 			this.getNode(DataHandler.OPTIONS_LINK_NETHER);
 			this.getNode(DataHandler.OPTIONS_WORLD_SPAWN);
 		}
-		ConfigurationSection spawnGroup = this.config.getConfigurationSection("spawnGroup");
-		if (spawnGroup == null)
+		if (this.getNode(DataHandler.OPTIONS_WORLD_SPAWN))
 		{
-			this.config.set("spawnGroup.defaultGroup.world", Bukkit.getWorlds().get(0).getName());
+			ConfigurationSection spawnGroup = this.config.getConfigurationSection("spawnGroup");
+			if (spawnGroup == null)
+			{
+				this.config.set("spawnGroup.defaultGroup.world", Bukkit.getWorlds().get(0).getName());
+			}
+			this.spawn = new SpawnWorldControl(spawnGroup, this);
+			ConfigurationSection worldList = this.config.getConfigurationSection("worlds");
+			if (worldList != null)
+			{
+				loadWorlds(worldList, this.logger, this.difficulty, this.spawn);
+			}
 		}
-		this.spawn = new SpawnWorldControl(spawnGroup, this);
-		ConfigurationSection worldList = this.config.getConfigurationSection("worlds");
-		if (worldList != null)
-		{
-			loadWorlds(worldList, this.logger, this.difficulty, this.spawn);
-		}
-
-
-
 	}
 
 	public MyLogger getLogger()
@@ -301,67 +288,6 @@ public final class DataHandler implements WorldUntils
 	public WorldContainer[] getWorlds()
 	{
 		return worlds.getWorlds();
-	}
-
-	private class ConfigGroup
-	{
-		private final ConfigurationSection insideNodes;
-		private final String groupName;
-
-		ConfigGroup(String groupName, ConfigurationSection insideNodes)
-		{
-			this.groupName = groupName;
-			this.insideNodes = insideNodes;
-
-		}
-
-		/**
-		 * @return the groupName
-		 */
-		public String getGroupName()
-		{
-			return groupName;
-		}
-
-		/**
-		 * @return the insideNodes
-		 */
-		public ConfigurationSection getInsideNodes()
-		{
-			return insideNodes;
-		}
-
-		@Override
-		public boolean equals(Object obj)
-		{
-			if (obj == null)
-			{
-				return false;
-			}
-			if (getClass() != obj.getClass())
-			{
-				return false;
-			}
-			final ConfigGroup other = (ConfigGroup) obj;
-			if (this.insideNodes != other.insideNodes && (this.insideNodes == null || !this.insideNodes.equals(other.insideNodes)))
-			{
-				return false;
-			}
-			if ((this.groupName == null) ? (other.groupName != null) : !this.groupName.equals(other.groupName))
-			{
-				return false;
-			}
-			return true;
-		}
-
-		@Override
-		public int hashCode()
-		{
-			int hash = 7;
-			hash = 37 * hash + (this.insideNodes != null ? this.insideNodes.hashCode() : 0);
-			hash = 37 * hash + (this.groupName != null ? this.groupName.hashCode() : 0);
-			return hash;
-		}
 	}
 
 	public <T> T getNode(ConfigNode<T> input)

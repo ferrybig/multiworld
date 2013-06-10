@@ -54,5 +54,4 @@ public class LoadWorldCommand extends Command
 			throw new CommandFailedByConfigException(ex);
 		}
 	}
-	
 }
