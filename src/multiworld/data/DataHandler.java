@@ -140,11 +140,12 @@ public final class DataHandler implements WorldUntils
 				this.config.set("spawnGroup.defaultGroup.world", Bukkit.getWorlds().get(0).getName());
 			}
 			this.spawn = new SpawnWorldControl(spawnGroup, this);
-			ConfigurationSection worldList = this.config.getConfigurationSection("worlds");
-			if (worldList != null)
-			{
-				loadWorlds(worldList, this.logger, this.difficulty, this.spawn);
-			}
+
+		}
+		ConfigurationSection worldList = this.config.getConfigurationSection("worlds");
+		if (worldList != null)
+		{
+			loadWorlds(worldList, this.logger, this.difficulty, this.spawn);
 		}
 	}
 
