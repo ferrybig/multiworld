@@ -164,7 +164,7 @@ public class InternalWorld
 			}
 		}
 
-		return "Unknwon world";
+		return "Unknown world";
 	}
 
 	public String getMainGen()
