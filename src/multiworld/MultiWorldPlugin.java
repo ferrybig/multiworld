@@ -202,7 +202,7 @@ public class MultiWorldPlugin extends JavaPlugin
 			Utils.sendMessage(sender, ChatColor.RED + "Inform plugin author about this");
 			if (ex instanceof RuntimeException)
 			{
-				this.log.throwing("MultiWorldPlugin", "onCommand", ex, "Error while excuting command");
+				this.log.throwing("MultiWorldPlugin", "onCommand", ex, "Error while executing command");
 			}
 			Throwable cause = ex;
 			while ((cause = cause.getCause()) != null)
