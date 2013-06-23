@@ -54,7 +54,7 @@ public class WorldManager implements WorldUntils
 	{
 		if (name == null)
 		{
-			throw new NullPointerException("Name may not be null");
+			throw new IllegalArgumentException("Name may not be null");
 		}
 		WorldContainer w = this.getWorldMeta(name, mustBeLoaded);
 		if (w == null)
@@ -123,9 +123,9 @@ public class WorldManager implements WorldUntils
 	}
 
 	@Override
-	public InternalWorld[] getWorlds(boolean b)
+	public InternalWorld[] getWorlds(boolean listOnlyOnlineWorlds)
 	{
-		if (b)
+		if (listOnlyOnlineWorlds)
 		{
 			return this.getLoadedWorlds();
 		}

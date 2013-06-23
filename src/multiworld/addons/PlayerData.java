@@ -45,7 +45,7 @@ public class PlayerData extends Object implements Cloneable
 		PlayerInventory inv = player.getInventory();
 		inv.clear();
 		inv.setContents(this.inventory.clone());
-		inv.setArmorContents(this.armor);
+		inv.setArmorContents(this.armor.clone());
 		player.setLevel(level);
 		player.setTotalExperience(xp);
 		player.setFireTicks(onFire);
