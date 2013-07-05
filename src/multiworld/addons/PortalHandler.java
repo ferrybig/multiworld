@@ -172,7 +172,10 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 					World.Environment toDim = toWorld.getEnvironment(), fromDim = event.getFrom().getWorld().getEnvironment();
 					if (toDim == World.Environment.THE_END)
 					{
-						event.setTo(new Location(toWorld, 100, 54, 0));
+						Location loc = new Location(toWorld, 100, 54, 0);
+						loc = event.getPortalTravelAgent().findOrCreate(loc);
+						event.setTo(loc);
+						
 					}
 					else
 					{
@@ -181,7 +184,9 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 						{
 							loc = toWorld.getSpawnLocation();
 						}
+						loc = event.getPortalTravelAgent().findOrCreate(loc);
 						event.setTo(loc);
+						
 					}
 				}
 			}
@@ -216,6 +221,7 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 					}
 					Location to = new Location(toWorld, event.getFrom().getX() * div, event.getFrom().getY(), event.getFrom().getZ() * div, event.getFrom().getYaw(),
 								   event.getFrom().getPitch());
+					to = event.getPortalTravelAgent().findOrCreate(to);
 					event.setTo(to);
 				}
 			}
