@@ -47,11 +47,6 @@ public class CommandMap extends Command
 		}
 	}
 
-	public String[] getOptionsForUnfinishedCOmmands()
-	{
-		return null;
-	}
-
 	private String[] removeFirstFromArray(String[] input)
 	{
 		if (input.length < 2)

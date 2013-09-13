@@ -84,9 +84,9 @@ public abstract class Command
 	{
 		String lowerName = worldGen.toLowerCase();
 		String otherPart = "";
-		if(lowerName.contains(":"))
+		if (lowerName.contains(":"))
 		{
-			String[] spl = lowerName.split(":",2);
+			String[] spl = lowerName.split(":", 2);
 			lowerName = spl[0];
 			otherPart = ":" + spl[1];
 			// TODO: other logic
@@ -100,7 +100,7 @@ public abstract class Command
 			}
 			if (gen.getName().toLowerCase().startsWith(lowerName))
 			{
-				found.add(gen.getName()+otherPart);
+				found.add(gen.getName() + otherPart);
 			}
 		}
 		return found.toArray(new String[found.size()]);
@@ -143,25 +143,139 @@ public abstract class Command
 		if (bool.startsWith("t") || bool.startsWith("tr") || bool.startsWith("tru") || bool.startsWith("true"))
 		{
 			return new String[]
-				{
-					"true"
-				};
+			{
+				"true"
+			};
 		}
 		if (bool.startsWith("f") || bool.startsWith("fa") || bool.startsWith("fal") || bool.startsWith("fals") || bool.startsWith("false"))
 		{
 			return new String[]
-				{
-					"false"
-				};
+			{
+				"false"
+			};
 		}
 		if (bool.isEmpty())
 		{
 			return new String[]
-				{
-					"false", "true"
-				};
+			{
+				"false", "true"
+			};
 		}
 		return EMPTY_STRING_ARRAY;
+	}
+	protected static final int MAX_COORD = 30000000;
+	protected static final int MIN_COORD_MINUS_ONE = -30000001;
+	protected static final int MIN_COORD = -30000000;
+
+	protected static double getCoordinate(CommandSender sender, double current, String input)
+	{
+		return getCoordinate(sender, current, input, MIN_COORD, MAX_COORD);
+	}
+
+	protected static double getCoordinate(CommandSender sender, double current, String input, int min, int max)
+	{
+		boolean relative = input.startsWith("~");
+		double result = relative ? current : 0;
+
+		if (!relative || input.length() > 1)
+		{
+			boolean exact = input.contains(".");
+			if (relative)
+			{
+				input = input.substring(1);
+			}
+
+			double testResult = getDouble(sender, input);
+			if (testResult == MIN_COORD_MINUS_ONE)
+			{
+				return MIN_COORD_MINUS_ONE;
+			}
+			result += testResult;
+
+			if (!exact && !relative)
+			{
+				result += 0.5f;
+			}
+		}
+		if (min != 0 || max != 0)
+		{
+			if (result < min)
+			{
+				result = MIN_COORD_MINUS_ONE;
+			}
+
+			if (result > max)
+			{
+				result = MIN_COORD_MINUS_ONE;
+			}
+		}
+
+		return result;
+	}
+
+	protected static double getRelativeDouble(double original, CommandSender sender, String input)
+	{
+		if (input.startsWith("~"))
+		{
+			double value = getDouble(sender, input.substring(1));
+			if (value == MIN_COORD_MINUS_ONE)
+			{
+				return MIN_COORD_MINUS_ONE;
+			}
+			return original + value;
+		}
+		else
+		{
+			return getDouble(sender, input);
+		}
+	}
+
+	protected static double getDouble(CommandSender sender, String input)
+	{
+		try
+		{
+			return Double.parseDouble(input);
+		}
+		catch (NumberFormatException ex)
+		{
+			return MIN_COORD_MINUS_ONE;
+		}
+	}
+
+	protected static double getDouble(CommandSender sender, String input, double min, double max)
+	{
+		double result = getDouble(sender, input);
+
+		// TODO: This should throw an exception instead.
+		if (result < min)
+		{
+			result = min;
+		}
+		else if (result > max)
+		{
+			result = max;
+		}
+
+		return result;
+	}
+
+	protected static String createString(String[] args, int start)
+	{
+		return createString(args, start, " ");
+	}
+
+	protected static String createString(String[] args, int start, String glue)
+	{
+		StringBuilder string = new StringBuilder();
+		for (int x = start; x < args.length; x++)
+		{
+			string.append(args[x]);
+			if (x != args.length - 1)
+			{
+				string.append(glue);
+			}
+		}
+		return string.toString();
 	}
 
 	public abstract void runCommand(CommandSender s, String[] arguments) throws CommandException;

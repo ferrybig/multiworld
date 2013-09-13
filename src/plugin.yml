@@ -1,6 +1,6 @@
 name: MultiWorld
 main: multiworld.MultiWorldPlugin
-version: 4.6.4
+version: 4.7.0
 dev-url: http://dev.bukkit.org/server-mods/multiworld-v-2-0/
 website: http://dev.bukkit.org/server-mods/multiworld-v-2-0/
 author: ferrybig
@@ -48,6 +48,8 @@ permissions:
             multiworld.command.reload: true
             multiworld.command.link: true
             multiworld.command.move: true
+            multiworld.commang.goto.cordinates: true
+            multiworld.commang.warp.cordinates: true
     multiworld.admin:
         description: admin settings
         children:
@@ -67,6 +69,9 @@ permissions:
             multiworld.command.list: true
     multiworld.command.goto:
         description: Teleport to a world.
+        default: op
+    multiworld.commang.goto.cordinates:
+        description: allows goto with cordinates
         default: op
     multiworld.command.list:
         description: list al the worlds.
@@ -121,6 +126,9 @@ permissions:
         default: op
     multiworld.command.move:
         description: move a player to another world.
+        default: op
+    multiworld.commang.move.cordinates:
+        description: allows move with cordinates
         default: op
     multiworld.command.spawn:
         description: Go to the spawn of a world.

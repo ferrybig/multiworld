@@ -11,13 +11,17 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 
 /**
  * the class that handle the use of portals between worlds
+ *
  * @author Fernando
  */
 public abstract class PortalHandler implements Listener, MultiworldAddon, SettingsListener
@@ -46,10 +50,11 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 
 	/**
 	 * The default constructor
-	 * @param d 
+	 *
+	 * @param d
 	 * @param server
 	 * @param logger
-	 * @param handleEndPortals  
+	 * @param handleEndPortals
 	 */
 	public PortalHandler(DataHandler d, Server server, MyLogger logger, boolean handleEndPortals)
 	{
@@ -60,7 +65,7 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 
 	/**
 	 * Load the data
-	 * 
+	 *
 	 * @throws IllegalStateException When this obj isn't enabled
 	 */
 	public void load() throws IllegalStateException
@@ -75,9 +80,9 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 
 	/**
 	 * Save the data
-	 * 
+	 *
 	 * @throws ConfigException When there was a configuration error
-	 * @throws IllegalStateException When it wasn't enabled 
+	 * @throws IllegalStateException When it wasn't enabled
 	 */
 	public void save() throws ConfigException, IllegalStateException
 	{
@@ -94,6 +99,7 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 
 	/**
 	 * Checks if this lugin is enabled
+	 *
 	 * @return true if its been enabled, false otherwise
 	 */
 	public boolean isEnabled()
@@ -130,6 +136,7 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 
 	/**
 	 * Adds a link to the database, or remove it if world2 is null
+	 *
 	 * @param world1 the target world
 	 * @param world2 the destination world
 	 * @throws NotEnabledException If this plugin is not enabled
@@ -148,10 +155,11 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 
 	/**
 	 * Called when a player uses a portal
+	 *
 	 * @param event The event data
 	 */
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerPortal(PlayerPortalEvent event)
+	public void onPlayerPortal(EntityPortalEvent event)
 	{
 		if (event.isCancelled() || !this.enabled)
 		{
@@ -159,73 +167,85 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 		}
 		int mapType = this.getPortalType(event.getFrom());
 		this.logger.fine("[PortalHandler] got portal " + mapType + " for location " + event.getFrom().toVector().toString() + ".");
-		if (this.handleEndPortals && (mapType == 1))
+		if (this.handleEndPortals)
 		{
-			this.logger.fine("[PortalHandler] got PortalType.END.");
-			InternalWorld from = this.data.getInternalWorld(event.getFrom().getWorld().getName(), true);
-			String toWorldString = from.getEndPortalWorld();
-			if (!toWorldString.isEmpty())
+			if ((mapType == END_PORTAL))
 			{
-				World toWorld = this.data.getWorld(toWorldString);
-				if (toWorld != null)
+				this.logger.fine("[PortalHandler] got PortalType.END.");
+				InternalWorld from = this.data.getInternalWorld(event.getFrom().getWorld().getName(), true);
+				String toWorldString = from.getEndPortalWorld();
+				if (!toWorldString.isEmpty())
 				{
-					World.Environment toDim = toWorld.getEnvironment(), fromDim = event.getFrom().getWorld().getEnvironment();
-					if (toDim == World.Environment.THE_END)
+					World toWorld = this.data.getWorld(toWorldString);
+					if (toWorld != null)
 					{
-						Location loc = new Location(toWorld, 100, 54, 0);
-						loc = event.getPortalTravelAgent().findOrCreate(loc);
-						event.setTo(loc);
-						
-					}
-					else
-					{
-						Location loc = event.getPlayer().getBedSpawnLocation();
-						if (loc == null || (!loc.getWorld().equals(toWorld)))
+						World.Environment toDim = toWorld.getEnvironment(), fromDim = event.getFrom().getWorld().getEnvironment();
+						if (toDim == World.Environment.THE_END)
 						{
-							loc = toWorld.getSpawnLocation();
+							Location loc = new Location(toWorld, 100, 54, 0);
+							loc = event.getPortalTravelAgent().findOrCreate(loc);
+							event.setTo(loc);
+
 						}
-						loc = event.getPortalTravelAgent().findOrCreate(loc);
-						event.setTo(loc);
-						
+						else
+						{
+							Entity ent = event.getEntity();
+							Location loc = null;
+							if (ent instanceof Player)
+							{
+								Player player = (Player) ent;
+								loc = player.getBedSpawnLocation();
+							}
+							if (loc == null || (!loc.getWorld().equals(toWorld)))
+							{
+								loc = toWorld.getSpawnLocation();
+							}
+							loc = event.getPortalTravelAgent().findOrCreate(loc);
+							event.setTo(loc);
+
+						}
 					}
 				}
+				this.logger.fine("[PortalHandler] [PortalType.END] used for entity " + event.getEntityType().toString().toLowerCase() + " to get to world " + toWorldString);
 			}
-			this.logger.fine("[PortalHandler] [PortalType.END] used for user " + event.getPlayer().getName() + " to get to world " + toWorldString);
 		}
-		else if ((!this.handleEndPortals) && (mapType == -1))
+		else
 		{
-			this.logger.fine("[PortalHandler] got PortalType.NETHER.");
-			String toWorldString = this.data.getInternalWorld(event.getFrom().getWorld().getName(), true).getPortalWorld();
-			if (!toWorldString.isEmpty())
+			if ((!this.handleEndPortals) && (mapType == NETHER_PORTAL))
 			{
-				World toWorld = this.data.getWorld(toWorldString);
-				if (toWorld != null)
+				this.logger.fine("[PortalHandler] got PortalType.NETHER.");
+				String toWorldString = this.data.getInternalWorld(event.getFrom().getWorld().getName(), true).getPortalWorld();
+				if (!toWorldString.isEmpty())
 				{
-					World.Environment toDim = toWorld.getEnvironment(), fromDim = event.getFrom().getWorld().getEnvironment();
-					float div;
-					if (fromDim == toDim)//Env is same at both worlds
+					World toWorld = this.data.getWorld(toWorldString);
+					if (toWorld != null)
 					{
-						div = 1.0f;
+						World.Environment toDim = toWorld.getEnvironment(), fromDim = event.getFrom().getWorld().getEnvironment();
+						float div;
+						if (fromDim == toDim)//Env is same at both worlds
+						{
+							div = 1.0f;
+						}
+						else if (fromDim == World.Environment.NETHER) //env is nether at target world
+						{
+							div = 8.0f;
+						}
+						else if (toDim == World.Environment.NETHER) // env is nether at from world
+						{
+							div = 0.125f;
+						}
+						else
+						{
+							div = 1.0f;
+						}
+						Location to = new Location(toWorld, event.getFrom().getX() * div, event.getFrom().getY(), event.getFrom().getZ() * div, event.getFrom().getYaw(),
+									   event.getFrom().getPitch());
+						to = event.getPortalTravelAgent().findOrCreate(to);
+						event.setTo(to);
 					}
-					else if (fromDim == World.Environment.NETHER) //env is nether at target world
-					{
-						div = 8.0f;
-					}
-					else if (toDim == World.Environment.NETHER) // env is nether at from world
-					{
-						div = 0.125f;
-					}
-					else
-					{
-						div = 1.0f;
-					}
-					Location to = new Location(toWorld, event.getFrom().getX() * div, event.getFrom().getY(), event.getFrom().getZ() * div, event.getFrom().getYaw(),
-								   event.getFrom().getPitch());
-					to = event.getPortalTravelAgent().findOrCreate(to);
-					event.setTo(to);
 				}
+				this.logger.fine("[PortalHandler] [PortalType.NETHER] used for user " + event.getEntityType().toString().toLowerCase() + " to get to world " + toWorldString);
 			}
-			this.logger.fine("[PortalHandler] [PortalType.NETHER] used for user " + event.getPlayer().getName() + " to get to world " + toWorldString);
 		}
 	}
 
@@ -235,9 +255,9 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 		Block mainBlock = loc.getBlock();
 		Material toCheck;
 		for (BlockFace face : new BlockFace[]
-			{
-				BlockFace.SELF, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH_EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST, BlockFace.NORTH_WEST
-			})
+		{
+			BlockFace.SELF, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH_EAST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST, BlockFace.NORTH_WEST
+		})
 		{
 			toCheck = mainBlock.getRelative(face).getType();
 			if (toCheck == Material.ENDER_PORTAL)

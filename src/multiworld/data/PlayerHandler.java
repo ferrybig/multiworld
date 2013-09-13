@@ -7,6 +7,7 @@ package multiworld.data;
 import java.util.List;
 import multiworld.NotAPlayerException;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -53,19 +54,28 @@ public class PlayerHandler
 
 	/**
 	 * Moves the speciefied player
+	 *
 	 * @param player the target player
-	 * @param world the target world
+	 * @param world the value of location
 	 */
+	
 	public void movePlayer(Player player, World world)
 	{
-		if (player.getWorld() == world)
-		{
-			return;
-		}
-		Location loc = world.getSpawnLocation();
-		world.loadChunk(world.getChunkAt(loc));
+		movePlayer(player, world.getSpawnLocation());
+	}
+
+	/**
+	 * Moves the speciefied player
+	 * @param player the target player
+	 * @param loc  
+	 */
+	public void movePlayer(Player player, Location loc)
+	{
+		World world = loc.getWorld();
+		Chunk chunk;
+		world.loadChunk(chunk = world.getChunkAt(loc));
 		player.teleport(loc);
-		this.log.fine("Warping " + player.getDisplayName() + " to world " + world.getName());//NOI18N
+		this.log.fine("Warping " + player.getDisplayName() + " to location " + loc.toString()); //NOI18N
 	}
 
 	public Player getPlayer(String name)
