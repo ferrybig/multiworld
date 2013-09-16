@@ -39,7 +39,7 @@ public class MoveCommand extends Command
 	@Override
 	public void runCommand(CommandSender sender, String[] args) throws CommandException
 	{
-		if (args.length != 2)
+		if (args.length != 2 && args.length != 5)
 		{
 			throw new ArgumentException("/mw move <player> <world>"); //NOI18N
 		}
