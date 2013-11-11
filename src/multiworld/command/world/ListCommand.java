@@ -4,13 +4,16 @@
  */
 package multiworld.command.world;
 
-import multiworld.CommandException;
-import multiworld.chat.Formatter;
+import java.util.Arrays;
+import java.util.Comparator;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.InternalWorld;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
 import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 
 /**
  *
@@ -22,18 +25,31 @@ public class ListCommand extends Command
 
 	public ListCommand(DataHandler data)
 	{
-		super("list");
+		super("list","Lists al worlds on the server");
 		this.data = data;
 	}
 
 	@Override
-	public void runCommand(CommandSender sender, String[] arguments) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
-		sender.sendMessage(this.data.getLang().getString("world.list.header").split("\n"));
-		InternalWorld[] worlds = this.data.getWorlds(false);
+		stack.sendMessage(MessageType.SUCCES, Translation.COMMAND_LIST_HEADER);
+		InternalWorld[] worlds = this.data.getWorldManager().getWorlds(false);
+		Arrays.sort(worlds, new Comparator<InternalWorld>() {
+
+			@Override
+			public int compare(InternalWorld t, InternalWorld t1)
+			{
+				return t.getName().compareToIgnoreCase(t1.getName());
+			}
+		});
 		for (InternalWorld world : worlds)
 		{
-			sender.sendMessage(Formatter.createList(ChatColor.GRAY,Formatter.printBoolean(this.data.isWorldLoaded(world.getName())),world.getName(),world.getWorldType()));
+			stack.sendMessage(MessageType.HIDDEN_SUCCES,
+					  Translation.COMMAND_LIST_DATA,
+					  MessageCache.WORLD.get(world.getName()),
+					  MessageCache.custom("%loaded%", (this.data.getWorldManager().isWorldLoaded(world.getName()) ? ChatColor.GREEN+"Loaded" : ChatColor.RED + "Unloaded")+RESET),
+					  MessageCache.custom("%type%", world.getOptions().isEmpty() ? world.getMainGen() : world.getMainGen() + ":" + world.getOptions())
+			);
 		}
 	}
 }

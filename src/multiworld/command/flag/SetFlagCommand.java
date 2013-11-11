@@ -4,17 +4,20 @@
  */
 package multiworld.command.flag;
 
-import multiworld.ArgumentException;
-import multiworld.CommandException;
-import multiworld.ConfigException;
-import multiworld.Utils;
+import multiworld.InvalidFlagException;
+import multiworld.InvalidFlagValueException;
 import multiworld.addons.AddonHandler;
 import multiworld.api.flag.FlagName;
+import multiworld.command.ArgumentType;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.InternalWorld;
+import multiworld.data.WorldHandler;
 import multiworld.flags.FlagValue;
-import org.bukkit.ChatColor;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -25,44 +28,60 @@ public class SetFlagCommand extends Command
 {
 	private final DataHandler d;
 	private final AddonHandler pl;
+	private final WorldHandler worlds;
 
-	public SetFlagCommand(DataHandler data,AddonHandler pl)
+	public SetFlagCommand(DataHandler data, AddonHandler pl, WorldHandler worlds)
 	{
-		super("setflag");
+		super("setflag", "This commands sets a flag value on a world, \nflag values can be compared with gamerules");
 		this.d = data;
 		this.pl = pl;
+		this.worlds = worlds;
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] split) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
+		String[] split = stack.getArguments();
 		if (split.length != 3)
 		{
-			throw new ArgumentException("/mw setflag <world> <flag> <value>"); //NOI18N
+			stack.sendMessageUsage(stack.getCommandLabel(), ArgumentType.valueOf("setflag"), ArgumentType.TARGET_WORLD, ArgumentType.valueOf("<Flag>"), ArgumentType.valueOf("<value>"));
 		}
 		else
 		{
+			InternalWorld world = worlds.getWorld(split[0], false);
+			FlagName flag;
+			FlagValue valueTo;
 			try
 			{
-				InternalWorld world = Utils.getWorld(split[0], this.d,false);
-				FlagName flag = FlagName.getFlagFromString(split[1]);
-				FlagValue valueTo = FlagValue.parseFlagValue(split[2]);
-				if (this.d.getFlag(world.getName(), flag) == valueTo)
-				{
-					s.sendMessage(this.d.getLang().getString("flag.set.same.value"));
-				}
-				else
-				{
-					
-					this.d.setFlag(world.getName(), flag, valueTo);
-				}
-				s.sendMessage(ChatColor.GREEN + this.d.getLang().getString("flag.set.succes"));
+				flag = FlagName.getFlagFromString(split[1]);
+				valueTo = FlagValue.parseFlagValue(split[2]);
 			}
-			catch (ConfigException e)
+			catch (InvalidFlagException ex)
 			{
-				s.sendMessage(ChatColor.RED + this.d.getLang().getString("flag.set.err"));
-				this.d.getLogger().throwing("multiworld.MultiWorld", "onCommand", e, "User command setflag error"); //NOI18N
+				stack.sendMessage(MessageType.ERROR, Translation.INVALID_FLAG);
+				return;
 			}
+			catch (InvalidFlagValueException ex)
+			{
+				stack.sendMessage(MessageType.ERROR, Translation.INVALID_FLAG_VALUE);
+				return;
+			}
+
+			if (this.d.getWorldManager().getFlag(world.getName(), flag) == valueTo)
+			{
+				stack.sendMessage(MessageType.ERROR, Translation.COMMAND_SETFLAG_FAIL_SAME_VALUE);
+			}
+			else
+			{
+				this.d.getWorldManager().setFlag(world.getName(), flag, valueTo);
+				this.d.scheduleSave();
+				stack.sendMessageBroadcast(
+					MessageType.SUCCES,
+					Translation.COMMAND_SETFLAG_SUCCES,
+					MessageCache.FLAG.get(flag.toString()),
+					MessageCache.FLAG_VALUE.get(valueTo.toString()));
+			}
+
 		}
 	}
 

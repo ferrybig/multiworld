@@ -30,7 +30,7 @@ public class EnderChestBlokker implements MultiworldAddon, Listener
 	{
 		if (enabled)
 		{
-			if (this.data.getFlag(evt.getPlayer().getWorld().getName(), FlagName.CREATIVEWORLD).getAsBoolean())
+			if (this.data.getWorldManager().getFlag(evt.getPlayer().getWorld().getName(), FlagName.CREATIVEWORLD).getAsBoolean())
 			{
 				if (evt.getBlockPlaced().getType() == Material.ENDER_CHEST)
 				{

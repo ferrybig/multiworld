@@ -2,23 +2,22 @@ package multiworld.data;
 
 import multiworld.ConfigException;
 import multiworld.MultiWorldPlugin;
-import multiworld.WorldGenException;
-import multiworld.api.MultiWorldWorldData;
-import multiworld.api.flag.FlagName;
-import multiworld.flags.FlagValue;
-import multiworld.worldgen.WorldGenerator;
+import multiworld.command.DebugLevel;
+import multiworld.command.MessageType;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.Server;
-import org.bukkit.World;
+import org.bukkit.command.Command;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  *
  * @author Fernando
  */
-public final class DataHandler implements WorldUntils
+public final class DataHandler
 {
 	private final WorldManager worlds = new WorldManager();
 	private FileConfiguration config;
@@ -43,7 +42,7 @@ public final class DataHandler implements WorldUntils
 
 	/**
 	 * Makes the object
-	 *
+	 * <p>
 	 * @param server The server whits runs the plugin
 	 * @param config
 	 * @param plugin The main plugin running this
@@ -55,33 +54,81 @@ public final class DataHandler implements WorldUntils
 		this.plugin = plugin;
 		this.load(true);
 	}
+	private BukkitTask saveTask = null;
 
-	@Override
-	public void loadWorlds(ConfigurationSection worldList, MyLogger logger, Difficulty baseDifficulty, SpawnWorldControl spawn)
+	public void scheduleSave()
 	{
-		worlds.loadWorlds(worldList, logger, baseDifficulty, spawn);
+		if (this.saveTask == null)
+		{
+			this.saveTask = new BukkitRunnable()
+			{
+
+				@Override
+				public void run()
+				{
+					try
+					{
+						save();
+						getPlugin().builder.build(Bukkit.getConsoleSender(), DebugLevel.NONE).
+							sendMessageBroadcast(MessageType.SUCCES, "Saved automaticly!");
+					}
+					catch (ConfigException ex)
+					{
+						getPlugin().builder.build(Bukkit.getConsoleSender(), DebugLevel.NONE).
+							sendMessageBroadcast(MessageType.ERROR, "Saved automaticly FAILED! Check console for details!");
+						ex.printStackTrace();
+					}
+				}
+			}.runTaskLater(plugin, 1200);
+		}
+	}
+
+	public WorldManager getWorldManager()
+	{
+		return this.worlds;
+	}
+
+	public MultiWorldPlugin getPlugin()
+	{
+		return this.plugin;
+	}
+
+	public void onShutdown()
+	{
+		if (this.saveTask == null)
+		{
+			return;
+		}
+		try
+		{
+			save();
+		}
+		catch (ConfigException ex)
+		{
+			Command.broadcastCommandMessage(Bukkit.getConsoleSender(), "[Multiworld] Failed saving!!! check console for details!!!", false);
+			ex.printStackTrace();
+		}
 	}
 
 	public void save() throws ConfigException
 	{
+		if (this.saveTask != null)
+		{
+			this.saveTask.cancel();
+			this.saveTask = null;
+		}
 		this.config.options().header("# options.debug: must the debug output be printed?\n"
 			+ "# options.difficulty: what is the server diffeculty?\n"
 			+ "# options.locale: what set of lang files must be used, supported: en_US, nl_NL, de_DE, it_IT\n"
-			+ "# spawnGroup: used to set withs worlds have what spawn, difficult to use. see official site for details");
+			+ "# spawnGroup: used to set withs worlds have what spawn, difficult to use. see official site for details (try expierementing)");
 		ConfigurationSection l1;
 		l1 = this.config.createSection("worlds");
-		saveWorlds(l1, logger, this.spawn);
+		this.worlds.saveWorlds(l1, logger, this.spawn);
 		if (this.spawn != null)
 		{
 			this.spawn.save(config.createSection("spawnGroup"));
 		}
 		this.plugin.saveConfig();
-	}
-
-	@Override
-	public void saveWorlds(ConfigurationSection worldSection, MyLogger log, SpawnWorldControl spawn)
-	{
-		worlds.saveWorlds(worldSection, log, spawn);
 	}
 
 	public void load() throws ConfigException
@@ -96,11 +143,8 @@ public final class DataHandler implements WorldUntils
 			this.plugin.reloadConfig();
 			this.config = this.plugin.getConfig();
 		}
-
 		this.logger = new MyLogger(getNode(OPTIONS_DEBUG), "MultiWorld");
 		this.logger.fine("config loaded");
-
-
 		this.difficulty = Difficulty.getByValue(getNode(OPTIONS_DIFFICULTY));
 
 		/* locale setting */
@@ -145,7 +189,7 @@ public final class DataHandler implements WorldUntils
 		ConfigurationSection worldList = this.config.getConfigurationSection("worlds");
 		if (worldList != null)
 		{
-			loadWorlds(worldList, this.logger, this.difficulty, this.spawn);
+			worlds.loadWorlds(worldList, this.logger, this.difficulty, this.spawn);
 		}
 	}
 
@@ -173,122 +217,9 @@ public final class DataHandler implements WorldUntils
 		return this.lang;
 	}
 
-	@Override
-	public boolean unloadWorld(String world, boolean mustSave) throws ConfigException
-	{
-		boolean temp = worlds.unloadWorld(world, mustSave);
-		if (temp && mustSave)
-		{
-			this.save();
-		}
-		return temp;
-	}
-
-	@Override
-	public boolean setPortal(String fromWorld, String toWorld)
-	{
-		boolean temp = worlds.setPortal(fromWorld, toWorld);
-		return temp;
-	}
-
-	@Override
-	public void setFlag(String world, FlagName flag, FlagValue value) throws ConfigException
-	{
-		worlds.setFlag(world, flag, value);
-		this.save();
-	}
-
-	@Override
-	public boolean setEndPortal(String fromWorld, String toWorld)
-	{
-		return worlds.setEndPortal(fromWorld, toWorld);
-	}
-
-	@Override
-	public boolean makeWorld(String name, WorldGenerator env, long seed, String options) throws ConfigException, WorldGenException
-	{
-		return worlds.makeWorld(name, env, seed, options);
-	}
-
-	@Override
-	public World loadWorld(String name, boolean mustSave) throws ConfigException
-	{
-		World w = worlds.loadWorld(name, mustSave);
-		if (mustSave)
-		{
-			this.save();
-		}
-		return w;
-	}
-
-	@Override
-	public boolean isWorldLoaded(String name)
-	{
-		return worlds.isWorldLoaded(name);
-	}
-
 	boolean isWorldExisting(String world)
 	{
 		return worlds.isWorldExisting(world);
-	}
-
-	@Override
-	public InternalWorld[] getWorlds(boolean b)
-	{
-		return worlds.getWorlds(b);
-	}
-
-	@Override
-	public WorldContainer getWorldMeta(String world, boolean mustLoad)
-	{
-		return worlds.getWorldMeta(world, mustLoad);
-	}
-
-	@Override
-	public World getWorld(String name)
-	{
-		return worlds.getWorld(name);
-	}
-
-	@Override
-	public InternalWorld[] getLoadedWorlds()
-	{
-		return worlds.getLoadedWorlds();
-	}
-
-	@Override
-	public InternalWorld getInternalWorld(String name, boolean mustBeLoaded)
-	{
-		return worlds.getInternalWorld(name, mustBeLoaded);
-	}
-
-	@Override
-	public FlagValue getFlag(String worldName, FlagName flag)
-	{
-		return worlds.getFlag(worldName, flag);
-	}
-
-	@Override
-	public MultiWorldWorldData[] getAllWorlds()
-	{
-		return worlds.getAllWorlds();
-	}
-
-	@Override
-	public boolean deleteWorld(String world, boolean mustSave) throws ConfigException
-	{
-		boolean temp = worlds.deleteWorld(world, mustSave);
-		if (temp && mustSave)
-		{
-			this.save();
-		}
-		return temp;
-	}
-
-	@Override
-	public WorldContainer[] getWorlds()
-	{
-		return worlds.getWorlds();
 	}
 
 	public <T> T getNode(ConfigNode<T> input)

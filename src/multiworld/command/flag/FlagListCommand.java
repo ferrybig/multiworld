@@ -4,11 +4,10 @@
  */
 package multiworld.command.flag;
 
-import multiworld.CommandException;
-import multiworld.Utils;
 import multiworld.api.flag.FlagName;
 import multiworld.command.Command;
-import org.bukkit.command.CommandSender;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 
 /**
  *
@@ -18,13 +17,13 @@ public class FlagListCommand extends Command
 {
 
 	public FlagListCommand()
-	{super("flaglist");
+	{super("flaglist","gets al flags on the server");
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] arguments) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
-		Utils.sendMessage(s,FlagName.makeFlagList());
+		stack.sendMessage(MessageType.SUCCES,FlagName.makeFlagList());
 	}
-	
+
 }

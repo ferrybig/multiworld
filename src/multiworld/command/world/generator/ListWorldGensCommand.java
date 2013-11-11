@@ -4,12 +4,11 @@
  */
 package multiworld.command.world.generator;
 
-import multiworld.Utils;
 import multiworld.chat.Formatter;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.worldgen.WorldGenerator;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 
 /**
  *
@@ -19,11 +18,11 @@ public class ListWorldGensCommand extends Command
 {
 	public ListWorldGensCommand()
 	{
-		super("listgens");
+		super("listgens","List al world generators installed inside this multiworld build");
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] arguments)
+	public void runCommand(CommandStack stack)
 	{
 		WorldGenerator[] gens = WorldGenerator.values();
 		for (WorldGenerator g : gens)
@@ -32,10 +31,9 @@ public class ListWorldGensCommand extends Command
 			{
 				continue;
 			}
-			Utils.sendMessage(s, ChatColor.GOLD + g.getName());
-			Utils.sendMessage(s, " - " + g.getDestr(), 10);
-			Utils.sendMessage(s, " - " + Formatter.printSpeed(g.getSpeed()));
+			stack.sendMessage(MessageType.HIDDEN_SUCCES, g.getName());
+			stack.sendMessage(MessageType.HIDDEN_SUCCES, "+- "+g.getDestr());
+			stack.sendMessage(MessageType.HIDDEN_SUCCES, "+- "+Formatter.printSpeed(g.getSpeed()));
 		}
-
 	}
 }

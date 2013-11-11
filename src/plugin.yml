@@ -1,6 +1,6 @@
 name: MultiWorld
 main: multiworld.MultiWorldPlugin
-version: 4.7.0
+version: 5.0.0
 dev-url: http://dev.bukkit.org/server-mods/multiworld-v-2-0/
 website: http://dev.bukkit.org/server-mods/multiworld-v-2-0/
 author: ferrybig
@@ -11,15 +11,18 @@ commands:
       description: all the commands
       usage:
            /<command> <commandaction> <arg1> <arg2>
+      aliases: [multiworld-v, multiworld-vv, multiworld-vvv, multiworld-vvvv, multiworld-vvvvv, multiworld-vvvvvv]
    mw:
       description: all the commands
       usage:
            /<command> <commandaction> <arg1> <arg2>
-   goto:
-      description: teleport to a world
+      aliases: [mw-v, mw-vv, mw-vvv, mw-vvvv, mw-vvvvv, mw-vvvvvv]
+   multiworld-shortcut:
+      description: shortcuts to multiworld commands
       usage:
            /<command> <world>
       permission: multiworld.command.goto
+      aliases: [goto]
 permissions:
     multiworld.*:
         description: same as multiworld.admin
@@ -54,7 +57,7 @@ permissions:
         description: admin settings
         children:
             multiworld.moderate: true
-            multiworld.worldmaneger: true    
+            multiworld.worldmaneger: true
             multiworld.command.debug: true
             multiworld.command.spawn: true
             multiworld.command.setspawn: true
@@ -63,7 +66,7 @@ permissions:
         description: settings for world managers
         children:
             multiworld.command.world.create: true
-            multiworld.command.world.unload: true    
+            multiworld.command.world.unload: true
             multiworld.command.world.load: true
             multiworld.command.world.delete: true
             multiworld.command.list: true

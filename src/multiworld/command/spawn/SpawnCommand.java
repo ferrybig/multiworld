@@ -4,12 +4,13 @@
  */
 package multiworld.command.spawn;
 
-import multiworld.NotAPlayerException;
-import multiworld.Utils;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.PlayerHandler;
 import multiworld.data.WorldHandler;
+import multiworld.translation.Translation;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,17 +26,25 @@ public class SpawnCommand extends Command
 
 	public SpawnCommand(DataHandler data, WorldHandler worlds, PlayerHandler player)
 	{
-		super("spawn");
+		super("spawn","Teleports yourself to spawn");
 		this.d = data;
 		this.w = worlds;
 		this.p = player;
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] arguments) throws NotAPlayerException
+	public void runCommand(CommandStack stack)
 	{
-		Player player = this.p.getPlayer(s);
-		player.teleport(player.getWorld().getSpawnLocation());
-		Utils.sendMessage(s, this.d.getLang().getString("SPAWN_WARP"));
+		CommandSender sender = stack.getSender();
+		if(sender instanceof Player)
+		{
+			Player player = (Player) sender;
+			player.teleport(player.getWorld().getSpawnLocation());
+			stack.sendMessage(MessageType.SUCCES, Translation.COMMAND_SPAWN_SUCCES);
+		}
+		else
+		{
+			stack.sendMessage(MessageType.ERROR, Translation.COMMAND_SPAWN_FAIL_CONSOLE);
+		}
 	}
 }

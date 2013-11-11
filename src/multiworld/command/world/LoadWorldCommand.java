@@ -4,15 +4,14 @@
  */
 package multiworld.command.world;
 
-import multiworld.ArgumentException;
-import multiworld.CommandException;
-import multiworld.CommandFailedByConfigException;
-import multiworld.ConfigException;
-import multiworld.Utils;
+import multiworld.command.ArgumentType;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.WorldHandler;
-import org.bukkit.command.CommandSender;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
 
 /**
  *
@@ -25,33 +24,46 @@ public class LoadWorldCommand extends Command
 
 	public LoadWorldCommand(DataHandler data, WorldHandler worlds)
 	{
-		super("world.load");
+		super("world.load","Loads a world");
 		this.data = data;
 		this.worlds = worlds;
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] arguments) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
-		try
+		String[] args = stack.getArguments();
+		if (args.length != 1)
 		{
-			if(arguments.length != 1)
-			{
-				throw new ArgumentException("/mw load <world name>");
-			}
-			this.worlds.getWorld(arguments[0], false);
-			if(this.worlds.isWorldLoaded(arguments[0]))
-			{
-				Utils.sendMessage(s,this.data.getLang().getString("world.load.alreadyloaded"));
-				return;
-			}
-			Utils.sendMessage(s,this.data.getLang().getString("world.load.start"));
-			this.worlds.loadWorld(arguments[0]);
-			Utils.sendMessage(s,this.data.getLang().getString("world.load.done"));
+			stack.sendMessageUsage(stack.getCommandLabel(), ArgumentType.valueOf("load"), ArgumentType.TARGET_WORLD);
+			return;
 		}
-		catch (ConfigException ex)
+		String worldName = args[0];
+		if (!this.worlds.isWorldExistingAndSendMessage(worldName, stack))
 		{
-			throw new CommandFailedByConfigException(ex);
+			return;
+		}
+		if (this.worlds.isWorldLoaded(args[0]))
+		{
+			stack.sendMessage(MessageType.ERROR,
+					  Translation.WORLD_LOADED_ALREADY,
+					  MessageCache.WORLD.get(worldName));
+			return;
+		}
+		stack.sendMessageBroadcast(null,
+					   Translation.WORLD_LOADING_START,
+					   MessageCache.WORLD.get(worldName));
+		if (this.worlds.loadWorld(worldName, stack) != null)
+		{
+			stack.sendMessageBroadcast(MessageType.SUCCES,
+						   Translation.WORLD_LOADING_END,
+						   MessageCache.WORLD.get(worldName));
+		}
+		else
+		{
+			stack.sendMessageBroadcast(MessageType.ERROR,
+						   Translation.WORLD_LOADING_FAILED,
+						   MessageCache.WORLD.get(worldName));
 		}
 	}
 }

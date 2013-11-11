@@ -1,22 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package multiworld.command.world;
 
-import multiworld.ArgumentException;
-import multiworld.CommandException;
-import multiworld.CommandFailedByConfigException;
-import multiworld.ConfigException;
-import multiworld.Utils;
+import multiworld.command.ArgumentType;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.WorldHandler;
-import org.bukkit.command.CommandSender;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
 
 /**
  *
- * @author Fernando
+ * @author ferrybig
  */
 public class UnloadWorldCommand extends Command
 {
@@ -25,39 +20,46 @@ public class UnloadWorldCommand extends Command
 
 	public UnloadWorldCommand(DataHandler data, WorldHandler worlds)
 	{
-		super("world.unload");
+		super("world.unload","Unloads a world");
 		this.data = data;
 		this.worlds = worlds;
 	}
 
-	
 	@Override
-	public void runCommand(CommandSender s, String[] arguments) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
-		try
+		String[] arguments = stack.getArguments();
+		if (arguments.length != 1)
 		{
-			if(arguments.length != 1)
-			{
-				throw new ArgumentException("/mw unload <world name>");
-			}
-			if(!this.worlds.isWorldExisting(arguments[0]))
-			{
-				Utils.sendMessage(s,this.data.getLang().getString("world.unload.fail.unloaded"));
-				return;
-			}
-			if(!this.worlds.isWorldLoaded(arguments[0]))
-			{
-				Utils.sendMessage(s,this.data.getLang().getString("world.unload.fail.unloaded"));
-				return;
-			}
-			Utils.sendMessage(s,this.data.getLang().getString("world.unload.start"));
-			this.worlds.unloadWorld(arguments[0]);
-			Utils.sendMessage(s,this.data.getLang().getString("world.unload.done"));
+			stack.sendMessageUsage(stack.getCommandLabel(), ArgumentType.valueOf("unload"), ArgumentType.TARGET_WORLD);
+			return;
 		}
-		catch (ConfigException ex)
+		final String worldName = arguments[0];
+		if (!this.worlds.isWorldExistingAndSendMessage(worldName, stack))
 		{
-			throw new CommandFailedByConfigException(ex);
+			return;
+		}
+		if (!this.worlds.isWorldLoaded(worldName))
+		{
+			stack.sendMessage(MessageType.ERROR,
+					  Translation.WORLD_UNLOADED_ALREADY,
+					  MessageCache.WORLD.get(worldName));
+			return;
+		}
+		stack.sendMessageBroadcast(null,
+					   Translation.WORLD_UNLOADING_START,
+					   MessageCache.WORLD.get(worldName));
+		if (this.worlds.unloadWorld(worldName))
+		{
+			stack.sendMessageBroadcast(MessageType.SUCCES,
+						   Translation.WORLD_UNLOADING_END,
+						   MessageCache.WORLD.get(worldName));
+		}
+		else
+		{
+			stack.sendMessageBroadcast(MessageType.ERROR,
+						   Translation.WORLD_UNLOADING_FAILED,
+						   MessageCache.WORLD.get(worldName));
 		}
 	}
-	
 }

@@ -46,7 +46,7 @@ public interface WorldUntils
 
 	boolean isWorldLoaded(String name);
 
-	World loadWorld(String name, boolean mustSave) throws ConfigException;
+	World loadWorld(String name);
 
 	boolean makeWorld(String name, WorldGenerator env, long seed, String options) throws ConfigException, WorldGenException;
 
@@ -82,5 +82,5 @@ public interface WorldUntils
 	void loadWorlds(ConfigurationSection worldList, MyLogger logger, Difficulty baseDifficulty, SpawnWorldControl spawn);
 
 	void saveWorlds(ConfigurationSection worldSection, MyLogger log, SpawnWorldControl spawn);
-	
+
 }

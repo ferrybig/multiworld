@@ -4,7 +4,6 @@
  */
 package multiworld.data;
 
-import multiworld.ConfigException;
 import multiworld.MultiWorldPlugin;
 import multiworld.api.ConfigurationSaveException;
 import multiworld.api.MultiWorldWorldData;
@@ -100,27 +99,21 @@ public class WorldContainer implements MultiWorldWorldData
 	@Override
 	public boolean getOptionValue(FlagName flag)
 	{
-		return MultiWorldPlugin.getInstance().getDataManager().getFlag(this.getName(), flag).getAsBoolean(flag);
+		return MultiWorldPlugin.getInstance().getDataManager().getWorldManager().getFlag(this.getName(), flag).getAsBoolean(flag);
 
 	}
 
 	@Override
 	public void setOptionValue(FlagName flag, boolean newValue) throws ConfigurationSaveException
 	{
-		try
-		{
-			MultiWorldPlugin.getInstance().getDataManager().setFlag(this.getName(), flag, FlagValue.fromBoolean(newValue));
-		}
-		catch (ConfigException ex)
-		{
-			throw new ConfigurationSaveException("Error saving flag " + flag, ex);
-		}
+		MultiWorldPlugin.getInstance().getDataManager().getWorldManager().setFlag(this.getName(), flag, FlagValue.fromBoolean(newValue));
+		MultiWorldPlugin.getInstance().getDataManager().scheduleSave();
 	}
 
 	@Override
 	public boolean isOptionSet(FlagName flag)
 	{
-		return MultiWorldPlugin.getInstance().getDataManager().getFlag(this.getName(), flag) != FlagValue.UNKNOWN;
+		return MultiWorldPlugin.getInstance().getDataManager().getWorldManager().getFlag(this.getName(), flag) != FlagValue.UNKNOWN;
 	}
 
 	@Override
@@ -130,29 +123,17 @@ public class WorldContainer implements MultiWorldWorldData
 	}
 
 	@Override
-	public boolean loadWorld() throws ConfigurationSaveException
+	public boolean loadWorld()
 	{
-		try
-		{
-			return MultiWorldPlugin.getInstance().getDataManager().loadWorld(this.getName(), true) != null;
-		}
-		catch (ConfigException ex)
-		{
-			throw new ConfigurationSaveException("Unable to save world after load", ex);
-		}
+		MultiWorldPlugin.getInstance().getDataManager().scheduleSave();
+		return MultiWorldPlugin.getInstance().getDataManager().getWorldManager().loadWorld(this.getName()) != null;
 	}
 
 	@Override
-	public boolean unloadWorld() throws ConfigurationSaveException
+	public boolean unloadWorld()
 	{
-		try
-		{
-			return MultiWorldPlugin.getInstance().getDataManager().unloadWorld(this.getName(), true);
-		}
-		catch (ConfigException ex)
-		{
-			throw new ConfigurationSaveException("Unable to save world after unload", ex);
-		}
+		MultiWorldPlugin.getInstance().getDataManager().scheduleSave();
+		return MultiWorldPlugin.getInstance().getDataManager().getWorldManager().unloadWorld(this.getName(),false);
 	}
 
 	@Override

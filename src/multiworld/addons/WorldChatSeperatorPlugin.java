@@ -39,8 +39,8 @@ public class WorldChatSeperatorPlugin implements Listener, MultiworldAddon
 		{
 			return;
 		}
-		InternalWorld w = d.getInternalWorld(evt.getPlayer().getWorld().getName(), true);
-		boolean maySendChat = d.getFlag(w.getName(), FlagName.SENDCHAT).getAsBoolean();
+		InternalWorld w = d.getWorldManager().getInternalWorld(evt.getPlayer().getWorld().getName(), true);
+		boolean maySendChat = d.getWorldManager().getFlag(w.getName(), FlagName.SENDCHAT).getAsBoolean();
 		if (!maySendChat)
 		{
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
@@ -56,9 +56,9 @@ public class WorldChatSeperatorPlugin implements Listener, MultiworldAddon
 			}
 			return;
 		}
-		for (InternalWorld world : d.getLoadedWorlds())
+		for (InternalWorld world : d.getWorldManager().getLoadedWorlds())
 		{
-			if (world != w && !d.getFlag(world.getName(), FlagName.RECIEVECHAT).getAsBoolean())
+			if (world != w && !d.getWorldManager().getFlag(world.getName(), FlagName.RECIEVECHAT).getAsBoolean())
 			{
 				evt.getRecipients().removeAll(world.getWorld().getPlayers());
 			}
@@ -84,6 +84,7 @@ public class WorldChatSeperatorPlugin implements Listener, MultiworldAddon
 		this.isEnabled = true;
 	}
 
+	@Override
 	public boolean isEnabled()
 	{
 		return this.isEnabled;

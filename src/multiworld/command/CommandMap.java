@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import multiworld.CommandException;
+import multiworld.translation.Translation;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -20,30 +20,50 @@ public class CommandMap extends Command
 	public final Map<String, Command> m;
 	public final Map<String, String> aliasses;
 	private static final String[] nullString = new String[0];
-	private final String unknownMessage;
 
-	public CommandMap(String permissions, Map<String, Command> h, Map<String, String> aliasses, String unknownMessage)
+	public CommandMap(String permissions, Map<String, Command> h, Map<String, String> aliasses)
 	{
-		super(permissions);
+		super(permissions, "Base command");
 		this.m = Collections.<String, Command>unmodifiableMap(h);
 		this.aliasses = aliasses;
-		this.unknownMessage = unknownMessage;
 	}
 
-	public void excute(CommandSender sender, String name, String[] split) throws CommandException
+	private void parseCommand(CommandStack sender, String name)
 	{
-		if (name.equalsIgnoreCase("multiworld") || name.equalsIgnoreCase("mw"))
+		Command cmd = this.m.get(name);
+		if (cmd != null)
 		{
-			if (split.length == 0)
+			cmd.excute(sender);
+		}
+		else if (aliasses != null)
+		{
+			String newName = aliasses.get(name);
+			if (newName != null)
 			{
-				this.m.get("help").excute(sender, nullString);
-				return;
+				this.parseCommand(sender, newName);
 			}
-			this.parseCommand(sender, split[0], this.removeFirstFromArray(split));
+			else
+			{
+				sender.sendMessage(MessageType.ERROR, Translation.COMMAND_NOT_FOUND);
+			}
 		}
 		else
 		{
-			this.parseCommand(sender, name, split);
+			sender.sendMessage(MessageType.ERROR, Translation.COMMAND_NOT_FOUND);
+		}
+	}
+
+	@Override
+	public void runCommand(CommandStack s)
+	{
+		CommandStack newStack = s.newStack().popArguments(1).build();
+		if (s.getArguments().length == 0)
+		{
+			this.parseCommand(newStack, "help");
+		}
+		else
+		{
+			this.parseCommand(newStack, s.getArguments()[0]);
 		}
 	}
 
@@ -58,49 +78,10 @@ public class CommandMap extends Command
 		return output;
 	}
 
-	private void parseCommand(CommandSender sender, String name, String[] arg) throws CommandException
-	{
-		if (name.isEmpty())
-		{
-			this.m.get("help").excute(sender, nullString);
-			return;
-		}
-		Command cmd = this.m.get(name);
-		if (cmd != null)
-		{
-			cmd.excute(sender, arg);
-		}
-		else
-		{
-			if (aliasses != null)
-			{
-				String newName = aliasses.get(name);
-				if (newName != null)
-				{
-					this.parseCommand(sender, newName, arg);
-					return;
-				}
-			}
-			sender.sendMessage(this.unknownMessage);
-		}
-	}
-
-	@Override
-	public void runCommand(CommandSender s, String[] split) throws CommandException
-	{
-		if (split.length == 0)
-		{
-			this.m.get("help").excute(s, nullString);
-			return;
-		}
-		this.parseCommand(s, split[0], this.removeFirstFromArray(split));
-	}
-
 	public String[] getOptionsForUnfinishedCommands(CommandSender sender, String commandName, String[] split)
 	{
 		if (commandName.equalsIgnoreCase("multiworld") || commandName.equalsIgnoreCase("mw"))
 		{
-
 			if (split.length == 0)
 			{
 				Set<String> commands = this.m.keySet();

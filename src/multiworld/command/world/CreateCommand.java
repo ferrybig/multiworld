@@ -4,19 +4,19 @@
  */
 package multiworld.command.world;
 
-import multiworld.ArgumentException;
-import multiworld.CommandException;
-import multiworld.CommandFailedException;
-import multiworld.ConfigException;
+import multiworld.InvalidWorldGenException;
 import multiworld.InvalidWorldGenOptionsException;
-import multiworld.InvalidWorldNameException;
 import multiworld.Utils;
 import multiworld.WorldGenException;
+import multiworld.command.ArgumentType;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.MyLogger;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
 import multiworld.worldgen.WorldGenerator;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -30,7 +30,7 @@ public class CreateCommand extends Command
 
 	public CreateCommand(DataHandler data)
 	{
-		super("world.create");
+		super("world.create","Creates a new world");
 		this.data = data;
 		this.log = data.getLogger();
 	}
@@ -46,7 +46,7 @@ public class CreateCommand extends Command
 		{
 			return this.calculateMissingArgumentsWorld(split[0]);
 		}
-		else if(split.length == 2)
+		else if (split.length == 2)
 		{
 			return this.calculateMissingArgumentsWorldGenerator(split[1]);
 		}
@@ -57,30 +57,43 @@ public class CreateCommand extends Command
 	}
 
 	@Override
-	public void runCommand(CommandSender sender, String[] split) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
-		if (split.length == 0)
+		String[] args = stack.getArguments();
+		if (args.length == 0)
 		{
-			throw new ArgumentException("/mw create <world> [type] [seed]"); //NOI18N
+			stack.sendMessageUsage(stack.getCommandLabel(),
+					       ArgumentType.valueOf("create"),
+					       ArgumentType.NEW_WORLD_NAME,
+					       ArgumentType.valueOf("<generator>:<options>"),
+					       ArgumentType.valueOf("<seed>"));
 		}
 		else
 		{
+			if (!Utils.checkWorldName(args[0]))
+			{
+				stack.sendMessage(MessageType.ERROR,
+						  Translation.INVALID_WORLD,
+						  MessageCache.WORLD.get(args[0]));
+				return;
+			}
+			if (data.getWorldManager().getInternalWorld(args[0], false) != null)
+			{
+				stack.sendMessage(MessageType.ERROR,
+						  Translation.COMMAND_CREATE_WORLD_EXISTS,
+						  MessageCache.WORLD.get(args[0]));
+				return;
+			}
+			long seed = (new java.util.Random()).nextLong();
+			WorldGenerator env = WorldGenerator.NORMAL;
+			String genOptions = ""; //NOI18N
+			String genName;
 			try
 			{
-				Utils.checkWorldName(split[0]);
-				if (data.getInternalWorld(split[0], false) != null)
-				{
-					sender.sendMessage(ChatColor.RED + this.data.getLang().getString("WORLD CREATE ERR WORLD EXISTS"));
-					return;
-				}
-				long seed = (new java.util.Random()).nextLong();
-				WorldGenerator env = WorldGenerator.NORMAL;
-				String genOptions = ""; //NOI18N
-				String genName;
-				if (split.length > 1)
+				if (args.length > 1)
 				{
 
-					genName = split[1];
+					genName = args[1];
 					int index = genName.indexOf(':'); //NOI18N
 					if (index != -1)
 					{
@@ -88,48 +101,55 @@ public class CreateCommand extends Command
 						genName = genName.substring(0, index);
 					}
 					env = WorldGenerator.getGenByName(genName);
-					if (split.length > 2)
+					if (args.length > 2)
 					{
 						try
 						{
-							seed = Long.parseLong(split[2]);
+							seed = Long.parseLong(args[2]);
 						}
 						catch (NumberFormatException e)
 						{
-							seed = split[2].hashCode();
+							seed = args[2].hashCode();
 						}
 					}
 
 				}
-				sender.sendMessage(ChatColor.GREEN + this.data.getLang().getString("WORLD CREATE MAKING"));
-				if (!this.data.makeWorld(split[0], env, seed, genOptions))
+			}
+			catch (InvalidWorldGenException ex)
+			{
+				stack.sendMessage(MessageType.ERROR,
+						  Translation.COMMAND_CREATE_GET_ERROR,
+						  MessageCache.custom("%error%", "Notfound:" + ex.getWrongGen()));
+				return;
+			}
+
+			stack.sendMessageBroadcast(null,
+						   Translation.COMMAND_CREATE_START,
+						   MessageCache.WORLD.get(args[0]),
+						   MessageCache.GENERATOR.get(env.getName()),
+						   MessageCache.GENERATOR_OPTION.get(genOptions),
+						   MessageCache.SEED.get(String.valueOf(seed)));
+			try
+			{
+				if (this.data.getWorldManager().makeWorld(args[0], env, seed, genOptions))
 				{
-					sender.sendMessage(ChatColor.RED + this.data.getLang().getString("WORLD CREATE ERR NULL"));
-				}
-				else
-				{
-					this.data.loadWorld(split[0], true);
-					sender.sendMessage(ChatColor.GREEN + this.data.getLang().getString("WORLD CREATE SUCCES", new Object[]
-						{
-							split[0], env.getName(), seed
-						}));
+					this.data.scheduleSave();
+					stack.sendMessage(MessageType.SUCCES, Translation.COMMAND_CREATE_SUCCES, MessageCache.WORLD.get(args[0]));
 				}
 			}
-			catch (ConfigException ex)
+			catch (InvalidWorldGenOptionsException error)
 			{
-				throw new CommandException(ex);
+				stack.sendMessageBroadcast(
+					MessageType.ERROR,
+					Translation.COMMAND_CREATE_GET_ERROR,
+					MessageCache.custom("%error%", error.getMessage()));
 			}
-			catch (InvalidWorldNameException e)
+			catch (WorldGenException error)
 			{
-				throw new CommandFailedException("The input world isn't a valid world name!");
-			}
-			catch(InvalidWorldGenOptionsException e)
-			{
-				throw new CommandFailedException(e.getMessage());
-			}
-			catch (WorldGenException ex)
-			{
-				throw new CommandFailedException("Do /mw listgens for a list of valid world gens");
+				stack.sendMessageBroadcast(
+					MessageType.ERROR,
+					Translation.COMMAND_CREATE_GET_ERROR,
+					MessageCache.custom("%error%", error.getMessage()));
 			}
 		}
 	}

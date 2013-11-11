@@ -6,14 +6,15 @@ package multiworld.command;
 
 import java.util.HashSet;
 import java.util.Set;
-import multiworld.CommandException;
 import multiworld.Utils;
 import multiworld.api.flag.FlagName;
 import multiworld.worldgen.WorldGenerator;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.help.HelpTopic;
 
 /**
  *
@@ -23,35 +24,34 @@ public abstract class Command
 {
 	public static final String[] EMPTY_STRING_ARRAY = new String[0];
 	private final String perm;
-
-	/**
-	 * No arg constructor
-	 *
-	 * @deprecated use Command(String) instead
-	 */
-	@Deprecated
-	public Command()
+	private final String description;
+	public final static String RESET = new String(new char[]
 	{
-		this.perm = null;
-	}
+		ChatColor.COLOR_CHAR, 'z'
+	});
 
 	/**
 	 * The 1 arg contructor
-	 *
+	 * <p>
 	 * @param perm The permission that this command needs
+	 * @param description
 	 */
-	public Command(String perm)
+	public Command(String perm, String description)
 	{
 		this.perm = perm;
+		this.description = description;
 	}
 
-	public void excute(CommandSender s, String[] arguments) throws CommandException
+	public void excute(CommandStack stack)
 	{
 		if (this.getPermissions() != null)
 		{
-			Utils.canUseCommand(s, this.getPermissions());
+			if (!Utils.canUseCommand(stack, this.getPermissions()))
+			{
+				return;
+			}
 		}
-		this.runCommand(s, arguments);
+		this.runCommand(stack);
 	}
 
 	public String getPermissions()
@@ -167,12 +167,12 @@ public abstract class Command
 	protected static final int MIN_COORD_MINUS_ONE = -30000001;
 	protected static final int MIN_COORD = -30000000;
 
-	protected static double getCoordinate(CommandSender sender, double current, String input)
+	protected static double getCoordinate(double current, String input)
 	{
-		return getCoordinate(sender, current, input, MIN_COORD, MAX_COORD);
+		return getCoordinate(current, input, MIN_COORD, MAX_COORD);
 	}
 
-	protected static double getCoordinate(CommandSender sender, double current, String input, int min, int max)
+	protected static double getCoordinate(double current, String input, int min, int max)
 	{
 		boolean relative = input.startsWith("~");
 		double result = relative ? current : 0;
@@ -184,8 +184,7 @@ public abstract class Command
 			{
 				input = input.substring(1);
 			}
-
-			double testResult = getDouble(sender, input);
+			double testResult = getDouble(input);
 			if (testResult == MIN_COORD_MINUS_ONE)
 			{
 				return MIN_COORD_MINUS_ONE;
@@ -213,11 +212,11 @@ public abstract class Command
 		return result;
 	}
 
-	protected static double getRelativeDouble(double original, CommandSender sender, String input)
+	protected static double getRelativeDouble(double original, String input)
 	{
 		if (input.startsWith("~"))
 		{
-			double value = getDouble(sender, input.substring(1));
+			double value = getDouble(input.substring(1));
 			if (value == MIN_COORD_MINUS_ONE)
 			{
 				return MIN_COORD_MINUS_ONE;
@@ -226,11 +225,11 @@ public abstract class Command
 		}
 		else
 		{
-			return getDouble(sender, input);
+			return getDouble(input);
 		}
 	}
 
-	protected static double getDouble(CommandSender sender, String input)
+	protected static double getDouble(String input)
 	{
 		try
 		{
@@ -242,9 +241,9 @@ public abstract class Command
 		}
 	}
 
-	protected static double getDouble(CommandSender sender, String input, double min, double max)
+	protected static double getDouble(String input, double min, double max)
 	{
-		double result = getDouble(sender, input);
+		double result = getDouble(input);
 
 		// TODO: This should throw an exception instead.
 		if (result < min)
@@ -278,5 +277,40 @@ public abstract class Command
 		return string.toString();
 	}
 
-	public abstract void runCommand(CommandSender s, String[] arguments) throws CommandException;
+	public abstract void runCommand(CommandStack stack);
+
+	public HelpTopic generateHelpTopic(final String command)
+	{
+		return new HelpTopic()
+		{
+			@Override
+			public boolean canSee(CommandSender sender)
+			{
+				return true;
+			}
+
+
+			{
+				name = "/" + command;
+
+				// The short text is the first line of the description
+				int i = Command.this.description.indexOf("\n");
+				if (i > 1)
+				{
+					shortText = Command.this.description.substring(0, i - 1);
+				}
+				else
+				{
+					shortText = Command.this.description;
+				}
+				StringBuilder sb = new StringBuilder();
+
+				sb.append(ChatColor.GOLD);
+				sb.append("Description: ");
+				sb.append(ChatColor.WHITE);
+				sb.append(Command.this.description);
+				fullText = sb.toString();
+			}
+		};
+	}
 }

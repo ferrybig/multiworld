@@ -4,16 +4,18 @@
  */
 package multiworld.command.move;
 
-import multiworld.ArgumentException;
-import multiworld.CommandException;
 import multiworld.Utils;
+import multiworld.command.ArgumentType;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.InternalWorld;
 import multiworld.data.PlayerHandler;
 import multiworld.data.WorldHandler;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,39 +32,48 @@ public class MoveCommand extends Command
 
 	public MoveCommand(DataHandler data, PlayerHandler player, WorldHandler worlds)
 	{
-		super("move");
+		super("move","Moves a player to a other world");
 		this.p = player;
 		this.w = worlds;
 		this.d = data;
 	}
 
 	@Override
-	public void runCommand(CommandSender sender, String[] args) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
+		String[] args = stack.getArguments();
 		if (args.length != 2 && args.length != 5)
 		{
-			throw new ArgumentException("/mw move <player> <world>"); //NOI18N
+			stack.sendMessageUsage(stack.getCommandLabel(), ArgumentType.valueOf("move"), ArgumentType.TARGET_PLAYER, ArgumentType.TARGET_WORLD);
 		}
 		else
 		{
 			Player targetPlayer = Bukkit.getPlayer(args[0]);
-			InternalWorld worldObj = Utils.getWorld(args[1], this.d, true);
+			InternalWorld worldObj = w.getWorld(args[1], true);
 			if (targetPlayer == null)
 			{
-				sender.sendMessage(ChatColor.RED + this.d.getLang().getString("PLAYER NOT FOUND"));
+				stack.sendMessage(MessageType.ERROR, Translation.PLAYER_NOT_FOUND, MessageCache.PLAYER.get(args[0]));
+				return;
+			}
+			if (worldObj == null)
+			{
+				stack.sendMessage(MessageType.ERROR, Translation.WORLD_NOT_FOUND, MessageCache.WORLD.get(args[1]));
 				return;
 			}
 			Location warpLoc = worldObj.getWorld().getSpawnLocation();
 			warpLoc.setWorld(worldObj.getWorld());
-			if (args.length == 4)
+			if (args.length == 5)
 			{
-				Utils.canUseCommand(sender, this.getPermissions() + ".cordinates");
-				double x = getCoordinate(sender, warpLoc.getX(), args[args.length - 3]);
-				double y = getCoordinate(sender, warpLoc.getY(), args[args.length - 2], 0, 0);
-				double z = getCoordinate(sender, warpLoc.getZ(), args[args.length - 1]);
+				if (!Utils.canUseCommand(stack, this.getPermissions() + ".cordinates"))
+				{
+					return;
+				}
+				double x = getCoordinate(warpLoc.getX(), args[args.length - 3]);
+				double y = getCoordinate(warpLoc.getY(), args[args.length - 2], 0, 0);
+				double z = getCoordinate(warpLoc.getZ(), args[args.length - 1]);
 				if (x == MIN_COORD_MINUS_ONE || y == MIN_COORD_MINUS_ONE || z == MIN_COORD_MINUS_ONE)
 				{
-					sender.sendMessage("Please provide a valid location!");
+					stack.sendMessage(MessageType.ERROR, Translation.INVALID_LOCATION);
 					return;
 				}
 				warpLoc.setX(x);
@@ -70,8 +81,10 @@ public class MoveCommand extends Command
 				warpLoc.setZ(z);
 			}
 			p.movePlayer(targetPlayer, warpLoc);
-			targetPlayer.sendMessage("You are been moved to world \"" + worldObj.getName() + "\" by: " + Utils.getPlayerName(sender));
-			sender.sendMessage("Moved player");
+			stack.sendMessageBroadcast(MessageType.SUCCES,
+						   Translation.COMMAND_MOVE_MESSAGE_SUCCES,
+						   MessageCache.PLAYER.get(targetPlayer.getName()),
+						   MessageCache.WORLD.get(warpLoc.getWorld().getName()));
 		}
 	}
 

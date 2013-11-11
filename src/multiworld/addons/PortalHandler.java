@@ -1,7 +1,6 @@
 package multiworld.addons;
 
 import multiworld.ConfigException;
-import multiworld.NotEnabledException;
 import multiworld.data.DataHandler;
 import multiworld.data.InternalWorld;
 import multiworld.data.MyLogger;
@@ -17,7 +16,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
 
 /**
  * the class that handle the use of portals between worlds
@@ -139,17 +137,16 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 	 *
 	 * @param world1 the target world
 	 * @param world2 the destination world
-	 * @throws NotEnabledException If this plugin is not enabled
 	 */
-	public void add(String world1, String world2) throws NotEnabledException
+	public void add(String world1, String world2)
 	{
 		if (this.handleEndPortals)
 		{
-			this.data.setEndPortal(world1, world2);
+			this.data.getWorldManager().setEndPortal(world1, world2);
 		}
 		else
 		{
-			this.data.setPortal(world1, world2);
+			this.data.getWorldManager().setPortal(world1, world2);
 		}
 	}
 
@@ -172,11 +169,11 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 			if ((mapType == END_PORTAL))
 			{
 				this.logger.fine("[PortalHandler] got PortalType.END.");
-				InternalWorld from = this.data.getInternalWorld(event.getFrom().getWorld().getName(), true);
+				InternalWorld from = this.data.getWorldManager().getInternalWorld(event.getFrom().getWorld().getName(), true);
 				String toWorldString = from.getEndPortalWorld();
 				if (!toWorldString.isEmpty())
 				{
-					World toWorld = this.data.getWorld(toWorldString);
+					World toWorld = this.data.getWorldManager().getWorld(toWorldString);
 					if (toWorld != null)
 					{
 						World.Environment toDim = toWorld.getEnvironment(), fromDim = event.getFrom().getWorld().getEnvironment();
@@ -214,10 +211,10 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 			if ((!this.handleEndPortals) && (mapType == NETHER_PORTAL))
 			{
 				this.logger.fine("[PortalHandler] got PortalType.NETHER.");
-				String toWorldString = this.data.getInternalWorld(event.getFrom().getWorld().getName(), true).getPortalWorld();
+				String toWorldString = this.data.getWorldManager().getInternalWorld(event.getFrom().getWorld().getName(), true).getPortalWorld();
 				if (!toWorldString.isEmpty())
 				{
-					World toWorld = this.data.getWorld(toWorldString);
+					World toWorld = this.data.getWorldManager().getWorld(toWorldString);
 					if (toWorld != null)
 					{
 						World.Environment toDim = toWorld.getEnvironment(), fromDim = event.getFrom().getWorld().getEnvironment();

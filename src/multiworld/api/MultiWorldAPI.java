@@ -98,7 +98,7 @@ public class MultiWorldAPI
 	public MultiWorldWorldData getWorld(String world)
 	{
 		checkValid();
-		return this.plugin.getDataManager().getWorldMeta(world, false);
+		return this.plugin.getDataManager().getWorldManager().getWorldMeta(world, false);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class MultiWorldAPI
 	public MultiWorldWorldData[] getWorlds()
 	{
 		checkValid();
-		return this.plugin.getDataManager().getAllWorlds();
+		return this.plugin.getDataManager().getWorldManager().getAllWorlds();
 	}
 
 	/**
@@ -172,11 +172,7 @@ public class MultiWorldAPI
 			return false;
 		}
 		final MultiWorldAPI other = (MultiWorldAPI) obj;
-		if (this.plugin != other.plugin && (this.plugin == null || !this.plugin.equals(other.plugin)))
-		{
-			return false;
-		}
-		return true;
+		return this.plugin == other.plugin || (this.plugin != null && this.plugin.equals(other.plugin));
 	}
 
 	@Override

@@ -4,12 +4,12 @@
  */
 package multiworld.command.config;
 
-import multiworld.CommandException;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.ReloadHandler;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import multiworld.translation.Translation;
 
 /**
  *
@@ -22,21 +22,21 @@ public class LoadCommand extends Command
 
 	public LoadCommand(DataHandler d, ReloadHandler r)
 	{
-		super("load");
+		super("load","Reloads the multiworld configuration file");
 		this.d = d;
 		this.r = r;
 	}
 
 	@Override
-	public void runCommand(CommandSender sender, String[] arguments) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
 		if (this.reloadCommand())
 		{
-			sender.sendMessage(ChatColor.GREEN + this.d.getLang().getString("RELOAD SUCCESS"));
+			stack.sendMessage(MessageType.SUCCES, Translation.COMMAND_RELOAD_SUCCES);
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.RED + this.d.getLang().getString("RELOAD ERR"));
+			stack.sendMessage(MessageType.ERROR, Translation.COMMAND_RELOAD_FAIL);
 		}
 	}
 

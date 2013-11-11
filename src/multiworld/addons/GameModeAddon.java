@@ -164,7 +164,7 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 		{
 			return;
 		}
-		if (this.data.getFlag(toWorld.getName(), FlagName.CREATIVEWORLD) == FlagValue.TRUE)
+		if (this.data.getWorldManager().getFlag(toWorld.getName(), FlagName.CREATIVEWORLD) == FlagValue.TRUE)
 		{
 			this.addPlayer(player);
 		}
@@ -196,7 +196,7 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 		{
 			return;
 		}
-		if (this.data.getFlag(toWorld.getName(), FlagName.CREATIVEWORLD) == FlagValue.TRUE)
+		if (this.data.getWorldManager().getFlag(toWorld.getName(), FlagName.CREATIVEWORLD) == FlagValue.TRUE)
 		{
 			if (!this.creativePlayers.containsKey(player.getName()) && player.isOnline())
 			{

@@ -4,15 +4,15 @@
  */
 package multiworld;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.InternalWorld;
+import multiworld.translation.Translation;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.util.ChatPaginator;
 
 /**
@@ -22,18 +22,55 @@ import org.bukkit.util.ChatPaginator;
 public class Utils implements java.io.Serializable
 {
 	/**
-	 * The start of al the permission strings
-	 */
-	public static final String PERMISSION_STARTER = "multiworld.";
-	/**
 	 * The start of al command permission nodes
 	 */
 	public static final String COMMAND_STARTER = "command.";
+	/**
+	 * The start of al the permission strings
+	 */
+	public static final String PERMISSION_STARTER = "multiworld.";
 	private static final long serialVersionUID = 98487365L;
 
 	/**
+	 * Can the follwing commandsender use the command?
+	 * <p>
+	 * @param sender to test whit
+	 * @param command The command to test
+	 * @return
+	 */
+	public static boolean canUseCommand(CommandStack sender, String command)
+	{
+		if (!hasPermission(sender, COMMAND_STARTER.concat(command)))
+		{
+			sender.sendMessage(MessageType.ERROR, Translation.LACKING_PERMISSIONS);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean checkWorldName(String name)
+	{
+		if (Character.isLetterOrDigit(name.charAt(0)) && Character.isLetterOrDigit(name.charAt(name.length() - 1)))
+		{
+			for (char i : name.toCharArray())
+			{
+				if (Character.isLetterOrDigit(i) || Character.getType(i) == Character.SPACE_SEPARATOR || i == '_' || i == '-' || i == ',')
+				{
+					continue;
+				}
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Gets the name of the input CommandSender
-	 *
+	 * <p>
 	 * @param sender The CommandSender obj to get the name from
 	 * @return The name of it
 	 */
@@ -42,16 +79,32 @@ public class Utils implements java.io.Serializable
 		return sender.getName();
 	}
 
+	public static InternalWorld getWorld(String name, DataHandler handler, boolean mustBeLoaded) throws UnknownWorldException
+	{
+		Utils.checkWorldName(name);
+		InternalWorld worldObj = handler.getWorldManager().getInternalWorld(name, mustBeLoaded);
+		if (worldObj == null)
+		{
+			throw new UnknownWorldException(name);
+		}
+		return worldObj;
+	}
+
 	/**
 	 * Have the player the permission?
-	 *
-	 * @param player The player to test whit
+	 * <p>
+	 * @param stack
 	 * @param permission
 	 * @return The result
 	 */
-	public static boolean hasPermission(Player player, String permission)
+	public static boolean hasPermission(CommandStack stack, String permission)
 	{
-		return player.hasPermission(PERMISSION_STARTER + permission);
+		return stack.hasPermission(PERMISSION_STARTER + permission);
+	}
+
+	public static boolean hasPermission(CommandSender sender, String permission)
+	{
+		return sender.hasPermission(PERMISSION_STARTER + permission);
 	}
 
 	public static String[] parseArguments(String[] list)
@@ -81,7 +134,7 @@ public class Utils implements java.io.Serializable
 			else if (hasFoundToken)
 			{
 				numberOfArguments--;
-				tmp = tmp.concat(i).concat(" ");
+				tmp = tmp + i + " ";
 			}
 			else
 			{
@@ -95,55 +148,6 @@ public class Utils implements java.io.Serializable
 		return argList.toArray(new String[argList.size()]);
 	}
 
-	public static void checkWorldName(String name) throws InvalidWorldNameException
-	{
-		if (Character.isLetterOrDigit(name.charAt(0)) && Character.isLetterOrDigit(name.charAt(name.length() - 1)))
-		{
-			for (char i : name.toCharArray())
-			{
-				if (Character.isLetterOrDigit(i) || Character.getType(i) == Character.SPACE_SEPARATOR || i == '_' || i == '-' || i == ',')
-				{
-					continue;
-				}
-				throw new InvalidWorldNameException(name);
-			}
-		}
-		else
-		{
-			throw new InvalidWorldNameException(name);
-		}
-	}
-
-	/**
-	 * Can the follwing commandsender use the command?
-	 *
-	 * @param sender to test whit
-	 * @param command The command to test
-	 * @throws PermissionException If the sender dont have the permission
-	 */
-	public static void canUseCommand(CommandSender sender, String command) throws PermissionException
-	{
-		if (!(sender instanceof Player))
-		{
-			return;
-		}
-		if (!hasPermission((Player) sender, COMMAND_STARTER.concat(command)))
-		{
-			throw new PermissionException();
-		}
-	}
-
-	public static InternalWorld getWorld(String name, DataHandler handler, boolean mustBeLoaded) throws UnknownWorldException
-	{
-		Utils.checkWorldName(name);
-		InternalWorld worldObj = handler.getInternalWorld(name, mustBeLoaded);
-		if (worldObj == null)
-		{
-			throw new UnknownWorldException(name);
-		}
-		return worldObj;
-	}
-	
 	public static void sendMessage(CommandSender s, String msg)
 	{
 
@@ -151,7 +155,8 @@ public class Utils implements java.io.Serializable
 	}
 
 	/**
-	 *Sends a command sender a message in a friendly way
+	 * Sends a command sender a message in a friendly way
+	 * <p>
 	 * @param s the commandsender to send to
 	 * @param msg the message
 	 * @param spaces The amount of spaces before the message if it doesn't fit
@@ -164,16 +169,23 @@ public class Utils implements java.io.Serializable
 			spaceChars[i] = ' ';
 		}
 		String spaceString = new String(spaceChars);
-		sendMessage(s, msg, spaceString);
+		sendMessage(s, msg, spaceString, false);
 	}
 
-	public static void sendMessage(CommandSender s, String msg, String prefix)
+	/**
+	 *
+	 * @param s the value of s
+	 * @param msg the value of msg
+	 * @param prefix the value of prefix
+	 * @param addPrefixToFirstOutput the value of addPrefixToFirstOutput
+	 */
+	public static void sendMessage(CommandSender s, String msg, String prefix, boolean addPrefixToFirstOutput)
 	{
 		if (msg.contains("\n"))
 		{
-			for(String str : msg.split("\n"))
+			for (String str : msg.split("\n"))
 			{
-				sendMessage(s,str,prefix);// recursion
+				sendMessage(s, str, prefix, addPrefixToFirstOutput);// recursion
 			}
 			return;
 		}
@@ -182,14 +194,32 @@ public class Utils implements java.io.Serializable
 			s.sendMessage(msg);
 			return;
 		}
+		final int prefixSubstract = countOccurrences(prefix, ChatColor.COLOR_CHAR) * 2;
 		final int maxLineLenght = ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH;
-		if (msg.length() > maxLineLenght)
+		if ((msg.length() - (countOccurrences(msg, ChatColor.COLOR_CHAR) * 2)) > maxLineLenght)
 		{
-			char color = 'f';
+			char color;
+			{
+				final int lastIndexOf = prefix.lastIndexOf(0x00A7);
+				if (lastIndexOf != -1)
+				{
+					color = prefix.charAt(lastIndexOf + 1);
+				}
+				else
+				{
+					color = 'f';
+				}
+			}
 			int charsLeft = 60;
 			String[] parts = msg.split(" ");
 			StringBuilder b = new StringBuilder(maxLineLenght);
 			int spaces = prefix.length();
+			spaces -= prefixSubstract;
+			if (addPrefixToFirstOutput)
+			{
+				b.append(prefix);
+				charsLeft -= spaces;
+			}
 			for (String i : parts)
 			{
 				if (i.lastIndexOf(0x00A7) != -1)
@@ -200,11 +230,13 @@ public class Utils implements java.io.Serializable
 				{
 					s.sendMessage(b.toString());
 					charsLeft = maxLineLenght - spaces;
+					b.setLength(0);
 					b = new StringBuilder(maxLineLenght);
 					b.append(prefix);
 					b.append('\u00A7').append(color);
 				}
 				charsLeft -= i.length() + 1;
+				charsLeft += countOccurrences(i, ChatColor.COLOR_CHAR) * 2;
 				b.append(i).append(" ");
 			}
 			if (b.length() != 0)
@@ -214,7 +246,26 @@ public class Utils implements java.io.Serializable
 		}
 		else
 		{
-			s.sendMessage(msg);
+			s.sendMessage(addPrefixToFirstOutput ? prefix + msg : msg);
 		}
 	}
+
+	public static int countOccurrences(String haystack, char needle)
+	{
+		int count = 0;
+		char[] contents = haystack.toCharArray();
+		for (int i = 0; i < contents.length; i++)
+		{
+			if (contents[i] == needle)
+			{
+				count++;
+			}
+		}
+		return count;
+	}
+
+	private Utils()
+	{
+	}
+
 }

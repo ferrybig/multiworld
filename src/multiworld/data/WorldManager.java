@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import multiworld.ConfigException;
-import multiworld.InvalidWorldNameException;
 import multiworld.Utils;
 import multiworld.WorldGenException;
 import multiworld.api.MultiWorldWorldData;
@@ -309,8 +308,12 @@ public class WorldManager implements WorldUntils
 		}
 	}
 
+	/**
+	 *
+	 * @param name the value of name
+	 */
 	@Override
-	public World loadWorld(String name, boolean mustSave)
+	public World loadWorld(String name)
 	{
 		WorldContainer option = this.worlds.get(name.toLowerCase());
 		if (option.isLoaded())
@@ -332,6 +335,7 @@ public class WorldManager implements WorldUntils
 		{
 			option.setLoaded(Bukkit.getWorld(name) != null);
 		}
+		if(bukkitWorld == null)return null;
 		bukkitWorld.setDifficulty(Difficulty.getByValue(option.getWorld().getDifficulty()));
 		Iterator<Map.Entry<FlagName, FlagValue>> i = world.getFlags().entrySet().iterator();
 		while (i.hasNext())
@@ -349,10 +353,7 @@ public class WorldManager implements WorldUntils
 	private void createWorld(InternalWorld w, boolean mustSave)
 	{
 		this.addWorld(w, false);
-		if (mustSave)
-		{
-			new WorldCreateEvent(this.getWorldMeta(w.getName(), false)).call();
-		}
+		new WorldCreateEvent(this.getWorldMeta(w.getName(), false)).call();
 	}
 
 	@Override
@@ -500,12 +501,7 @@ public class WorldManager implements WorldUntils
 		for (WorldContainer i : this.getWorlds())
 		{
 			InternalWorld w = i.getWorld();
-			try
-			{
-				Utils.checkWorldName(w.getName());
-			}
-			catch (InvalidWorldNameException ex)
-			{
+			if(!Utils.checkWorldName(w.getName())){
 				log.warning("Was not able to save world named: " + w.getName());
 				continue;
 			}
@@ -528,7 +524,7 @@ public class WorldManager implements WorldUntils
 					FlagValue get = this.getFlag(w.getName(), i1.getKey());
 					if (get != FlagValue.UNKNOWN)
 					{
-						l3.set(i1.getKey().name(), get == FlagValue.TRUE ? true : false);
+						l3.set(i1.getKey().name(), (get == FlagValue.TRUE));
 					}
 				}
 			}
@@ -621,7 +617,7 @@ public class WorldManager implements WorldUntils
 				this.createWorld(worldData, false);
 				if (world.getBoolean("autoload", true))
 				{
-					this.loadWorld(worldData.getName(), false);
+					this.loadWorld(worldData.getName());
 				}
 				if (spawn != null)
 				{

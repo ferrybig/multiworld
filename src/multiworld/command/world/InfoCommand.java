@@ -4,13 +4,16 @@
  */
 package multiworld.command.world;
 
-import multiworld.ArgumentException;
-import multiworld.CommandException;
+import multiworld.command.ArgumentType;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.InternalWorld;
 import multiworld.data.WorldHandler;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
+import org.bukkit.Difficulty;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  *
@@ -19,9 +22,10 @@ import org.bukkit.entity.Player;
 public class InfoCommand extends Command
 {
 	private final WorldHandler w;
+
 	public InfoCommand(WorldHandler w)
 	{
-		super("info");
+		super("info","Shows information about a world");
 		this.w = w;
 	}
 
@@ -43,29 +47,31 @@ public class InfoCommand extends Command
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] arg) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
-		String worldName = null;
-		if (s instanceof Player)
+		String worldName;
+		worldName = stack.getLocation().getWorld().getName();
+		String[] args = stack.getArguments();
+		if (args.length != 0)
 		{
-			worldName = ((Player) s).getWorld().getName();
-		}
-
-		if (arg.length != 0)
-		{
-			worldName = arg[0];
+			worldName = args[0];
 		}
 		if (worldName == null)
 		{
-			throw new ArgumentException("/mw info <world>");
+			stack.sendMessageUsage(stack.getCommandLabel(), ArgumentType.valueOf("list"), ArgumentType.TARGET_WORLD);
+			return;
 		}
-		InternalWorld worldObj = this.w.getWorld(worldName,false);
-		s.sendMessage("Name: "+worldName);
-		s.sendMessage("Seed: "+worldObj.getSeed());
-		s.sendMessage("Generator: "+worldObj.getMainGen());
-		s.sendMessage("Generator options: "+worldObj.getOptions());
-		s.sendMessage("Type: "+worldObj.getEnv().toString());
-		s.sendMessage("Chunks Loaded: "+worldObj.getWorld().getLoadedChunks().length);
-		s.sendMessage("Entities Loaded: "+worldObj.getWorld().getEntities().size());
+		if (w.isWorldExistingAndSendMessage(worldName, stack))
+		{
+			InternalWorld worldObj = this.w.getWorld(worldName, false);
+			stack.sendMessage(MessageType.HIDDEN_SUCCES,
+					  Translation.COMMAND_INFO_DATA,
+					  MessageCache.WORLD.get(worldObj.getName()),
+					  MessageCache.SEED.get(String.valueOf(worldObj.getSeed())),
+					  MessageCache.GENERATOR.get(worldObj.getMainGen()),
+					  MessageCache.custom("%options%", worldObj.getOptions()),
+					  MessageCache.ENVIOMENT.get(String.valueOf(worldObj.getEnv())),
+					  MessageCache.DIFFICULTY.get(String.valueOf(Difficulty.getByValue(worldObj.getDifficulty()))));
+		}
 	}
 }

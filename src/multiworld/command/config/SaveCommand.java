@@ -4,12 +4,12 @@
  */
 package multiworld.command.config;
 
-import multiworld.CommandException;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.ReloadHandler;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import multiworld.translation.Translation;
 
 /**
  *
@@ -22,23 +22,24 @@ public class SaveCommand extends Command
 
 	public SaveCommand(DataHandler data, ReloadHandler reload)
 	{
-		super("save");
+		super("save", "Saves data from multiworld to the disk");
 		this.d = data;
 		this.r = reload;
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] arguments) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
 		if (this.saveCommand())
-					{
-						s.sendMessage(ChatColor.GREEN + this.d.getLang().getString("SAVE SUCCES"));
-					}
-					else
-					{
-						s.sendMessage(ChatColor.RED + this.d.getLang().getString("SAVE ERR"));
-					}
+		{
+			stack.sendMessageBroadcast(MessageType.SUCCES,Translation.COMMAND_SAVE_SUCCES);
+		}
+		else
+		{
+			stack.sendMessageBroadcast(MessageType.ERROR,Translation.COMMAND_SAVE_FAIL);
+		}
 	}
+
 	private boolean saveCommand()
 	{
 		return this.r.save();

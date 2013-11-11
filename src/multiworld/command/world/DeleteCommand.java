@@ -4,13 +4,15 @@
  */
 package multiworld.command.world;
 
-import multiworld.ArgumentException;
-import multiworld.CommandException;
-import multiworld.ConfigException;
+import multiworld.command.ArgumentType;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.WorldHandler;
-import org.bukkit.ChatColor;
+import multiworld.data.WorldManager;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -23,7 +25,7 @@ public class DeleteCommand extends Command
 
 	public DeleteCommand(DataHandler data, WorldHandler worlds)
 	{
-		super("world.delete");
+		super("world.delete","Deletes a world from the multiworld index");
 		this.d = data;
 	}
 
@@ -45,41 +47,48 @@ public class DeleteCommand extends Command
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] arg) throws CommandException
+	public void runCommand(final CommandStack stack)
 	{
-		if (arg.length != 1)
+		if (stack.getArguments().length != 1)
 		{
-			throw new ArgumentException("/mw delete <world>"); //NOI18N
+			stack.sendMessageUsage(stack.getCommandLabel(), ArgumentType.valueOf("delete"), ArgumentType.TARGET_WORLD);
+			return;
+		}
+		WorldManager manager = d.getWorldManager();
+		String targetWorld = stack.getArguments()[0];
+		if (manager.getWorldMeta(targetWorld, false) == null)
+		{
+			stack.sendMessage(MessageType.ERROR,
+					  Translation.WORLD_NOT_FOUND,
+					  MessageCache.WORLD.get(targetWorld));
+			return;
+		}
+		if (manager.isWorldLoaded(targetWorld))
+		{
+			d.getPlugin().pushCommandStack(stack.newStack().setArguments(new String[]
+			{
+				"unload", targetWorld
+			}).build());
+			if (manager.isWorldLoaded(targetWorld))
+			{
+				return;// a message is printed in the unload command
+			}
+		}
+		stack.sendMessageBroadcast(null,
+					   Translation.COMMAND_DELETE_START,
+					   MessageCache.WORLD.get(targetWorld));
+		if (manager.deleteWorld(targetWorld, true))
+		{
+			this.d.scheduleSave();
+			stack.sendMessageBroadcast(MessageType.SUCCES,
+						   Translation.COMMAND_DELETE_SUCCESS,
+						   MessageCache.WORLD.get(targetWorld));
 		}
 		else
 		{
-			try
-			{
-				if (this.d.isWorldLoaded(arg[0]))
-				{
-					if (this.d.unloadWorld(arg[0], false))
-					{
-						s.sendMessage(ChatColor.GREEN + "Unloaded world " + arg[0] + "!");
-					}
-					else
-					{
-						s.sendMessage(ChatColor.RED + "Failed to unload world " + arg[0] + "!");
-						return;
-					}
-				}
-				if (this.d.deleteWorld(arg[0], true))
-				{
-					s.sendMessage(ChatColor.GREEN + "Deleted world " + arg[0] + "!");
-				}
-				else
-				{
-					s.sendMessage(ChatColor.RED + "Failed to delete world " + arg[0] + "!");
-				}
-			}
-			catch (ConfigException ex)
-			{
-				throw new CommandException(ex);
-			}
+			stack.sendMessageBroadcast(MessageType.ERROR,
+						   Translation.COMMAND_DELETE_FAILED,
+						   MessageCache.WORLD.get(targetWorld));
 		}
 	}
 }

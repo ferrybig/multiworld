@@ -4,15 +4,15 @@
  */
 package multiworld.command.spawn;
 
-import multiworld.CommandException;
-import multiworld.Utils;
 import multiworld.command.Command;
+import multiworld.command.CommandStack;
+import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.PlayerHandler;
 import multiworld.data.WorldHandler;
+import multiworld.translation.Translation;
+import multiworld.translation.message.MessageCache;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  *
@@ -26,26 +26,34 @@ public class SetSpawnCommand extends Command
 
 	public SetSpawnCommand(DataHandler data, WorldHandler worlds, PlayerHandler player)
 	{
-		super("setspawn");
+		super("setspawn","Sets a spawn of a world");
 		this.w = worlds;
 		this.p = player;
 		this.d = data;
 	}
 
 	@Override
-	public void runCommand(CommandSender s, String[] arguments) throws CommandException
+	public void runCommand(CommandStack stack)
 	{
-		// set the spawn for the concurent world
-		Player player = this.p.getPlayer(s);
-		Location l = player.getLocation();
-		boolean succes = player.getWorld().setSpawnLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ());
+		Location l = stack.getLocation();
+		if(l == null)
+		{
+			stack.sendMessage(MessageType.ERROR, Translation.COMMAND_SPAWN_FAIL_CONSOLE);
+			return;
+		}
+		boolean succes = l.getWorld().setSpawnLocation(l.getBlockX(), l.getBlockY(), l.getBlockZ());
 		if (succes)
 		{
-			Utils.sendMessage(s, this.d.getLang().getString("SPAWN_SET_SUCCES"));
+			stack.sendMessageBroadcast(MessageType.SUCCES,
+					  Translation.COMMAND_SETSPAWN_SUCCESS,
+					  MessageCache.custom("%x%", String.valueOf(l.getBlockX())),
+					  MessageCache.custom("%y%", String.valueOf(l.getBlockY())),
+					  MessageCache.custom("%z%", String.valueOf(l.getBlockZ())),
+					  MessageCache.WORLD.get(l.getWorld().getName()));
 		}
 		else
 		{
-			Utils.sendMessage(s, this.d.getLang().getString("SPAWN_SET_FAIL"));
+			stack.sendMessage(MessageType.ERROR,Translation.COMMAND_SETSPAWN_FAIL);
 		}
 	}
 }
