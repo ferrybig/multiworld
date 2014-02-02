@@ -22,7 +22,7 @@ public class MultiWorldException extends Exception
 		super(message);
 	}
 
-	public MultiWorldException(Throwable cause, String msg)
+	public MultiWorldException(String msg, Throwable cause)
 	{
 		super(msg, cause);
 	}

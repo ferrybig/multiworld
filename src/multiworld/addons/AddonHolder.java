@@ -5,7 +5,7 @@
 package multiworld.addons;
 
 import multiworld.MultiWorldPlugin;
-import multiworld.data.ConfigNode;
+import multiworld.data.config.DefaultConfigNode;
 import multiworld.data.DataHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -21,9 +21,9 @@ public class AddonHolder<T extends MultiworldAddon> implements MultiworldAddon, 
 	private final Class<T> type;
 	private final String name;
 	private final DataHandler data;
-	private final ConfigNode<Boolean> updateNode;
+	private final DefaultConfigNode<Boolean> updateNode;
 
-	public AddonHolder(Class<T> type, String name, DataHandler data, ConfigNode<Boolean> updateNode)
+	public AddonHolder(Class<T> type, String name, DataHandler data, DefaultConfigNode<Boolean> updateNode)
 	{
 		if (type == null || name == null || data == null)
 		{

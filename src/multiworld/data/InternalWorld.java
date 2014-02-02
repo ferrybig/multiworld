@@ -4,12 +4,14 @@ import java.util.EnumMap;
 import multiworld.api.flag.FlagName;
 import multiworld.flags.FlagValue;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.World;
+import org.bukkit.WorldType;
 import org.bukkit.generator.ChunkGenerator;
 
 /**
  * The class that represents worlds
- *
+ * <p>
  * @author Fernando
  */
 public class InternalWorld
@@ -20,16 +22,27 @@ public class InternalWorld
 	private ChunkGenerator worldGen;
 	private String options;
 	private EnumMap<FlagName, FlagValue> flags;
-	private String madeBy;
+	private String fullGeneratorName;
 	private String portalLink;
 	private String endLink;
-	private int difficulty = 2;
+	private Difficulty difficulty = Difficulty.NORMAL;
+	private WorldType type = WorldType.NORMAL;
 
 	public InternalWorld()
 	{
 	}
 
-	InternalWorld(String name, long seed, World.Environment env, ChunkGenerator gen, String options, EnumMap<FlagName, FlagValue> map, String by, int difficulty)
+	public InternalWorld(String name, long seed, World.Environment env, ChunkGenerator gen, String options, EnumMap<FlagName, FlagValue> map, String fullGeneratorName, Difficulty difficulty)
+	{
+		this(name, seed, env, gen, options, map, fullGeneratorName, "", "", difficulty);
+	}
+
+	public InternalWorld(String name, long seed, World.Environment env, ChunkGenerator gen, String options, EnumMap<FlagName, FlagValue> map, String fullGeneratorName, String link, String endLink, Difficulty difficulty)
+	{
+		this(name, seed, env, gen, options, map, fullGeneratorName, link, endLink, difficulty, WorldType.NORMAL);
+	}
+
+	public InternalWorld(String name, long seed, World.Environment env, ChunkGenerator gen, String options, EnumMap<FlagName, FlagValue> map, String fullGeneratorName, String link, String endLink, Difficulty difficulty, WorldType type)
 	{
 		this.worldName = name;
 		this.worldSeed = seed;
@@ -37,30 +50,25 @@ public class InternalWorld
 		this.worldGen = gen;
 		this.options = options;
 		this.flags = map;
-		this.madeBy = by;
-		this.portalLink = "";
-		this.endLink = "";
+		this.fullGeneratorName = fullGeneratorName;
+		this.portalLink = link != null ? link : "";
+		this.endLink = endLink != null ? endLink : "";
 		this.difficulty = difficulty;
 	}
 
-	InternalWorld(String name, long seed, World.Environment env, ChunkGenerator gen, String options, EnumMap<FlagName, FlagValue> map, String by, String link, String endLink, int difficulty)
+	public WorldType getType()
 	{
-		this.worldName = name;
-		this.worldSeed = seed;
-		this.worldType = env;
-		this.worldGen = gen;
-		this.options = options;
-		this.flags = map;
-		this.madeBy = by;
-		this.portalLink = link;
-		this.endLink = endLink;
-		this.difficulty = difficulty;
+		return type;
+	}
+
+	public void setType(WorldType type)
+	{
+		this.type = type;
 	}
 
 	public World getWorld()
 	{
 		return Bukkit.getWorld(worldName);
-
 	}
 
 	public String getName()
@@ -88,7 +96,7 @@ public class InternalWorld
 		return this.portalLink;
 	}
 
-	EnumMap<FlagName, FlagValue> getFlags()
+	public EnumMap<FlagName, FlagValue> getFlags()
 	{
 		return flags;
 	}
@@ -102,7 +110,7 @@ public class InternalWorld
 	{
 		if (this.worldGen != null)
 		{
-			if (this.getMainGen().equals("NULLGEN"))
+			if (this.getFullGeneratorName().equals("NULLGEN"))
 			{
 				if (this.worldType == World.Environment.NORMAL)
 				{
@@ -117,7 +125,7 @@ public class InternalWorld
 					return "End world with unknown external generator";
 				}
 			}
-			else if (this.getMainGen().startsWith("PLUGIN"))
+			else if (this.getFullGeneratorName().startsWith("PLUGIN"))
 			{
 				if (this.worldType == World.Environment.NORMAL)
 				{
@@ -136,15 +144,15 @@ public class InternalWorld
 			{
 				if (this.worldType == World.Environment.NORMAL)
 				{
-					return "Normal world with internal generator: " + this.getMainGen() + (this.getOptions().isEmpty() ? "" : ": "+this.getOptions());
+					return "Normal world with internal generator: " + this.getFullGeneratorName() + (this.getOptions().isEmpty() ? "" : ": " + this.getOptions());
 				}
 				else if (this.worldType == World.Environment.NETHER)
 				{
-					return "Nether world with internal generator: " + this.getMainGen() + (this.getOptions().isEmpty() ? "" : ": "+this.getOptions());
+					return "Nether world with internal generator: " + this.getFullGeneratorName() + (this.getOptions().isEmpty() ? "" : ": " + this.getOptions());
 				}
 				else if (this.worldType == World.Environment.THE_END)
 				{
-					return "End world with internal generator: " + this.getMainGen() +  (this.getOptions().isEmpty() ? "" : ": "+this.getOptions());
+					return "End world with internal generator: " + this.getFullGeneratorName() + (this.getOptions().isEmpty() ? "" : ": " + this.getOptions());
 				}
 			}
 		}
@@ -167,9 +175,9 @@ public class InternalWorld
 		return "Unknown world";
 	}
 
-	public String getMainGen()
+	public String getFullGeneratorName()
 	{
-		return this.madeBy;
+		return this.fullGeneratorName;
 	}
 
 	public String getEndPortalWorld()
@@ -180,7 +188,7 @@ public class InternalWorld
 	/**
 	 * @return the difficulty
 	 */
-	public int getDifficulty()
+	public Difficulty getDifficulty()
 	{
 		return difficulty;
 	}
@@ -221,7 +229,7 @@ public class InternalWorld
 		{
 			return false;
 		}
-		if ((this.madeBy == null) ? (other.madeBy != null) : !this.madeBy.equals(other.madeBy))
+		if ((this.fullGeneratorName == null) ? (other.fullGeneratorName != null) : !this.fullGeneratorName.equals(other.fullGeneratorName))
 		{
 			return false;
 		}
@@ -250,10 +258,10 @@ public class InternalWorld
 		hash ^= (this.worldGen != null ? this.worldGen.hashCode() : 0);
 		hash ^= (this.options != null ? this.options.hashCode() : 0);
 		hash ^= (this.flags != null ? this.flags.hashCode() : 0);
-		hash ^= (this.madeBy != null ? this.madeBy.hashCode() : 0);
+		hash ^= (this.fullGeneratorName != null ? this.fullGeneratorName.hashCode() : 0);
 		hash ^= (this.portalLink != null ? this.portalLink.hashCode() : 0);
 		hash ^= (this.endLink != null ? this.endLink.hashCode() : 0);
-		hash ^= this.difficulty *123456;
+		hash ^= this.difficulty.ordinal() * 123456;
 		return hash;
 	}
 
@@ -267,19 +275,19 @@ public class InternalWorld
 			+ ", worldGen=" + worldGen
 			+ ", options=" + options
 			+ ", flags=" + flags
-			+ ", madeBy=" + madeBy
+			+ ", madeBy=" + fullGeneratorName
 			+ ", portalLink=" + portalLink
 			+ ", endLink=" + endLink
 			+ ", difficulty=" + difficulty
 			+ '}';
 	}
 
-	void setWorldName(String worldName)
+	public void setWorldName(String worldName)
 	{
 		this.worldName = worldName;
 	}
 
-	void setWorldSeed(long worldSeed)
+	public void setWorldSeed(long worldSeed)
 	{
 		this.worldSeed = worldSeed;
 	}
@@ -294,32 +302,32 @@ public class InternalWorld
 		this.worldGen = worldGen;
 	}
 
-	void setOptions(String options)
+	public void setOptions(String options)
 	{
 		this.options = options;
 	}
 
-	void setFlags(EnumMap<FlagName, FlagValue> flags)
+	public void setFlags(EnumMap<FlagName, FlagValue> flags)
 	{
 		this.flags = flags;
 	}
 
-	void setMadeBy(String madeBy)
+	public void setFullGeneratorName(String madeBy)
 	{
-		this.madeBy = madeBy;
+		this.fullGeneratorName = madeBy;
 	}
 
-	void setPortalLink(String portalLink)
+	public void setPortalLink(String portalLink)
 	{
 		this.portalLink = portalLink;
 	}
 
-	void setEndLink(String endLink)
+	public void setEndLink(String endLink)
 	{
 		this.endLink = endLink;
 	}
 
-	void setDifficulty(int difficulty)
+	public void setDifficulty(Difficulty difficulty)
 	{
 		this.difficulty = difficulty;
 	}

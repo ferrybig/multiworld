@@ -4,13 +4,16 @@
  */
 package multiworld.data;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import multiworld.ConfigException;
 import multiworld.Utils;
 import multiworld.WorldGenException;
@@ -18,6 +21,8 @@ import multiworld.api.MultiWorldWorldData;
 import multiworld.api.events.FlagChanceEvent;
 import multiworld.api.events.WorldCreateEvent;
 import multiworld.api.flag.FlagName;
+import multiworld.data.config.ConfigNode;
+import multiworld.data.config.DifficultyConfigNode;
 import multiworld.flags.FlagMap;
 import multiworld.flags.FlagValue;
 import multiworld.worldgen.NullGen;
@@ -26,6 +31,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.WorldType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -33,11 +39,12 @@ import org.bukkit.generator.ChunkGenerator;
  *
  * @author Fernando
  */
-public class WorldManager implements WorldUntils
+public class WorldManager implements WorldUtils
 {
 	private final Map<String, WorldContainer> worlds;
+	public final static ConfigNode<Difficulty> WORLD_DIFFICULTY = new DifficultyConfigNode(null,"difficulty", Difficulty.NORMAL);
 
-	WorldManager()
+	public WorldManager()
 	{
 		this.worlds = new HashMap<String, WorldContainer>();
 	}
@@ -81,7 +88,8 @@ public class WorldManager implements WorldUntils
 		return world.isLoaded();
 	}
 
-	boolean isWorldExisting(String world)
+	@Override
+	public boolean isWorldExisting(String world)
 	{
 		WorldContainer w = this.getWorldMeta(world, false);
 		return w != null;
@@ -148,7 +156,7 @@ public class WorldManager implements WorldUntils
 
 	/**
 	 * Sets an flag on a world
-	 *
+	 * <p>
 	 * @param world the world to set on
 	 * @param flag The flag to affect
 	 * @param value The new value
@@ -198,7 +206,7 @@ public class WorldManager implements WorldUntils
 
 	/**
 	 * Gets an flag from the specified world
-	 *
+	 * <p>
 	 * @param worldName
 	 * @param flag The flag to return
 	 * @return The value of the specified flag
@@ -262,18 +270,18 @@ public class WorldManager implements WorldUntils
 		{
 			return false;
 		}
-		InternalWorld worldData = new InternalWorld(name, seed, World.Environment.NORMAL, null, options, new FlagMap(), env.name(), 2);
+		InternalWorld worldData = new InternalWorld(name, seed, World.Environment.NORMAL, null, options, new FlagMap(), env.name(), null, null, Difficulty.NORMAL, WorldType.NORMAL);
 		env.makeWorld(worldData);
 		if (worldData.getEnv() == null)
 		{
 			return false;
 		}
-		this.createWorld(worldData, true);
+		this.createWorld(worldData);
 		return true;
 	}
 
 	@Override
-	public boolean deleteWorld(String world, boolean mustSave)
+	public boolean deleteWorld(String world)
 	{
 		WorldContainer w = this.getWorldMeta(world, false);
 		if (w == null)
@@ -282,7 +290,7 @@ public class WorldManager implements WorldUntils
 		}
 		if (w.isLoaded())
 		{
-			if (!this.unloadWorld(null, false))
+			if (!this.unloadWorld(null))
 			{
 				return false;
 			}
@@ -292,7 +300,7 @@ public class WorldManager implements WorldUntils
 	}
 
 	@Override
-	public boolean unloadWorld(String world, boolean mustSave)
+	public boolean unloadWorld(String world)
 	{
 
 		if (Bukkit.unloadWorld(world, true))
@@ -311,6 +319,7 @@ public class WorldManager implements WorldUntils
 	/**
 	 *
 	 * @param name the value of name
+	 * @return
 	 */
 	@Override
 	public World loadWorld(String name)
@@ -321,7 +330,7 @@ public class WorldManager implements WorldUntils
 			return Bukkit.getWorld(name);
 		}
 		InternalWorld world = option.getWorld();
-		WorldCreator creator = WorldCreator.name(world.getName()).seed(world.getSeed()).environment(world.getEnv());
+		WorldCreator creator = WorldCreator.name(world.getName()).type(world.getType()).seed(world.getSeed()).environment(world.getEnv());
 		if (world.getGen() != null)
 		{
 			creator = creator.generator(world.getGen());
@@ -335,8 +344,11 @@ public class WorldManager implements WorldUntils
 		{
 			option.setLoaded(Bukkit.getWorld(name) != null);
 		}
-		if(bukkitWorld == null)return null;
-		bukkitWorld.setDifficulty(Difficulty.getByValue(option.getWorld().getDifficulty()));
+		if (bukkitWorld == null)
+		{
+			return null;
+		}
+		bukkitWorld.setDifficulty(option.getWorld().getDifficulty());
 		Iterator<Map.Entry<FlagName, FlagValue>> i = world.getFlags().entrySet().iterator();
 		while (i.hasNext())
 		{
@@ -350,7 +362,7 @@ public class WorldManager implements WorldUntils
 		return bukkitWorld;
 	}
 
-	private void createWorld(InternalWorld w, boolean mustSave)
+	private void createWorld(InternalWorld w)
 	{
 		this.addWorld(w, false);
 		new WorldCreateEvent(this.getWorldMeta(w.getName(), false)).call();
@@ -373,12 +385,14 @@ public class WorldManager implements WorldUntils
 				w = this.addWorld(
 					new InternalWorld(tmp.getName(), tmp.getSeed(), tmp.getEnvironment(), NullGen.get(), tmp1.getClass().getName(),
 							  new FlagMap(),
-							  "NULLGEN", tmp.getDifficulty().getValue()), true);
+							  "NULLGEN", null, null, tmp.getDifficulty(), tmp.getWorldType()), true);
 			}
 			else
 			{
-				w = this.addWorld(new InternalWorld(tmp.getName(), tmp.getSeed(), tmp.getEnvironment(), null, "", new FlagMap(),
-								    tmp.getEnvironment().name(), tmp.getDifficulty().getValue()), true);
+				w = this.addWorld(
+					new InternalWorld(tmp.getName(), tmp.getSeed(), tmp.getEnvironment(), null, "",
+							  new FlagMap(),
+							  tmp.getEnvironment().name(), tmp.getDifficulty()), true);
 			}
 		}
 		return w;
@@ -386,7 +400,7 @@ public class WorldManager implements WorldUntils
 
 	/**
 	 * Copy the flags from world 1 to another world.
-	 *
+	 * <p>
 	 * @param fromWorld
 	 * @param destinationWorld
 	 * @throws ConfigException
@@ -403,7 +417,7 @@ public class WorldManager implements WorldUntils
 
 	/**
 	 * Sets the nether portal from world "fromworld" to be redirected to "toworld"
-	 *
+	 * <p>
 	 * @param fromWorld
 	 * @param toWorld
 	 * @return
@@ -442,7 +456,7 @@ public class WorldManager implements WorldUntils
 
 	/**
 	 * Sets the end portal from world "fromworld" to be redirected to "toworld"
-	 *
+	 * <p>
 	 * @param fromWorld
 	 * @param toWorld
 	 * @return
@@ -498,22 +512,38 @@ public class WorldManager implements WorldUntils
 	{
 		ConfigurationSection l2;
 		ConfigurationSection l3;
-		for (WorldContainer i : this.getWorlds())
+		for (WorldContainer i : new TreeSet<WorldContainer>(new Comparator<WorldContainer>()
+		{
+			@Override
+			public int compare(WorldContainer t, WorldContainer t1)
+			{
+				return t.getName().compareTo(t1.getName()); // This makes the worlds be saved in the same order every time
+			}
+		})
+		{
+			private static final long serialVersionUID = 1L;
+
+
+			{
+				addAll(Arrays.asList(getWorlds()));
+			}
+		})
 		{
 			InternalWorld w = i.getWorld();
-			if(!Utils.checkWorldName(w.getName())){
+			if (!Utils.checkWorldName(w.getName()))
+			{
 				log.warning("Was not able to save world named: " + w.getName());
 				continue;
 			}
-			if (w.getMainGen().equalsIgnoreCase("NullGen"))
+			if (WorldGenerator.NULLGEN.getName().equals(w.getFullGeneratorName()))
 			{
 				continue;
 			}
 			l2 = worldSection.createSection(w.getName());
 			l2.set("seed", w.getSeed());
-			l2.set("worldgen", w.getMainGen());
+			l2.set("worldgen", w.getFullGeneratorName());
 			l2.set("options", w.getOptions());
-			l2.set("difficulty", w.getDifficulty());
+			WORLD_DIFFICULTY.set(l2, w.getDifficulty());
 			l2.set("autoload", i.isLoaded());
 			if (!w.getFlags().isEmpty())
 			{
@@ -548,7 +578,6 @@ public class WorldManager implements WorldUntils
 			{
 				l2.set("spawnGroup", spawn.getGroupByWorld(w.getName()));
 			}
-
 		}
 	}
 
@@ -583,30 +612,33 @@ public class WorldManager implements WorldUntils
 				if (flagList != null)
 				{
 					FlagName[] flagNames = FlagName.class.getEnumConstants();
-					for (int i = 0; i < flagNames.length; i++)
+					for (FlagName flagName : flagNames)
 					{
-						if (!flagList.isBoolean(flagNames[i].name()))
+						if (!flagList.isBoolean(flagName.name()))
 						{
 							continue;
 						}
-						flags.put(flagNames[i], FlagValue.fromBoolean(flagList.getBoolean(flagNames[i].name())));
+						flags.put(flagName, FlagValue.fromBoolean(flagList.getBoolean(flagName.name())));
 					}
 				}
 				String portal = world.getString("netherportal", "");
 				String endPortal = world.getString("endportal", "");
 
-				/* Makes the world */
+				/* Lets configure the internal world object */
 				InternalWorld worldData = new InternalWorld();
 				worldData.setWorldName(worldName);
 				worldData.setWorldSeed(seed);
-				worldData.setMadeBy(gen.getName());
+				worldData.setFullGeneratorName(gen.getName());
 				worldData.setPortalLink(portal);
 				worldData.setEndLink(endPortal);
 				worldData.setFlags(flags);
 				worldData.setOptions(options);
-				worldData.setDifficulty(world.getInt("difficulty", baseDifficulty.getValue()));
+				{
+					Difficulty diff = WORLD_DIFFICULTY.get(world);
+					worldData.setDifficulty(diff);
+				}
 
-				/* Passes the object to the world gens for further chances */
+				/* Passes the object to the world gens for further chances, like other world types */
 				gen.makeWorld(worldData);
 				if (worldData.getEnv() == null)
 				{
@@ -614,10 +646,10 @@ public class WorldManager implements WorldUntils
 				}
 
 				/* Loads the world at the mem of server */
-				this.createWorld(worldData, false);
+				this.createWorld(worldData);
 				if (world.getBoolean("autoload", true))
 				{
-					this.loadWorld(worldData.getName());
+					this.loadWorld(worldData.getName()).setDifficulty(worldData.getDifficulty());
 				}
 				if (spawn != null)
 				{
@@ -627,10 +659,7 @@ public class WorldManager implements WorldUntils
 						world.set("spawnGroup", "defaultGroup");
 						spawn.registerWorldSpawn(worldName, "defaultGroup");
 					}
-
 				}
-
-
 			}
 			catch (IllegalArgumentException err)
 			{

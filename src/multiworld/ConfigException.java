@@ -42,6 +42,6 @@ public class ConfigException extends MultiWorldException
 	 */
 	public ConfigException(String msg, Throwable cause)
 	{
-		super(cause,msg);
+		super(msg, cause);
 	}
 }

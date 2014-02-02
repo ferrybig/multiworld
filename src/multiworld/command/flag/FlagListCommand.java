@@ -17,13 +17,14 @@ public class FlagListCommand extends Command
 {
 
 	public FlagListCommand()
-	{super("flaglist","gets al flags on the server");
+	{
+		super("flaglist", "gets al flags on the server");
 	}
 
 	@Override
 	public void runCommand(CommandStack stack)
 	{
-		stack.sendMessage(MessageType.SUCCES,FlagName.makeFlagList());
+		stack.sendMessage(MessageType.SUCCES, FlagName.makeFlagList());
 	}
 
 }

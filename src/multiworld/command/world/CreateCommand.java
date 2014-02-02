@@ -117,9 +117,14 @@ public class CreateCommand extends Command
 			}
 			catch (InvalidWorldGenException ex)
 			{
+				String error = "Not found:" + ex.getWrongGen();
+				stack.sendMessageBroadcast(
+					MessageType.ERROR,
+					Translation.COMMAND_CREATE_GET_ERROR,
+					MessageCache.custom("%error%", error));
 				stack.sendMessage(MessageType.ERROR,
 						  Translation.COMMAND_CREATE_GET_ERROR,
-						  MessageCache.custom("%error%", "Notfound:" + ex.getWrongGen()));
+						  MessageCache.custom("%error%", error));
 				return;
 			}
 
@@ -141,12 +146,20 @@ public class CreateCommand extends Command
 			{
 				stack.sendMessageBroadcast(
 					MessageType.ERROR,
+					Translation.COMMAND_CREATE_GET_PRE_ERROR,
+					MessageCache.custom("%error%", error.getMessage()));
+				stack.sendMessage(
+					MessageType.ERROR,
 					Translation.COMMAND_CREATE_GET_ERROR,
 					MessageCache.custom("%error%", error.getMessage()));
 			}
 			catch (WorldGenException error)
 			{
 				stack.sendMessageBroadcast(
+					MessageType.ERROR,
+					Translation.COMMAND_CREATE_GET_PRE_ERROR,
+					MessageCache.custom("%error%", error.getMessage()));
+				stack.sendMessage(
 					MessageType.ERROR,
 					Translation.COMMAND_CREATE_GET_ERROR,
 					MessageCache.custom("%error%", error.getMessage()));

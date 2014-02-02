@@ -28,7 +28,7 @@ public class CommandException extends MultiWorldException
 	}
 	public CommandException(String msg,Throwable cause)
 	{
-		super(cause,msg);
+		super(msg, cause);
 	}
 	public CommandException(Throwable cause)
 	{

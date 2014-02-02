@@ -48,7 +48,7 @@ public class ListCommand extends Command
 					  Translation.COMMAND_LIST_DATA,
 					  MessageCache.WORLD.get(world.getName()),
 					  MessageCache.custom("%loaded%", (this.data.getWorldManager().isWorldLoaded(world.getName()) ? ChatColor.GREEN+"Loaded" : ChatColor.RED + "Unloaded")+RESET),
-					  MessageCache.custom("%type%", world.getOptions().isEmpty() ? world.getMainGen() : world.getMainGen() + ":" + world.getOptions())
+					  MessageCache.custom("%type%", world.getOptions().isEmpty() ? world.getFullGeneratorName() : world.getFullGeneratorName() + ":" + world.getOptions())
 			);
 		}
 	}

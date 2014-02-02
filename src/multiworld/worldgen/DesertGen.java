@@ -40,9 +40,9 @@ public class DesertGen extends MultiWorldChunkGen
 		if (options.isEmpty())
 		{
 			return new short[]
-				{
-					64, 80
-				};
+			{
+				64, 80
+			};
 		}
 		try
 		{
@@ -52,9 +52,9 @@ public class DesertGen extends MultiWorldChunkGen
 				throw new InvalidWorldGenOptionsException("Argument must be lower than 200 and higher than 64");
 			}
 			return new short[]
-				{
-					number, number
-				};
+			{
+				number, number
+			};
 		}
 		catch (NumberFormatException e)
 		{
@@ -76,9 +76,9 @@ public class DesertGen extends MultiWorldChunkGen
 					throw new InvalidWorldGenOptionsException("Arguments must be lower than 200 and higher than 64");
 				}
 				return new short[]
-					{
-						lowest, higest
-					};
+				{
+					lowest, higest
+				};
 			}
 			catch (NumberFormatException e1)
 			{

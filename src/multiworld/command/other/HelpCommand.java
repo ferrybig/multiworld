@@ -79,13 +79,13 @@ public class HelpCommand extends Command
 		int pageHeight;
 		if ((stack.getSender() instanceof ConsoleCommandSender))
 		{
-			pageHeight = 2147483647;
-			pageWidth = 2147483647;
+			pageHeight = Integer.MAX_VALUE;
+			pageWidth = Integer.MAX_VALUE;
 		}
 		else
 		{
 			pageHeight = 9;
-			pageWidth = 45;
+			pageWidth = 45 - 7;
 		}
 
 		if ((topic == null))
@@ -133,7 +133,11 @@ public class HelpCommand extends Command
 		{
 			for (Map.Entry<String, Command> command : this.data.getPlugin().getCommandHandler().m.entrySet())
 			{
-				possibleMatches.add(command.getValue().generateHelpTopic(stack.getCommandLabel() + " " + command.getKey() + " .."));
+				String trimmedTopic = command.getKey();
+				if (!trimmedTopic.equals("snowman"))
+				{
+					possibleMatches.add(command.getValue().generateHelpTopic(stack.getCommandLabel() + " " + trimmedTopic + " .."));
+				}
 			}
 		}
 		else
@@ -141,11 +145,14 @@ public class HelpCommand extends Command
 			for (Map.Entry<String, Command> command : this.data.getPlugin().getCommandHandler().m.entrySet())
 			{
 				String trimmedTopic = command.getKey();
-				if ((trimmedTopic.length() >= searchString.length()) && (Character.toLowerCase(trimmedTopic.charAt(0)) == Character.toLowerCase(searchString.charAt(0))))
+				if (!trimmedTopic.equals("snowman"))
 				{
-					if (searchString.isEmpty() || damerauLevenshteinDistance(searchString, trimmedTopic.substring(0, searchString.length())) < maxDistance)
+					if ((trimmedTopic.length() >= searchString.length()) && (Character.toLowerCase(trimmedTopic.charAt(0)) == Character.toLowerCase(searchString.charAt(0))))
 					{
-						possibleMatches.add(command.getValue().generateHelpTopic("/" + stack.getCommandLabel() + " " + command.getKey() + " .."));
+						if (damerauLevenshteinDistance(searchString, trimmedTopic.substring(0, searchString.length())) < maxDistance)
+						{
+							possibleMatches.add(command.getValue().generateHelpTopic("/" + stack.getCommandLabel() + " " + trimmedTopic + " .."));
+						}
 					}
 				}
 			}

@@ -32,17 +32,17 @@ public class PumpkingPopulator extends BlockPopulator
 					int localX = globalX + random.nextInt(8) - random.nextInt(8);
 					int localY = globalY + random.nextInt(4) - random.nextInt(4);
 					int localZ = globalZ + random.nextInt(8) - random.nextInt(8);
-					if ((world.getBlockTypeIdAt(localX, localY, localZ) != 0))
+					if ((world.getBlockAt(localX, localY, localZ).getType() != Material.AIR))
 					{
 						// chosen block is not air
 						continue;
 					}
-					if ((world.getBlockTypeIdAt(localX, localY - 1, localZ) == 0))
+					if ((world.getBlockAt(localX, localY - 1, localZ).getType() == Material.AIR))
 					{
 						//block below is air
 						continue;
 					}
-					world.getBlockAt(localX, localY, localZ).setTypeIdAndData(Material.PUMPKIN.getId(), (byte) random.nextInt(4), false);
+					world.getBlockAt(localX, localY, localZ).setType(Material.PUMPKIN);
 				}
 			}
 		}

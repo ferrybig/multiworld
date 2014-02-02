@@ -28,6 +28,6 @@ public class ConfigurationSaveException extends MultiWorldException
 
 	public ConfigurationSaveException(String msg, Throwable cause)
 	{
-		super(cause,msg);
+		super(msg, cause);
 	}
 }

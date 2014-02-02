@@ -4,6 +4,7 @@ import multiworld.InvalidWorldGenException;
 import multiworld.WorldGenException;
 import multiworld.data.InternalWorld;
 import org.bukkit.World;
+import org.bukkit.WorldType;
 
 /**
  * the main class to get world genarators
@@ -42,7 +43,11 @@ public enum WorldGenerator implements ChunkGen
 	OCEAN(new OceanGen(), "Ocean", "Makes a world that is 1 big ocean.", SpeedLevel.FAST),
 	DESERT(new DesertGen(), "Desert", "Makes a world that is 1 big desert.", SpeedLevel.FAST),
 	EPICCAVES(new ChunkGeneratorEpicCaves(), "EpicCaves", "just realy complex (and laggy) caves", SpeedLevel.SLOW),
-	EMPTY(new EmptyWorldGenerator(), "Empty", "an empty world", SpeedLevel.FAST);
+	EMPTY(new EmptyWorldGenerator(), "Empty", "an empty world", SpeedLevel.FAST),
+	AMPLIFIED(new WorldTypeBasedGenerator(WorldType.AMPLIFIED),"Amplified","Uses another generator to generate a amplified world"),
+	LARGEBIOMES(new WorldTypeBasedGenerator(WorldType.LARGE_BIOMES),"LargeBiomes","Uses another generator to generate a Large Biomes world"),
+	SUPERFLAT(new WorldTypeBasedGenerator(WorldType.FLAT),"SuperFlat","Uses minecraft superflat methode to create a world"),
+	;
 	private final ChunkGen generator;
 	private final String name;
 	private final String destr;

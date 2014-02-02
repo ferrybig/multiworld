@@ -18,7 +18,9 @@ import org.bukkit.plugin.Plugin;
 /**
  *
  * @author Fernando
+ * @deprecated Will be removed in the future update to make place for a better translation system
  */
+@Deprecated
 public class LangStrings
 {
 	private final Locale currentLocale;
@@ -39,23 +41,23 @@ public class LangStrings
 
 	public String getString(String input)
 	{
-		if(this.messages.containsKey(input))
+		if (this.messages.containsKey(input))
 		{
 			return this.messages.getString(input);
 		}
-		else if(this.messages.containsKey(input+".1"))
+		else if (this.messages.containsKey(input + ".1"))
 		{
 			StringBuilder build = new StringBuilder();
 			int i = 1;
-			while(this.messages.containsKey(input+"."+i))
+			while (this.messages.containsKey(input + "." + i))
 			{
-				build.append(this.messages.getString(input+"."+i)).append("\n");
+				build.append(this.messages.getString(input + "." + i)).append("\n");
 				i++;
 			}
 			return build.toString();
 		}
-		return "Missing key: "+input;
-			
+		return "Missing key: " + input;
+
 	}
 
 	public String getString(String input, Object[] data)

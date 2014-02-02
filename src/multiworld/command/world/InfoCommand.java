@@ -12,7 +12,6 @@ import multiworld.data.InternalWorld;
 import multiworld.data.WorldHandler;
 import multiworld.translation.Translation;
 import multiworld.translation.message.MessageCache;
-import org.bukkit.Difficulty;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -68,10 +67,10 @@ public class InfoCommand extends Command
 					  Translation.COMMAND_INFO_DATA,
 					  MessageCache.WORLD.get(worldObj.getName()),
 					  MessageCache.SEED.get(String.valueOf(worldObj.getSeed())),
-					  MessageCache.GENERATOR.get(worldObj.getMainGen()),
+					  MessageCache.GENERATOR.get(worldObj.getFullGeneratorName()),
 					  MessageCache.custom("%options%", worldObj.getOptions()),
 					  MessageCache.ENVIOMENT.get(String.valueOf(worldObj.getEnv())),
-					  MessageCache.DIFFICULTY.get(String.valueOf(Difficulty.getByValue(worldObj.getDifficulty()))));
+					  MessageCache.DIFFICULTY.get(String.valueOf(worldObj.getDifficulty())));
 		}
 	}
 }

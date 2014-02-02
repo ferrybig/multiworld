@@ -194,10 +194,10 @@ public class DungeonPopulator extends BlockPopulator
 			}
 			// Get spawner location
 			block = world.getBlockAt(dungeonX, dungeonY, dungeonZ);
-			
+
 			// Place spawner
 			block.setType(Material.MOB_SPAWNER);
-			
+
 			// Chance spawned mob
 			CreatureSpawner spawner = (CreatureSpawner) block.getState();
 			spawner.setCreatureTypeByName(this.getRandomMob(random));
@@ -245,7 +245,7 @@ public class DungeonPopulator extends BlockPopulator
 		}
 		if ((i == 9) && (paramRandom.nextInt(10) == 0))
 		{
-			return new ItemStack(Material.getMaterial(Material.GOLD_RECORD.getId() + paramRandom.nextInt(11)));
+			return new ItemStack(Material.GOLD_RECORD);
 		}
 		if (i == 10)
 		{

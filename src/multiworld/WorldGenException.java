@@ -42,6 +42,6 @@ public class WorldGenException extends MultiWorldException
 	 */
 	public WorldGenException(Throwable t,String msg)
 	{
-		super(t,msg);
+		super(msg, t);
 	}
 }

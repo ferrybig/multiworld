@@ -6,7 +6,7 @@ package multiworld.addons;
 
 import java.util.HashMap;
 import java.util.Map;
-import multiworld.data.ConfigNode;
+import multiworld.data.config.DefaultConfigNode;
 import multiworld.data.DataHandler;
 
 /**
@@ -29,7 +29,7 @@ public class AddonMap implements  SettingsListener, PluginList
 		this.addPlugin(EnderChestBlokker.class,"EnderChestBlokker",DataHandler.OPTIONS_BLOCK_ENDER_CHESTS);
 		this.addPlugin(WorldSpawnControll.class,"WorldSpawnHandler",DataHandler.OPTIONS_WORLD_SPAWN);
 	}
-	private <T extends MultiworldAddon> void addPlugin(Class<T> type, String name, ConfigNode<Boolean> config)
+	private <T extends MultiworldAddon> void addPlugin(Class<T> type, String name, DefaultConfigNode<Boolean> config)
 	{
 		pluginMap.put(name.toUpperCase(), new AddonHolder<T>(type,name,data, config));
 	}

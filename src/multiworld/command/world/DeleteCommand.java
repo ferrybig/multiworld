@@ -10,7 +10,7 @@ import multiworld.command.CommandStack;
 import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.WorldHandler;
-import multiworld.data.WorldManager;
+import multiworld.data.WorldUtils;
 import multiworld.translation.Translation;
 import multiworld.translation.message.MessageCache;
 import org.bukkit.command.CommandSender;
@@ -54,7 +54,7 @@ public class DeleteCommand extends Command
 			stack.sendMessageUsage(stack.getCommandLabel(), ArgumentType.valueOf("delete"), ArgumentType.TARGET_WORLD);
 			return;
 		}
-		WorldManager manager = d.getWorldManager();
+		WorldUtils manager = d.getWorldManager();
 		String targetWorld = stack.getArguments()[0];
 		if (manager.getWorldMeta(targetWorld, false) == null)
 		{
@@ -71,13 +71,13 @@ public class DeleteCommand extends Command
 			}).build());
 			if (manager.isWorldLoaded(targetWorld))
 			{
-				return;// a message is printed in the unload command
+				return;// a message is printed in the unload command if the world unload has failed
 			}
 		}
 		stack.sendMessageBroadcast(null,
 					   Translation.COMMAND_DELETE_START,
 					   MessageCache.WORLD.get(targetWorld));
-		if (manager.deleteWorld(targetWorld, true))
+		if (manager.deleteWorld(targetWorld))
 		{
 			this.d.scheduleSave();
 			stack.sendMessageBroadcast(MessageType.SUCCES,

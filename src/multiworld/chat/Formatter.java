@@ -51,14 +51,7 @@ public class Formatter
 
 	public static String createList(Object... args)
 	{
-		StringBuilder out = new StringBuilder();
-		out.append(ChatColor.BLUE).append("[ ");
-		for (int i = 0; i < args.length; i++)
-		{
-			out.append(args[i]).append(ChatColor.BLUE).append(", ");
-		}
-		out.setLength(out.length() - 2);
-		return out.toString();
+		return createList(ChatColor.GOLD, args);
 	}
 
 	public static String createList(ChatColor color, Object... args)
@@ -77,12 +70,13 @@ public class Formatter
 			throw new IllegalArgumentException(color.length + "!=" + args.length);
 		}
 		StringBuilder out = new StringBuilder();
-		out.append(ChatColor.BLUE).append("[ ");
+		out.append(ChatColor.BLUE).append("[");
 		for (int i = 0; i < args.length; i++)
 		{
 			out.append(color[i]).append(args[i]).append(ChatColor.BLUE).append(", ");
 		}
-		out.setLength(out.length() - 3);
+		out.setLength(out.length() - 2);
+		out.append(ChatColor.BLUE).append("]");
 		return out.toString();
 	}
 

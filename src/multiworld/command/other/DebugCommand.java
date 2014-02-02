@@ -34,14 +34,12 @@ public class DebugCommand extends Command
 		stack.sendMessage(MessageType.HIDDEN_SUCCES, "Bukkit version: " + Bukkit.getVersion());
 		stack.sendMessage(MessageType.HIDDEN_SUCCES, "");
 		stack.sendMessage(MessageType.HIDDEN_SUCCES, "--<[Modules]>--");
-		stack.sendMessage(MessageType.HIDDEN_SUCCES, Formatter.createList(ChatColor.WHITE, "configState", "enabled", "loaded", "pluginName"));
+		stack.sendMessage(MessageType.HIDDEN_SUCCES, Formatter.createList(ChatColor.WHITE, "State", "pluginName"));
 		for (String plugin : debug.getPlugins())
 		{
 			stack.sendMessage(MessageType.HIDDEN_SUCCES,
-					  Formatter.createList(Formatter.printBoolean(debug.enabledInsideConfig(plugin)),
-							       Formatter.printBoolean(debug.isEnabled(plugin)),
-							       Formatter.printBoolean(debug.isLoaded(plugin)),
-							       ChatColor.WHITE + plugin));
+					  Formatter.createList((debug.isLoaded(plugin) ? (debug.isEnabled(plugin) ? "Working" : "Loaded") : "Unloaded"),
+							       plugin));
 		}
 		stack.sendMessage(MessageType.HIDDEN_SUCCES, "");
 		stack.sendMessage(MessageType.HIDDEN_SUCCES, "--<[CommandStacks]>--");
@@ -49,8 +47,8 @@ public class DebugCommand extends Command
 		do
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.append(tmp.getClass().getName());
-			sb.append(" - /").append(String.valueOf(tmp.getCommandLabel()));
+			sb.append(tmp.getClass().getCanonicalName());
+			sb.append("\n - /").append(String.valueOf(tmp.getCommandLabel()));
 			sb.append(' ');
 			String[] args = tmp.getArguments();
 			if (args != null)

@@ -2,12 +2,17 @@ package multiworld.data;
 
 import multiworld.ConfigException;
 import multiworld.MultiWorldPlugin;
+import multiworld.command.CommandStack;
 import multiworld.command.DebugLevel;
 import multiworld.command.MessageType;
+import multiworld.data.config.ConfigNode;
+import multiworld.data.config.ConfigNodeSection;
+import multiworld.data.config.DefaultConfigNode;
+import multiworld.data.config.DifficultyConfigNode;
+import multiworld.translation.Translation;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.Server;
-import org.bukkit.command.Command;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,31 +24,38 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public final class DataHandler
 {
-	private final WorldManager worlds = new WorldManager();
+	private final WorldUtils worlds;
 	private FileConfiguration config;
 	private final MultiWorldPlugin plugin;
 	private MyLogger logger;
+	/**
+	 * Base difficulty
+	 */
 	private Difficulty difficulty;
+	/**
+	 * @deprecated Will be removed in the future update to make place for a better translation system
+	 */
+	@Deprecated
 	private LangStrings lang;
 	private boolean autoLoadWorld = false;
 	private boolean unloadWorldsOnDisable = false;
 	private SpawnWorldControl spawn;
-	public final static ConfigNode<ConfigurationSection> OPTIONS_NODE = new ConfigNode<ConfigurationSection>("options", null, ConfigurationSection.class);
-	public final static ConfigNode<Boolean> OPTIONS_BLOCK_ENDER_CHESTS = new ConfigNode<Boolean>(OPTIONS_NODE, "blockEnderChestInCrea", false, Boolean.class);
-	public final static ConfigNode<Boolean> OPTIONS_LINK_NETHER = new ConfigNode<Boolean>(OPTIONS_NODE, "useportalhandler", false, Boolean.class);
-	public final static ConfigNode<Boolean> OPTIONS_LINK_END = new ConfigNode<Boolean>(OPTIONS_NODE, "useEndPortalHandler", false, Boolean.class);
-	public final static ConfigNode<Boolean> OPTIONS_WORLD_CHAT = new ConfigNode<Boolean>(OPTIONS_NODE, "useWorldChatSeperator", false, Boolean.class);
-	public final static ConfigNode<Boolean> OPTIONS_GAMEMODE = new ConfigNode<Boolean>(OPTIONS_NODE, "usecreativemode", false, Boolean.class);
-	public final static ConfigNode<Boolean> OPTIONS_GAMEMODE_INV = new ConfigNode<Boolean>(OPTIONS_NODE, "usecreativemodeinv", true, Boolean.class);
-	public final static ConfigNode<Boolean> OPTIONS_WORLD_SPAWN = new ConfigNode<Boolean>(OPTIONS_NODE, "useWorldSpawnHandler", false, Boolean.class);
-	public final static ConfigNode<Boolean> OPTIONS_DEBUG = new ConfigNode<Boolean>(OPTIONS_NODE, "debug", false, Boolean.class);
-	public final static ConfigNode<Integer> OPTIONS_DIFFICULTY = new ConfigNode<Integer>(OPTIONS_NODE, "difficulty", 2, Integer.class);
-	public final static ConfigNode<String> OPTIONS_LOCALE = new ConfigNode<String>(OPTIONS_NODE, "locale", "en_US", String.class);
+	public final static ConfigNode<ConfigurationSection> OPTIONS_MAIN_NODE = new ConfigNodeSection("options");
+	public final static DefaultConfigNode<Boolean> OPTIONS_BLOCK_ENDER_CHESTS = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "blockEnderChestInCrea", false, Boolean.class);
+	public final static DefaultConfigNode<Boolean> OPTIONS_LINK_NETHER = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "useportalhandler", false, Boolean.class);
+	public final static DefaultConfigNode<Boolean> OPTIONS_LINK_END = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "useEndPortalHandler", false, Boolean.class);
+	public final static DefaultConfigNode<Boolean> OPTIONS_WORLD_CHAT = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "useWorldChatSeperator", false, Boolean.class);
+	public final static DefaultConfigNode<Boolean> OPTIONS_GAMEMODE = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "usecreativemode", false, Boolean.class);
+	public final static DefaultConfigNode<Boolean> OPTIONS_GAMEMODE_INV = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "usecreativemodeinv", true, Boolean.class);
+	public final static DefaultConfigNode<Boolean> OPTIONS_WORLD_SPAWN = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "useWorldSpawnHandler", false, Boolean.class);
+	public final static DefaultConfigNode<Boolean> OPTIONS_DEBUG = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "debug", false, Boolean.class);
+	public final static ConfigNode<Difficulty> OPTIONS_DIFFICULTY = new DifficultyConfigNode(OPTIONS_MAIN_NODE, "difficulty", Difficulty.NORMAL);
+	public final static DefaultConfigNode<String> OPTIONS_LOCALE = new DefaultConfigNode<String>(OPTIONS_MAIN_NODE, "locale", "en_US", String.class);
 
 	/**
 	 * Makes the object
 	 * <p>
-	 * @param server The server whits runs the plugin
+	 * @param server The server withs runs the plugin
 	 * @param config
 	 * @param plugin The main plugin running this
 	 * @throws ConfigException When there was an error
@@ -52,61 +64,105 @@ public final class DataHandler
 	{
 		this.config = config;
 		this.plugin = plugin;
+		this.worlds = new WorldManager();
 		this.load(true);
 	}
+
 	private BukkitTask saveTask = null;
+	private int configSaveFailed = 0;
+	private final Runnable saver = new Runnable()
+	{
+		@Override
+		public void run()
+		{
+			CommandStack console = DataHandler.this.getPlugin().builder.build(Bukkit.getConsoleSender(), DebugLevel.NONE);
+			try
+			{
+				save();
+				console.sendMessageBroadcast(MessageType.SUCCES, Translation.MULTIWORLD_SAVE_SUCCES);
+				configSaveFailed = 0;
+			}
+			catch (ConfigException ex)
+			{
+				configSaveFailed++;
+				if (configSaveFailed < 3)
+				{
+					console.sendMessageBroadcast(MessageType.ERROR, Translation.MULTIWORLD_SAVE_FAIL_RETRY);
+					scheduleSave(20 * 10);
+				}
+				else
+				{
+					console.sendMessageBroadcast(MessageType.ERROR, Translation.MULTIWORLD_SAVE_FAIL);
+				}
+				ex.printStackTrace();
+			}
+		}
+	};
 
 	public void scheduleSave()
+	{
+		scheduleSave(1200);
+	}
+
+	private void scheduleSave(int time)
 	{
 		if (this.saveTask == null)
 		{
 			this.saveTask = new BukkitRunnable()
 			{
-
 				@Override
 				public void run()
 				{
-					try
-					{
-						save();
-						getPlugin().builder.build(Bukkit.getConsoleSender(), DebugLevel.NONE).
-							sendMessageBroadcast(MessageType.SUCCES, "Saved automaticly!");
-					}
-					catch (ConfigException ex)
-					{
-						getPlugin().builder.build(Bukkit.getConsoleSender(), DebugLevel.NONE).
-							sendMessageBroadcast(MessageType.ERROR, "Saved automaticly FAILED! Check console for details!");
-						ex.printStackTrace();
-					}
+					saver.run();
 				}
-			}.runTaskLater(plugin, 1200);
+			}.runTaskLater(plugin, time);
 		}
 	}
 
-	public WorldManager getWorldManager()
+	public WorldUtils getWorldManager()
 	{
 		return this.worlds;
 	}
 
+	/**
+	 * Get the main multiworld plugin
+	 * <p>
+	 * @return The plugin
+	 */
 	public MultiWorldPlugin getPlugin()
 	{
 		return this.plugin;
 	}
-
+/**
+ * Called when multiworld is shutdown, performs auto saving if needed, 6 tries fail reducanty
+ */
 	public void onShutdown()
 	{
 		if (this.saveTask == null)
 		{
 			return;
 		}
-		try
+		CommandStack console = DataHandler.this.getPlugin().builder.build(Bukkit.getConsoleSender(), DebugLevel.NONE);
+		boolean saved = false;
+		this.configSaveFailed = 0;
+		while (configSaveFailed < 6 && !saved)
 		{
-			save();
+			try
+			{
+				save();
+				console.sendMessageBroadcast(MessageType.SUCCES, Translation.MULTIWORLD_SAVE_SUCCES);
+				saved = true;
+			}
+			catch (ConfigException ex)
+			{
+				console.sendMessageBroadcast(MessageType.ERROR, Translation.MULTIWORLD_SAVE_FAIL_RETRY_DIRECT);
+				configSaveFailed++;
+				ex.printStackTrace();
+			}
 		}
-		catch (ConfigException ex)
+		if (!saved)
 		{
-			Command.broadcastCommandMessage(Bukkit.getConsoleSender(), "[Multiworld] Failed saving!!! check console for details!!!", false);
-			ex.printStackTrace();
+			console.sendMessageBroadcast(MessageType.ERROR, Translation.MULTIWORLD_SAVE_FAIL_SHUTDOWN);
 		}
 	}
 
@@ -120,7 +176,7 @@ public final class DataHandler
 		this.config.options().header("# options.debug: must the debug output be printed?\n"
 			+ "# options.difficulty: what is the server diffeculty?\n"
 			+ "# options.locale: what set of lang files must be used, supported: en_US, nl_NL, de_DE, it_IT\n"
-			+ "# spawnGroup: used to set withs worlds have what spawn, difficult to use. see official site for details (try expierementing)");
+			+ "# spawnGroup: used to set withs worlds have what spawn, difficult to use. see official site for details");
 		ConfigurationSection l1;
 		l1 = this.config.createSection("worlds");
 		this.worlds.saveWorlds(l1, logger, this.spawn);
@@ -143,9 +199,9 @@ public final class DataHandler
 			this.plugin.reloadConfig();
 			this.config = this.plugin.getConfig();
 		}
-		this.logger = new MyLogger(getNode(OPTIONS_DEBUG), "MultiWorld");
+		this.logger = new MyLogger(getNode(OPTIONS_DEBUG), "MultiWorld", this.getPlugin().getLogger());
 		this.logger.fine("config loaded");
-		this.difficulty = Difficulty.getByValue(getNode(OPTIONS_DIFFICULTY));
+		this.difficulty = getNode(OPTIONS_DIFFICULTY);
 
 		/* locale setting */
 		{
@@ -163,8 +219,9 @@ public final class DataHandler
 					tmp1 = tmp4[0];
 					break;
 			}
-
-			this.lang = new LangStrings(tmp1, tmp2, tmp3, this.plugin);
+			@SuppressWarnings("deprecation")
+			LangStrings lang1 = new LangStrings(tmp1, tmp2, tmp3, this.plugin);
+			this.lang = lang1;
 		}
 		/* addons settings */
 		{
@@ -191,6 +248,7 @@ public final class DataHandler
 		{
 			worlds.loadWorlds(worldList, this.logger, this.difficulty, this.spawn);
 		}
+		this.save();
 	}
 
 	public MyLogger getLogger()
@@ -212,12 +270,26 @@ public final class DataHandler
 			+ '}';
 	}
 
+	/**
+	 * Gets the translation table
+	 * <p>
+	 * @return @deprecated Will be removed in the future update to make place for a better translation system
+	 */
+	@Deprecated
 	public LangStrings getLang()
 	{
 		return this.lang;
 	}
 
-	boolean isWorldExisting(String world)
+	/**
+	 * Sees if a world is known by multiworld
+	 * <p>
+	 * @param world
+	 * @return
+	 * @deprecated All calls to this methode should be deglated to the world manager
+	 */
+	@Deprecated
+	public boolean isWorldExisting(String world)
 	{
 		return worlds.isWorldExisting(world);
 	}

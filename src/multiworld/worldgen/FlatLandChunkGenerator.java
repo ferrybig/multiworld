@@ -23,9 +23,9 @@ public class FlatLandChunkGenerator extends SimpleChunkGen
 
 	/**
 	 * makes the internal chunk that wil be copied to the new chunks made
-	 * 
+	 *
 	 * @param w
-	 * @return  
+	 * @return
 	 */
 	@Override
 	protected short[][] makeChunk(World w)
@@ -43,7 +43,6 @@ public class FlatLandChunkGenerator extends SimpleChunkGen
 	/**
 	 * Makes the world and save the height
 	 * @param world the o<code>InternalWorld</code> obj to modify
-	 * @return the modifed <code>InternalWorld</code> obj
 	 * @throws InvalidWorldGenOptionsException  If the world dont give valid options
 	 */
 	@Override
@@ -51,7 +50,7 @@ public class FlatLandChunkGenerator extends SimpleChunkGen
 	{
 		super.makeWorld(world);
 		this.heightMap.put(world.getName(), parseOptions(world.getOptions()));
-		
+
 	}
 
 	private byte parseOptions(String options) throws InvalidWorldGenOptionsException

@@ -5,7 +5,6 @@
 package multiworld.data;
 
 import multiworld.MultiWorldPlugin;
-import multiworld.api.ConfigurationSaveException;
 import multiworld.api.MultiWorldWorldData;
 import multiworld.api.events.WorldLoadEvent;
 import multiworld.api.events.WorldUnloadEvent;
@@ -104,7 +103,7 @@ public class WorldContainer implements MultiWorldWorldData
 	}
 
 	@Override
-	public void setOptionValue(FlagName flag, boolean newValue) throws ConfigurationSaveException
+	public void setOptionValue(FlagName flag, boolean newValue)
 	{
 		MultiWorldPlugin.getInstance().getDataManager().getWorldManager().setFlag(this.getName(), flag, FlagValue.fromBoolean(newValue));
 		MultiWorldPlugin.getInstance().getDataManager().scheduleSave();
@@ -133,12 +132,12 @@ public class WorldContainer implements MultiWorldWorldData
 	public boolean unloadWorld()
 	{
 		MultiWorldPlugin.getInstance().getDataManager().scheduleSave();
-		return MultiWorldPlugin.getInstance().getDataManager().getWorldManager().unloadWorld(this.getName(),false);
+		return MultiWorldPlugin.getInstance().getDataManager().getWorldManager().unloadWorld(this.getName());
 	}
 
 	@Override
 	public String getGeneratorType()
 	{
-		return this.getWorld().getMainGen();
+		return this.getWorld().getFullGeneratorName();
 	}
 }

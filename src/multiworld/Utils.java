@@ -185,22 +185,36 @@ public class Utils implements java.io.Serializable
 		{
 			for (String str : msg.split("\n"))
 			{
-				sendMessage(s, str, prefix, addPrefixToFirstOutput);// recursion
+				sendMessage0(s, str, prefix, addPrefixToFirstOutput);
+				// addded another method to make this call less expensive since .contains on a long string takes long
 			}
 			return;
 		}
+		sendMessage0(s, msg, prefix, addPrefixToFirstOutput);
+	}
+
+	private static void sendMessage0(CommandSender s, String msg, String prefix, boolean addPrefixToFirstOutput)
+	{
 		if (s instanceof ConsoleCommandSender)
 		{
-			s.sendMessage(msg);
+			if (addPrefixToFirstOutput)
+			{
+				s.sendMessage(prefix + msg);
+			}
+			else
+			{
+				s.sendMessage(msg);
+			}
 			return;
 		}
 		final int prefixSubstract = countOccurrences(prefix, ChatColor.COLOR_CHAR) * 2;
+		final int prefixLength = prefix.length() - prefixSubstract;
 		final int maxLineLenght = ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH;
-		if ((msg.length() - (countOccurrences(msg, ChatColor.COLOR_CHAR) * 2)) > maxLineLenght)
+		if ((msg.length() + (addPrefixToFirstOutput ? prefixLength : 0)) > maxLineLenght)
 		{
 			char color;
 			{
-				final int lastIndexOf = prefix.lastIndexOf(0x00A7);
+				final int lastIndexOf = prefix.lastIndexOf(ChatColor.COLOR_CHAR);
 				if (lastIndexOf != -1)
 				{
 					color = prefix.charAt(lastIndexOf + 1);
@@ -213,23 +227,22 @@ public class Utils implements java.io.Serializable
 			int charsLeft = 60;
 			String[] parts = msg.split(" ");
 			StringBuilder b = new StringBuilder(maxLineLenght);
-			int spaces = prefix.length();
-			spaces -= prefixSubstract;
 			if (addPrefixToFirstOutput)
 			{
 				b.append(prefix);
-				charsLeft -= spaces;
+				charsLeft -= prefixLength;
 			}
 			for (String i : parts)
 			{
 				if (i.lastIndexOf(0x00A7) != -1)
 				{
+					assert i.lastIndexOf(0x00A7) + 1 < i.length();
 					color = i.charAt(i.lastIndexOf(0x00A7) + 1);
 				}
 				if ((charsLeft - i.length()) < 1)
 				{
 					s.sendMessage(b.toString());
-					charsLeft = maxLineLenght - spaces;
+					charsLeft = maxLineLenght - prefixLength;
 					b.setLength(0);
 					b = new StringBuilder(maxLineLenght);
 					b.append(prefix);

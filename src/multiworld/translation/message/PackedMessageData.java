@@ -15,6 +15,7 @@ public interface PackedMessageData
 	/**
 	 *
 	 * @param prevFormat the value of prevFormat
+	 * @return
 	 */
 	public abstract String transformMessage(String prevFormat);
 

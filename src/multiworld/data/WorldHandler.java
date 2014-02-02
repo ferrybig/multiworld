@@ -2,7 +2,6 @@ package multiworld.data;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
-import multiworld.ConfigException;
 import multiworld.Utils;
 import multiworld.WorldGenException;
 import multiworld.command.CommandStack;
@@ -21,7 +20,7 @@ import org.bukkit.World;
 public class WorldHandler
 {
 	private final DataHandler data;
-	private final WorldManager worlds;
+	private final WorldUtils worlds;
 
 	public WorldHandler(DataHandler h)
 	{
@@ -45,7 +44,7 @@ public class WorldHandler
 
 	public boolean isWorldExisting(String world)
 	{
-		return this.data.isWorldExisting(world);
+		return this.data.getWorldManager().isWorldExisting(world);
 	}
 
 	public boolean isWorldExistingAndSendMessage(String world, CommandStack stack)
@@ -70,14 +69,14 @@ public class WorldHandler
 		return this.worlds.makeWorld(name, env, seed, options);
 	}
 
-	public boolean deleteWorld(String world) throws ConfigException
+	public boolean deleteWorld(String world)
 	{
-		return this.worlds.deleteWorld(world, false);
+		return this.worlds.deleteWorld(world);
 	}
 
 	public boolean unloadWorld(String world)
 	{
-		return this.worlds.unloadWorld(world, false);
+		return this.worlds.unloadWorld(world);
 	}
 
 	public World loadWorld(final String name, final CommandStack debugger)

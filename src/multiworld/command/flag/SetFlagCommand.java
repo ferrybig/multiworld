@@ -69,7 +69,11 @@ public class SetFlagCommand extends Command
 
 			if (this.d.getWorldManager().getFlag(world.getName(), flag) == valueTo)
 			{
-				stack.sendMessage(MessageType.ERROR, Translation.COMMAND_SETFLAG_FAIL_SAME_VALUE);
+				stack.sendMessage(
+					MessageType.ERROR,
+					Translation.COMMAND_SETFLAG_FAIL_SAME_VALUE,
+					MessageCache.FLAG.get(flag.toString())
+				);
 			}
 			else
 			{

@@ -14,7 +14,6 @@ import multiworld.command.DebugLevel;
 import multiworld.command.DefaultCommandStack;
 import multiworld.command.DefaultMessageLogger;
 import multiworld.data.DataHandler;
-import multiworld.data.InternalWorld;
 import multiworld.data.MyLogger;
 import multiworld.data.PlayerHandler;
 import multiworld.data.ReloadHandler;
@@ -54,26 +53,27 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 	/**
 	 * The configuration
 	 */
-	DataHandler data = null;
+	private DataHandler data = null;
 	/**
-	 * was there anny critical error?
+	 * was there any critical error?
 	 */
-	boolean errorStatus = false;
+	private boolean errorStatus = false;
 	/**
 	 * The logger
 	 */
-	MyLogger log;
-	private PlayerHandler playerHandler;
+	private MyLogger log;
 	/**
 	 * The plugin directory
 	 */
-	File pluginDir;
-	private AddonHandler pluginHandler;
-	private ReloadHandler reloadHandler;
+	private File pluginDir;
 	/**
-	 * The version of the plugin
+	 * The version of the plugin that is running on the server
 	 */
 	private String version;
+
+	private PlayerHandler playerHandler;
+	private AddonHandler pluginHandler;
+	private ReloadHandler reloadHandler;
 	private WorldHandler worldHandler;
 
 	@Override
@@ -95,6 +95,9 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 		return DefaultCommandStack.builder(new DefaultMessageLogger(level, sender, ChatColor.translateAlternateColorCodes('&', "&9[&4MultiWorld&9] &3"))).setSender(sender).setLocation(loc).setPermissible(sender).build();
 	}
 
+	/**
+	 * Tries to clean up multiworlds memory caches
+	 */
 	public void gc()
 	{
 		WorldGenerator[] list = WorldGenerator.values();
@@ -113,7 +116,8 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 	}
 
 	/**
-	 * Gets the multiworld api interface Notice that its better to cache the result of this
+	 * Gets the multiworld api interface
+	 * Notice that its better to cache the result of this since its a heavy call
 	 * <p>
 	 * @return the api interface
 	 */
@@ -160,11 +164,6 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 	public AddonHandler getPluginHandler()
 	{
 		return pluginHandler;
-	}
-
-	protected InternalWorld getWorld(String name, boolean mustBeLoaded) throws UnknownWorldException
-	{
-		return Utils.getWorld(name, data, mustBeLoaded);
 	}
 
 	public void log(String msg)
@@ -222,9 +221,6 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 		this.commandHandler.excute(stack);
 	}
 
-	/**
-	 * this is called when the plugin is deactivated
-	 */
 	@Override
 	public void onDisable()
 	{
@@ -246,9 +242,6 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 		MultiWorldPlugin.instance = null;
 	}
 
-	/**
-	 * this is called when the plugin is enabled
-	 */
 	@Override
 	public void onEnable()
 	{
@@ -268,7 +261,7 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 			this.reloadHandler = new ReloadHandler(this.data, this.getPluginHandler());
 			this.commandHandler = new CommandHandler(this.data, this.playerHandler, this.worldHandler, this.reloadHandler, this.getPluginHandler(), this.getPluginHandler());
 			this.pluginHandler.onSettingsChance();
-			this.submitStats();
+			this.setupMetrics();
 			this.log.info("v" + this.version + " enabled."); //NOI18N
 		}
 		catch (ConfigException e)
@@ -297,7 +290,7 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 		return list;
 	}
 
-	private void submitStats()
+	private void setupMetrics()
 	{
 		try
 		{
@@ -364,7 +357,7 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 						int returnValue = 0;
 						for (WorldContainer world : data.getWorldManager().getWorlds())
 						{
-							if (world.getWorld().getMainGen().equals(gen.name()))
+							if (world.getWorld().getFullGeneratorName().equals(gen.name()))
 							{
 								returnValue++;
 							}
@@ -373,32 +366,30 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 					}
 				});
 			}
-			metrics.addCustomData(new Metrics.Plotter("Worlds Existing")
+			graph = metrics.createGraph("World Data");
 			{
-				@Override
-				public int getValue()
+				graph.addPlotter(new Metrics.Plotter("Worlds Existing")
 				{
-					return data.getWorldManager().getAllWorlds().length;
-				}
-			});
-			metrics.addCustomData(new Metrics.Plotter("Worlds Loaded")
-			{
-				@Override
-				public int getValue()
+					@Override
+					public int getValue()
+					{
+						return data.getWorldManager().getAllWorlds().length;
+					}
+				});
+				graph.addPlotter(new Metrics.Plotter("Worlds Loaded")
 				{
-					return data.getWorldManager().getWorlds(true).length;
-				}
-			});
+					@Override
+					public int getValue()
+					{
+						return data.getWorldManager().getWorlds(true).length;
+					}
+				});
+			}
 			metrics.start();
 		}
 		catch (IOException e)
 		{
 			// Failed to submit the stats :-(
 		}
-	}
-
-	public void warning(String msg)
-	{
-		this.log.warning(msg);
 	}
 }

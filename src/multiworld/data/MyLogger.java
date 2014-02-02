@@ -7,28 +7,30 @@ import java.util.regex.Pattern;
 
 /**
  * The class used for logging
+ * <p>
  * @author Fernando
  */
-public class MyLogger extends Object {
+public class MyLogger extends Object
+{
 
-	protected static final Logger log = Logger.getLogger("Minecraft.multiworld");
+	protected final Logger log;
 	protected final String name;
 	protected final boolean debug;
 
-	public MyLogger(boolean debug, String name) {
+	public MyLogger(boolean debug, String name, Logger root)
+	{
 		this.debug = debug;
 		this.name = new StringBuilder(name.length() + 3).append("[").append(name).append("] ").toString();
+		log = root;
 	}
 
-	public MyLogger(String name) {
-		this(false, name);
-	}
-
-	public boolean getDebug() {
+	public boolean getDebug()
+	{
 		return this.debug;
 	}
 
-	private void logException(Throwable e) {
+	private void logException(Throwable e)
+	{
 		CharArrayWriter buffer = new CharArrayWriter();
 		PrintWriter tmp = new PrintWriter(buffer);
 		e.printStackTrace(tmp);
@@ -39,60 +41,66 @@ public class MyLogger extends Object {
 		}
 	}
 
-	public void throwing(String sourceClass, String sourceMethod, Throwable thrown) {
+	public void throwing(String sourceClass, String sourceMethod, Throwable thrown)
+	{
 		this.severe("ERROR HAPPEND:");
 		this.logException(thrown);
 	}
 
-	public void throwing(String sourceClass, String sourceMethod, Throwable thrown, String error) {
+	public void throwing(String sourceClass, String sourceMethod, Throwable thrown, String error)
+	{
 		this.severe("ERROR HAPPEND: ".concat(error));
 		this.logException(thrown);
 	}
 
-	public void severe(String msg) {
-		MyLogger.log.severe(this.name.concat(msg));
+	public void severe(String msg)
+	{
+		log.severe(msg);
 	}
 
-	public void warning(String msg) {
-		MyLogger.log.warning(this.name.concat(msg));
+	public void warning(String msg)
+	{
+		log.warning(msg);
 	}
 
-	public void info(String msg) {
-		MyLogger.log.info(this.name.concat(msg));
+	public void info(String msg)
+	{
+		log.info(msg);
 	}
 
-	public void config(String msg) {
+	public void config(String msg)
+	{
 		if (!debug)
 		{
 			return;
 		}
-		MyLogger.log.info(this.name.concat(msg));
+		log.info(msg);
 	}
 
-	public void fine(String msg) {
+	public void fine(String msg)
+	{
 		if (!debug)
 		{
 			return;
 		}
-		MyLogger.log.info(this.name.concat(msg));
+		log.info(msg);
 	}
 
-	public void finer(String msg) {
+	public void finer(String msg)
+	{
 		if (!debug)
 		{
 			return;
 		}
-		MyLogger.log.info(this.name.concat(msg));
+		log.info(msg);
 	}
 
-	public void finest(String msg) {
+	public void finest(String msg)
+	{
 		if (!debug)
 		{
 			return;
 		}
-		MyLogger.log.info(this.name.concat(msg));
+		log.info(msg);
 	}
-	/**
-	 *
-	 */
 }

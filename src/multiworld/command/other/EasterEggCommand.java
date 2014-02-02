@@ -65,7 +65,7 @@ public class EasterEggCommand extends Command
 					stack.sendMessage(MessageType.HIDDEN_SUCCES, "        \\---/                   ");
 					break;
 				case VVVVVV:
-					stack.sendMessage(MessageType.HIDDEN_SUCCES, "What is it? Its a snake that eated a minecraft block");
+					stack.sendMessage(MessageType.HIDDEN_SUCCES, "What is it? Its a snake that consumed a minecraft block");
 					break;
 			}
 		}
