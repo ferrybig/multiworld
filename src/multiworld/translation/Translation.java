@@ -22,7 +22,7 @@ public enum Translation implements PackedMessageData
 	WORLD_UNLOADING_END("The unloading of the world %world% is ended succesfully!"),
 	WORLD_UNLOADING_FAILED("The unloading of the world %world% is failed, you can't unload the main world and worlds with players!"),
 	WORLD_LOADED_ALREADY("World %world% is already loaded, no need to load it again!"),
-	WORLD_LOADING_START("Starting to load world %world%, except some lagg!"),
+	WORLD_LOADING_START("Starting to load world %world%, expect some lagg!"),
 	WORLD_LOADING_END("World %world% loaded succesfully!"),
 	WORLD_LOADING_FAILED("Failed to load world %world%!"),
 	PREPARING_SPAWN_ARENA("Loading %world%: %percent%%"),
