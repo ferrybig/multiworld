@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import multiworld.ConfigException;
 import multiworld.Utils;
 import multiworld.WorldGenException;
 import multiworld.api.MultiWorldWorldData;
@@ -42,7 +42,7 @@ import org.bukkit.generator.ChunkGenerator;
 public class WorldManager implements WorldUtils
 {
 	private final Map<String, WorldContainer> worlds;
-	public final static ConfigNode<Difficulty> WORLD_DIFFICULTY = new DifficultyConfigNode(null,"difficulty", Difficulty.NORMAL);
+	public final static ConfigNode<Difficulty> WORLD_DIFFICULTY = new DifficultyConfigNode(null, "difficulty", Difficulty.NORMAL);
 
 	public WorldManager()
 	{
@@ -218,36 +218,45 @@ public class WorldManager implements WorldUtils
 		if (w.isLoaded())
 		{
 			InternalWorld world = w.getWorld();
-			if (flag == FlagName.SPAWNMONSTER)
+			switch (flag)
 			{
-				return FlagValue.fromBoolean(world.getWorld().getAllowMonsters());
-			}
-			if (flag == FlagName.SPAWNANIMAL)
-			{
-				return FlagValue.fromBoolean(world.getWorld().getAllowAnimals());
-			}
-			if (flag == FlagName.REMEMBERSPAWN)
-			{
-				return FlagValue.fromBoolean(world.getWorld().getKeepSpawnInMemory());
-			}
-			if (flag == FlagName.CREATIVEWORLD)
-			{
-				FlagValue flagValue = world.getFlags().get(flag);
-				if (flagValue == null)
+				case SPAWNMONSTER:
 				{
-					return FlagValue.fromBoolean(Bukkit.getDefaultGameMode() == org.bukkit.GameMode.CREATIVE);
+					return FlagValue.fromBoolean(world.getWorld().getAllowMonsters());
 				}
-				return flagValue;
+				case SPAWNANIMAL:
+				{
+					return FlagValue.fromBoolean(world.getWorld().getAllowAnimals());
+				}
+				case REMEMBERSPAWN:
+				{
+					return FlagValue.fromBoolean(world.getWorld().getKeepSpawnInMemory());
+				}
+				case CREATIVEWORLD:
+				{
+					FlagValue flagValue = world.getFlags().get(flag);
+					if (flagValue == null)
+					{
+						return FlagValue.fromBoolean(Bukkit.getDefaultGameMode() == org.bukkit.GameMode.CREATIVE);
+					}
+					return flagValue;
+				}
+				case SAVEON:
+				{
+					return FlagValue.fromBoolean(world.getWorld().isAutoSave());
+				}
+				case RECIEVECHAT:
+				case SENDCHAT:
+				{
+					return world.getFlags().containsKey(flag) ? world.getFlags().get(flag) : FlagValue.TRUE;
+				}
+				case PVP:
+				{
+					return FlagValue.fromBoolean(world.getWorld().getPVP());
+				}
+				default:
+					throw new RuntimeException("Cannot find that flag");
 			}
-			if (flag == FlagName.SAVEON)
-			{
-				return FlagValue.fromBoolean(world.getWorld().isAutoSave());
-			}
-			if (flag == FlagName.RECIEVECHAT || flag == FlagName.SENDCHAT)
-			{
-				return world.getFlags().containsKey(flag) ? world.getFlags().get(flag) : FlagValue.TRUE;
-			}
-			return FlagValue.fromBoolean(world.getWorld().getPVP());
 		}
 		else
 		{
@@ -290,10 +299,7 @@ public class WorldManager implements WorldUtils
 		}
 		if (w.isLoaded())
 		{
-			if (!this.unloadWorld(null))
-			{
-				return false;
-			}
+			return false;
 		}
 		this.worlds.remove(world);
 		return true;
@@ -305,13 +311,13 @@ public class WorldManager implements WorldUtils
 
 		if (Bukkit.unloadWorld(world, true))
 		{
-			this.worlds.get(world.toLowerCase()).setLoaded(false);
+			this.worlds.get(world.toLowerCase(Locale.ENGLISH)).setLoaded(false);
 			return true;
 		}
 		else
 		{
 			boolean isLoaded = Bukkit.getWorld(world) != null;
-			this.worlds.get(world.toLowerCase()).setLoaded(isLoaded);
+			this.worlds.get(world.toLowerCase(Locale.ENGLISH)).setLoaded(isLoaded);
 			return !isLoaded;
 		}
 	}
@@ -324,7 +330,7 @@ public class WorldManager implements WorldUtils
 	@Override
 	public World loadWorld(String name)
 	{
-		WorldContainer option = this.worlds.get(name.toLowerCase());
+		WorldContainer option = this.worlds.get(name.toLowerCase(Locale.ENGLISH));
 		if (option.isLoaded())
 		{
 			return Bukkit.getWorld(name);
@@ -371,7 +377,7 @@ public class WorldManager implements WorldUtils
 	@Override
 	public WorldContainer getWorldMeta(String world, boolean mustLoad)
 	{
-		WorldContainer w = worlds.get(world.toLowerCase());
+		WorldContainer w = worlds.get(world.toLowerCase(Locale.ENGLISH));
 		if (w == null)
 		{
 			World tmp = Bukkit.getWorld(world);

@@ -12,7 +12,6 @@ import multiworld.data.config.DifficultyConfigNode;
 import multiworld.translation.Translation;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
-import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -32,12 +31,6 @@ public final class DataHandler
 	 * Base difficulty
 	 */
 	private Difficulty difficulty;
-	/**
-	 * @deprecated Will be removed in the future update to make place for a better translation system
-	 */
-	@Deprecated
-	private LangStrings lang;
-	private boolean autoLoadWorld = false;
 	private boolean unloadWorldsOnDisable = false;
 	private SpawnWorldControl spawn;
 	public final static ConfigNode<ConfigurationSection> OPTIONS_MAIN_NODE = new ConfigNodeSection("options");
@@ -48,6 +41,7 @@ public final class DataHandler
 	public final static DefaultConfigNode<Boolean> OPTIONS_GAMEMODE = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "usecreativemode", false, Boolean.class);
 	public final static DefaultConfigNode<Boolean> OPTIONS_GAMEMODE_INV = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "usecreativemodeinv", true, Boolean.class);
 	public final static DefaultConfigNode<Boolean> OPTIONS_WORLD_SPAWN = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "useWorldSpawnHandler", false, Boolean.class);
+	public final static DefaultConfigNode<Boolean> OPTIONS_CRAFTBUKKIT_HOOKS = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "craftbukkitHooks", true, Boolean.class);
 	public final static DefaultConfigNode<Boolean> OPTIONS_DEBUG = new DefaultConfigNode<Boolean>(OPTIONS_MAIN_NODE, "debug", false, Boolean.class);
 	public final static ConfigNode<Difficulty> OPTIONS_DIFFICULTY = new DifficultyConfigNode(OPTIONS_MAIN_NODE, "difficulty", Difficulty.NORMAL);
 	public final static DefaultConfigNode<String> OPTIONS_LOCALE = new DefaultConfigNode<String>(OPTIONS_MAIN_NODE, "locale", "en_US", String.class);
@@ -55,12 +49,11 @@ public final class DataHandler
 	/**
 	 * Makes the object
 	 * <p>
-	 * @param server The server withs runs the plugin
 	 * @param config
 	 * @param plugin The main plugin running this
 	 * @throws ConfigException When there was an error
 	 */
-	public DataHandler(Server server, FileConfiguration config, MultiWorldPlugin plugin) throws ConfigException
+	public DataHandler(FileConfiguration config, MultiWorldPlugin plugin) throws ConfigException
 	{
 		this.config = config;
 		this.plugin = plugin;
@@ -204,7 +197,7 @@ public final class DataHandler
 		this.difficulty = getNode(OPTIONS_DIFFICULTY);
 
 		/* locale setting */
-		{
+		/*{
 			String tmp1;
 			String tmp2 = "";
 			String tmp3 = "";
@@ -222,7 +215,7 @@ public final class DataHandler
 			@SuppressWarnings("deprecation")
 			LangStrings lang1 = new LangStrings(tmp1, tmp2, tmp3, this.plugin);
 			this.lang = lang1;
-		}
+		}*/
 		/* addons settings */
 		{
 			this.getNode(DataHandler.OPTIONS_DEBUG);
@@ -265,20 +258,8 @@ public final class DataHandler
 			+ ", plugin=" + plugin
 			+ ", logger=" + logger
 			+ ", difficulty=" + difficulty
-			+ ", lang=" + lang
 			+ ", unloadWorldsOnDisable=" + unloadWorldsOnDisable
 			+ '}';
-	}
-
-	/**
-	 * Gets the translation table
-	 * <p>
-	 * @return @deprecated Will be removed in the future update to make place for a better translation system
-	 */
-	@Deprecated
-	public LangStrings getLang()
-	{
-		return this.lang;
 	}
 
 	/**

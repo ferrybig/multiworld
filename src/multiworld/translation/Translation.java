@@ -17,10 +17,10 @@ public enum Translation implements PackedMessageData
 	INVALID_FLAG("The specified flag is invalid"),
 	INVALID_FLAG_VALUE("The specified flag value is invalid"),
 	NEED_PLAYER("This command can't be executed from the console"),
-	WORLD_UNLOADED_ALREADY("World %world% is already unloaded!"),
-	WORLD_UNLOADING_START("The unloading of the world %world% is started!"),
-	WORLD_UNLOADING_END("The unloading of the world %world% is ended succesfully!"),
-	WORLD_UNLOADING_FAILED("The unloading of the world %world% is failed, you can't unload the main world and worlds with players!"),
+	WORLD_UNLOADED_ALREADY("%world%: already unloaded!"),
+	WORLD_UNLOADING_START("%world%: Unloading..."),
+	WORLD_UNLOADING_END("%world%: Unloaded!"),
+	WORLD_UNLOADING_FAILED("%world%: Cannot unload! Are all the player out this world?"),
 	WORLD_LOADED_ALREADY("World %world% is already loaded, no need to load it again!"),
 	WORLD_LOADING_START("Starting to load world %world%, expect some lagg!"),
 	WORLD_LOADING_END("World %world% loaded succesfully!"),
@@ -29,11 +29,11 @@ public enum Translation implements PackedMessageData
 	COMMAND_LIST_HEADER("The following world are found by MultiWorld:"),
 	COMMAND_LIST_DATA("%world%: %loaded% - %type%"),
 	COMMAND_INFO_DATA("We know the following about your world:\n"
-		+ "World Name: %world%\n"
-		+ "World Seed: %seed%\n"
-		+ "Generator: %generator%:%options%\n"
-		+ "Environment: %env%\n"
-		+ "Difficulty: %difficulty%"),
+		+ "* World Name: %world%\n"
+		+ "* World Seed: %seed%\n"
+		+ "* Generator: %generator%:%options%\n"
+		+ "* Environment: %env%\n"
+		+ "* Difficulty: %difficulty%"),
 	COMMAND_DELETE_START("Starting to remove %world% from the multiworld database"),
 	COMMAND_DELETE_SUCCESS("World %world% has been deleted from the multiworld database."),
 	COMMAND_DELETE_FAILED("Failed to delete world %world%"),
@@ -64,6 +64,7 @@ public enum Translation implements PackedMessageData
 	MULTIWORLD_SAVE_FAIL_RETRY_DIRECT("Saved automaticly FAILED! Trying again...."),
 	MULTIWORLD_SAVE_FAIL_SHUTDOWN("Wasn't able to save data! Data loss has been occured!!!"),
 	MULTIWORLD_SAVE_FAIL("Saved automaticly FAILED! Check console for details!"),
+	CRAFTBUKKIT_HOOKS_FAILED("Unable to hook into craftbukkit!\nRunning in bukkit compatibility mode!\nTurn this message of by changing craftbukkitHooks inside the configuration"),
 	;
 	private final String humanText;
 

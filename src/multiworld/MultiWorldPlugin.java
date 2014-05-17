@@ -253,7 +253,7 @@ public class MultiWorldPlugin extends JavaPlugin implements CommandStackBuilder
 			this.pluginDir = this.getDataFolder();
 			this.pluginDir.mkdir();
 
-			this.data = new DataHandler(this.getServer(), this.getConfig(), this); //NOI18N
+			this.data = new DataHandler(this.getConfig(), this); //NOI18N
 			this.log = this.data.getLogger();
 			this.playerHandler = new PlayerHandler(this.data);
 			this.worldHandler = new WorldHandler(this.data);

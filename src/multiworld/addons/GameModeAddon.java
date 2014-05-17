@@ -7,6 +7,7 @@ package multiworld.addons;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 import multiworld.MultiWorldPlugin;
 import multiworld.Utils;
 import multiworld.api.events.FlagChanceEvent;
@@ -35,8 +36,8 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 	/**
 	 * The players who have creative mode and their inv
 	 */
-	private HashMap<String, PlayerData> creativePlayers;
-	private HashMap<String, RemovePlayerTask> tasks;
+	private HashMap<UUID, PlayerData> creativePlayers;
+	private HashMap<UUID, RemovePlayerTask> tasks;
 	/**
 	 * is this class enabled?
 	 */
@@ -59,10 +60,10 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
 		this.log.finest("Got PlayerJoinEvent");//NOI18N
-		if (this.tasks.containsKey(event.getPlayer().getName()))
+		if (this.tasks.containsKey(event.getPlayer().getUniqueId()))
 		{
-			Bukkit.getScheduler().cancelTask(this.tasks.get(event.getPlayer().getName()).getTaskId());
-			this.tasks.remove(event.getPlayer().getName());
+			Bukkit.getScheduler().cancelTask(this.tasks.get(event.getPlayer().getUniqueId()).getTaskId());
+			this.tasks.remove(event.getPlayer().getUniqueId());
 		}
 		else
 		{
@@ -79,7 +80,7 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 	{
 		this.log.finest("Got PlayerQuitEvent");//NOI18N
 		Player player = event.getPlayer();
-		this.tasks.put(player.getName(), new RemovePlayerTask(player));
+		this.tasks.put(player.getUniqueId(), new RemovePlayerTask(player));
 	}
 
 	/**
@@ -119,11 +120,11 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 		{
 			return;
 		}
-		PlayerData tmp = this.creativePlayers.get(player.getName());
+		PlayerData tmp = this.creativePlayers.get(player.getUniqueId());
 		if (tmp != null)
 		{
 			removePlayerAction(player, tmp);
-			this.creativePlayers.remove(player.getName());
+			this.creativePlayers.remove(player.getUniqueId());
 		}
 	}
 
@@ -176,9 +177,9 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 	 */
 	private void addPlayer(Player player)
 	{
-		if (!this.creativePlayers.containsKey(player.getName()))
+		if (!this.creativePlayers.containsKey(player.getUniqueId()))
 		{
-			this.creativePlayers.put(player.getName(), this.data.getNode(DataHandler.OPTIONS_GAMEMODE_INV) ? PlayerData.getFromPlayer(player) : null);
+			this.creativePlayers.put(player.getUniqueId(), this.data.getNode(DataHandler.OPTIONS_GAMEMODE_INV) ? PlayerData.getFromPlayer(player) : null);
 		}
 		player.setGameMode(GameMode.CREATIVE);
 		new GameModeChanceByWorldEvent(player, GameMode.CREATIVE).call();
@@ -198,14 +199,14 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 		}
 		if (this.data.getWorldManager().getFlag(toWorld.getName(), FlagName.CREATIVEWORLD) == FlagValue.TRUE)
 		{
-			if (!this.creativePlayers.containsKey(player.getName()) && player.isOnline())
+			if (!this.creativePlayers.containsKey(player.getUniqueId()) && player.isOnline())
 			{
 				this.addPlayer(player);
 			}
 		}
 		else
 		{
-			if (this.creativePlayers.containsKey(player.getName()))
+			if (this.creativePlayers.containsKey(player.getUniqueId()))
 			{
 				this.removePlayer(player);
 			}
@@ -218,12 +219,12 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 	@Override
 	public void onDisable()
 	{
-		Iterator<Map.Entry<String, PlayerData>> loop = this.creativePlayers.entrySet().iterator();
-		Map.Entry<String, PlayerData> data = null;
+		Iterator<Map.Entry<UUID, PlayerData>> loop = this.creativePlayers.entrySet().iterator();
+		Map.Entry<UUID, PlayerData> data;
 		while (loop.hasNext())
 		{
 			data = loop.next();
-			Player player = Bukkit.getPlayerExact(data.getKey());
+			Player player = Bukkit.getPlayer(data.getKey());
 			if (player != null)
 			{
 				this.removePlayerAction(player, data.getValue());
@@ -245,8 +246,8 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 	@Override
 	public void onEnable()
 	{
-		this.tasks = new HashMap<String, RemovePlayerTask >(Math.min(20, Bukkit.getMaxPlayers()));
-		this.creativePlayers = new HashMap<String, PlayerData>(Math.min(20, Bukkit.getMaxPlayers()));
+		this.tasks = new HashMap<UUID, RemovePlayerTask >(Math.min(20, Bukkit.getMaxPlayers()));
+		this.creativePlayers = new HashMap<UUID, PlayerData>(Math.min(20, Bukkit.getMaxPlayers()));
 		Bukkit.getScheduler().scheduleSyncDelayedTask(MultiWorldPlugin.getInstance(), new Runnable()
 		{
 			@Override
@@ -271,7 +272,7 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 		return this.isEnabled;
 	}
 
-	public class RemovePlayerTask implements Runnable
+	private class RemovePlayerTask implements Runnable
 	{
 		private final Player player;
 		private final int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(MultiWorldPlugin.getInstance(), this);
@@ -291,8 +292,8 @@ public final class GameModeAddon implements Listener, MultiworldAddon
 			}
 			finally
 			{
-				GameModeAddon.this.tasks.remove(player.getName());
-				GameModeAddon.this.creativePlayers.remove(player.getName());
+				GameModeAddon.this.tasks.remove(player.getUniqueId());
+				GameModeAddon.this.creativePlayers.remove(player.getUniqueId());
 			}
 		}
 

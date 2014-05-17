@@ -3,12 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package multiworld.data.config;
 
 import java.util.Locale;
-import multiworld.data.config.ConfigNode;
-import multiworld.data.config.DataPackException;
 import org.bukkit.Difficulty;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -16,7 +13,8 @@ import org.bukkit.configuration.ConfigurationSection;
  *
  * @author ferrybig
  */
-public class DifficultyConfigNode extends ConfigNode<Difficulty> {
+public class DifficultyConfigNode extends ConfigNode<Difficulty>
+{
 
 	public DifficultyConfigNode(ConfigNode<ConfigurationSection> parent, String configPath, Difficulty defaultValue)
 	{
@@ -50,12 +48,14 @@ public class DifficultyConfigNode extends ConfigNode<Difficulty> {
 						return Difficulty.NORMAL;
 					case 3:
 						return Difficulty.HARD;
+					default:
+						return Difficulty.EASY;
 				}
 			}
 			catch (NumberFormatException er1)
 			{
+				throw new DataPackException("Difficulty is in an illegal format!");
 			}
 		}
-		throw new DataPackException("Difficulty is in an illegal format!");
 	}
 }

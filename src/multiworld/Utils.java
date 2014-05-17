@@ -50,6 +50,10 @@ public class Utils implements java.io.Serializable
 
 	public static boolean checkWorldName(String name)
 	{
+		if (name.isEmpty())
+		{
+			return false;
+		}
 		if (Character.isLetterOrDigit(name.charAt(0)) && Character.isLetterOrDigit(name.charAt(name.length() - 1)))
 		{
 			for (char i : name.toCharArray())

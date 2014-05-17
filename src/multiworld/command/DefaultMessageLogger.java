@@ -5,9 +5,11 @@
  */
 package multiworld.command;
 
+import java.util.Arrays;
 import java.util.Set;
 import multiworld.Utils;
 import multiworld.translation.message.PackedMessageData;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.BlockCommandSender;
@@ -78,6 +80,11 @@ public class DefaultMessageLogger implements MessageLogger
 	@Override
 	public void sendMessageBroadcast(MessageType type, String message)
 	{
+		sendMessageBroadcast(type, message, true);
+	}
+
+	public void sendMessageBroadcast(MessageType type, String message, boolean sendToConsole)
+	{
 		message = message.replace(Command.RESET, ChatColor.getLastColors(prefix));
 		String result = prefix + reciever.getName() + ": " + message;
 		if (reciever instanceof BlockCommandSender && ((BlockCommandSender) reciever).getBlock().getWorld().getGameRuleValue("commandBlockOutput").equalsIgnoreCase("false"))
@@ -98,6 +105,11 @@ public class DefaultMessageLogger implements MessageLogger
 				CommandSender target = (CommandSender) user;
 				if (target instanceof ConsoleCommandSender)
 				{
+					if (!sendToConsole && target == Bukkit.getConsoleSender())
+					{
+						continue;
+
+					}
 					target.sendMessage(result);
 				}
 				else if (target != reciever)
@@ -111,7 +123,7 @@ public class DefaultMessageLogger implements MessageLogger
 	@Override
 	public void sendMessageBroadcast(MessageType type, PackedMessageData... message)
 	{
-		this.sendMessageBroadcast(type, this.transformMessage(message));
+		this.sendMessageBroadcast(type, this.transformMessage(message), !Arrays.asList(message).contains(PackedMessageData.NO_CONSOLE_MESSAGE));
 	}
 
 	@Override

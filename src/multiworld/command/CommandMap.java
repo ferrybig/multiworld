@@ -6,6 +6,7 @@ package multiworld.command;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import multiworld.translation.Translation;
@@ -95,7 +96,7 @@ public class CommandMap extends Command
 				String lowerName = split[0].toLowerCase();
 				for (String command : commands)
 				{
-					if (command.toLowerCase().startsWith(lowerName))
+					if (command.toLowerCase(Locale.ENGLISH).startsWith(lowerName))
 					{
 						found.add(command);
 					}

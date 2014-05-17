@@ -130,7 +130,6 @@ public abstract class ConfigNode<T>
 
 	public void set(ConfigurationSection to, T value)
 	{
-		System.out.println(to.getCurrentPath());
 		if (this.parent != null)
 		{
 			to = this.parent.get(to);

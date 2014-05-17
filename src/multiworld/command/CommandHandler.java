@@ -50,7 +50,7 @@ public class CommandHandler extends CommandMap
 		h.put("load", new LoadWorldCommand(data, worlds));
 		h.put("unload", new UnloadWorldCommand(data, worlds));
 		h.put("delete", new DeleteCommand(data, worlds));
-		h.put("listgens", new ListWorldGensCommand());
+		h.put("generators", new ListWorldGensCommand());
 		h.put("move", new MoveCommand(data, player, worlds));
 		h.put("save", new SaveCommand(data, reload));
 		h.put("reload", new LoadCommand(data, reload));
@@ -70,7 +70,7 @@ public class CommandHandler extends CommandMap
 
 	private static Map<String, String> getAliassesMap()
 	{
-		HashMap<String, String> h = new HashMap<String, String>(20, 0.9f);
+		HashMap<String, String> h = new HashMap<String, String>(22, 0.9f);
 		h.put("gens", "listgens");
 		h.put("list-gens", "listgens");
 
@@ -88,6 +88,9 @@ public class CommandHandler extends CommandMap
 		h.put("store", "save");
 
 		h.put("move-player", "move");
+
+		h.put("listgens", "generators");
+		h.put("list-gens", "generators");
 
 		h.put("g", "goto");
 		h.put("i", "info");
