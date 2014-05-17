@@ -11,7 +11,21 @@ package multiworld.translation.message;
  */
 public interface PackedMessageData
 {
+public static final PackedMessageData NO_CONSOLE_MESSAGE = new PackedMessageData()
+{
 
+	@Override
+	public String getBinary()
+	{
+		return "No-Console";
+	}
+
+	@Override
+	public String transformMessage(String prevFormat)
+	{
+		return prevFormat;
+	}
+};
 	/**
 	 *
 	 * @param prevFormat the value of prevFormat
