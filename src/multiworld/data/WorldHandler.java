@@ -89,7 +89,8 @@ public class WorldHandler
 	public World loadWorld(String name, CommandStack debugger)
 	{
 		WorldLoadCatcher loader = null;
-		if (this.data.getNode(DataHandler.OPTIONS_CRAFTBUKKIT_HOOKS))
+		if (this.data.getNode(DataHandler.OPTIONS_CRAFTBUKKIT_HOOKS) 
+                        && debugger.getSender() == Bukkit.getConsoleSender())
 		{
 			final String magicPrefix = "preparing spawn area for " + name.toLowerCase(Locale.ENGLISH) + ",";
 			final String magicSuffix = "%";
