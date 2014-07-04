@@ -25,7 +25,7 @@ public class DeleteCommand extends Command
 
 	public DeleteCommand(DataHandler data, WorldHandler worlds)
 	{
-		super("world.delete","Deletes a world from the multiworld index");
+		super("world.delete","Deletes a world from the MultiWorld index");
 		this.d = data;
 	}
 
