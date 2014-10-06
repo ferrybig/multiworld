@@ -4,6 +4,7 @@
  */
 package multiworld.command;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import multiworld.Utils;
@@ -106,15 +107,18 @@ public abstract class Command
 		return found.toArray(new String[found.size()]);
 	}
 
-	protected final String[] calculateMissingArgumentsPlayer(String playerName)
+	protected final String[] calculateMissingArgumentsPlayer(String playerName, Player executer)
 	{
-		Player[] players = Bukkit.getOnlinePlayers();
+		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
 
-		Set<String> found = new HashSet<String>(players.length);
+		Set<String> found = new HashSet<String>(players.size());
 		String lowerName = playerName.toLowerCase();
 		for (Player player : players)
 		{
-			if (player.getName().toLowerCase().startsWith(lowerName))
+			if(executer != null)
+                            if(!executer.canSee(player))
+                                continue;
+                        if (player.getName().toLowerCase().startsWith(lowerName))
 			{
 				found.add(player.getName());
 			}

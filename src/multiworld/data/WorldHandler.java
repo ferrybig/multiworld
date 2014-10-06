@@ -90,7 +90,7 @@ public class WorldHandler
 	{
 		WorldLoadCatcher loader = null;
 		if (this.data.getNode(DataHandler.OPTIONS_CRAFTBUKKIT_HOOKS) 
-                        && debugger.getSender() == Bukkit.getConsoleSender())
+                        && debugger.getSender() != Bukkit.getConsoleSender())
 		{
 			final String magicPrefix = "preparing spawn area for " + name.toLowerCase(Locale.ENGLISH) + ",";
 			final String magicSuffix = "%";
@@ -295,17 +295,18 @@ public class WorldHandler
 					}
 				}
 			};
-			logManager = Class.forName("org.apache.logging.log4j.LogManager", true, Bukkit.getServer().getClass().getClassLoader());
-			logger = Class.forName("org.apache.logging.log4j.core.Logger", true, Bukkit.getServer().getClass().getClassLoader());
-			appender = Class.forName("org.apache.logging.log4j.core.Appender", true, Bukkit.getServer().getClass().getClassLoader());
-			logEvent = Class.forName("org.apache.logging.log4j.core.LogEvent", true, Bukkit.getServer().getClass().getClassLoader());
-			layout = Class.forName("org.apache.logging.log4j.core.Layout", true, Bukkit.getServer().getClass().getClassLoader());
-			message = Class.forName("org.apache.logging.log4j.message.Message", true, Bukkit.getServer().getClass().getClassLoader());
-			layoutInstance = Class.forName("org.apache.logging.log4j.core.layout.PatternLayout", true, Bukkit.getServer().getClass().getClassLoader())
+                        final ClassLoader classLoader = Bukkit.getServer().getClass().getClassLoader();
+			logManager = Class.forName("org.apache.logging.log4j.LogManager", true, classLoader);
+			logger = Class.forName("org.apache.logging.log4j.core.Logger", true, classLoader);
+			appender = Class.forName("org.apache.logging.log4j.core.Appender", true, classLoader);
+			logEvent = Class.forName("org.apache.logging.log4j.core.LogEvent", true, classLoader);
+			layout = Class.forName("org.apache.logging.log4j.core.Layout", true, classLoader);
+			message = Class.forName("org.apache.logging.log4j.message.Message", true, classLoader);
+			layoutInstance = Class.forName("org.apache.logging.log4j.core.layout.PatternLayout", true, classLoader)
 				.getMethod("createLayout",
 					   String.class,
-					   Class.forName("org.apache.logging.log4j.core.config.Configuration", true, Bukkit.getServer().getClass().getClassLoader()),
-					   Class.forName("org.apache.logging.log4j.core.pattern.RegexReplacement", true, Bukkit.getServer().getClass().getClassLoader()),
+					   Class.forName("org.apache.logging.log4j.core.config.Configuration", true, classLoader),
+					   Class.forName("org.apache.logging.log4j.core.pattern.RegexReplacement", true, classLoader),
 					   String.class,
 					   String.class
 				).invoke(null, new Object[5]);

@@ -93,11 +93,11 @@ public class MoveCommand extends Command
 	{
 		if (split.length == 0)
 		{
-			return this.calculateMissingArgumentsPlayer("");
+			return this.calculateMissingArgumentsPlayer("", (sender instanceof Player) ? (Player)sender : null);
 		}
 		else if (split.length == 1)
 		{
-			return this.calculateMissingArgumentsPlayer(split[0]);
+			return this.calculateMissingArgumentsPlayer(split[0], (sender instanceof Player) ? (Player)sender : null);
 		}
 		else if (split.length == 2)
 		{
