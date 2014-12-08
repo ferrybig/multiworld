@@ -109,9 +109,9 @@ public abstract class Command
 
 	protected final String[] calculateMissingArgumentsPlayer(String playerName, Player executer)
 	{
-		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+		Player[] players = Bukkit.getOnlinePlayers();
 
-		Set<String> found = new HashSet<String>(players.size());
+		Set<String> found = new HashSet<String>(players.length);
 		String lowerName = playerName.toLowerCase();
 		for (Player player : players)
 		{
