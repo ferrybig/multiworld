@@ -301,7 +301,7 @@ public class WorldManager implements WorldUtils
 		{
 			return false;
 		}
-		this.worlds.remove(world);
+		this.worlds.remove(world.toLowerCase());
 		return true;
 	}
 
