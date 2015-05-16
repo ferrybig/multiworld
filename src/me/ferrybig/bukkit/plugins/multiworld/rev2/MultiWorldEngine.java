@@ -1,7 +1,7 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2;
 
 import java.util.UUID;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.core.Native;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 
 /**
  *
