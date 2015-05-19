@@ -1,5 +1,6 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2;
 
+import java.util.Collection;
 import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 
@@ -18,5 +19,7 @@ public interface MultiWorldEngine {
     
     public void registerNewGenerator(WorldGenerator gen);
     
+    public Collection<? extends WorldDefinition> getWorlds();
     
+    public AddonRegistery getPluginManager();
 }
