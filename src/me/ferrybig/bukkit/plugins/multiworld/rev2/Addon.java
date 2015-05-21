@@ -18,11 +18,13 @@ public interface Addon {
     
     public String getVersion();
     
-    public void isEnabled();
+    public boolean isEnabled();
     
     public void enable();
     
     public void disable();
+    
+    public boolean isCoreAddon();
     
     public Collection<? extends NativeListener> getListeners();
     
