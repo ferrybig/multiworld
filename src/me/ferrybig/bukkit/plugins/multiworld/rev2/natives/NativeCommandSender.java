@@ -5,23 +5,21 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
 
-import java.util.UUID;
-
 /**
  *
  * @author Fernando
  */
-public interface NativeWorld {
+public interface NativeCommandSender extends NativePermissionsHolder {
 
-    public UUID getID();
-
+    public void sendMessage(String message);
+    
     public String getName();
-
-    public int getDimension();
-
-    public Object getNative();
-
-    public String getGameRuleValue(String gamerule);
-
-    public String setGameRuleValue(String gamerule, String value);
+    
+    public NativeLocation getLocation();
+    
+    public boolean canTeleport();
+    
+    public boolean teleport(NativeLocation location);
+    
+    public Native getNative();
 }

@@ -1,5 +1,6 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 
@@ -9,4 +10,8 @@ public interface Native {
     public Map<String, NativeGenerator> getRegisteredGenerators();
     
     public void createWorld(NativeGenerator generator, UUID uuid, String name, long seed);
+    
+    public Collection<? extends NativePermissionsHolder> getOps();
+    
+    public NativeConsoleCommandSender getConsoleCommandSender();
 }
