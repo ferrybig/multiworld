@@ -9,16 +9,6 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
  *
  * @author Fernando
  */
-public interface NativeLocation {
-
-    public NativeWorld getWorld();
-    
-    public double getX();
-    
-    public double getY();
-    
-    public double getZ();
-    
-    public double distance(NativeLocation loc);
+public interface NativeLivingEntity extends NativeEntity {
     
 }

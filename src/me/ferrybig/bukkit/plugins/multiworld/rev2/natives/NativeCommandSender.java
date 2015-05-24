@@ -9,17 +9,11 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
  *
  * @author Fernando
  */
-public interface NativeCommandSender extends NativePermissionsHolder {
+public interface NativeCommandSender extends NativePermissionsHolder, NativeTeleportable {
 
     public void sendMessage(String message);
     
     public String getName();
-    
-    public NativeLocation getLocation();
-    
-    public boolean canTeleport();
-    
-    public boolean teleport(NativeLocation location);
     
     public Native getNative();
 }

@@ -9,16 +9,12 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
  *
  * @author Fernando
  */
-public interface NativeLocation {
-
-    public NativeWorld getWorld();
+public interface NativeTeleportable {
+    public boolean hasLocation();
     
-    public double getX();
+    public NativeLocation getLocation();
     
-    public double getY();
+    public boolean canTeleport();
     
-    public double getZ();
-    
-    public double distance(NativeLocation loc);
-    
+    public boolean teleport(NativeLocation location);
 }

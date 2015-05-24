@@ -9,6 +9,6 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
  *
  * @author Fernando
  */
-public interface NativePlayer extends NativeCommandSender {
+public interface NativePlayer extends NativeCommandSender, NativeLivingEntity {
     
 }
