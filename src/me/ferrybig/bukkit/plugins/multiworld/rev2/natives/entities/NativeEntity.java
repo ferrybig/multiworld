@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
+package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities;
+
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeTeleportable;
 
 /**
  *
