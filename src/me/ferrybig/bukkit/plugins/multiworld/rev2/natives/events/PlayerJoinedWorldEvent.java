@@ -5,10 +5,12 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events;
 
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
+
 /**
  *
  * @author Fernando
  */
 public interface PlayerJoinedWorldEvent extends PlayerEvent {
-    
+    public NativeLocation getLocation();
 }

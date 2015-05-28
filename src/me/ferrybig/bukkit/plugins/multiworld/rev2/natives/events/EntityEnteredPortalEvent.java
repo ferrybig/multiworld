@@ -5,10 +5,18 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events;
 
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
+
 /**
  *
  * @author Fernando
  */
 public interface EntityEnteredPortalEvent extends EntityEvent {
-    
+    public NativeLocation getFrom();
+    public boolean isNetherPortal();
+    public boolean isEndPortal();
+    public NativeLocation getNonPreciseTargetLocation();
+    public NativeLocation getPreciseTargetLocation();
+    public void setNonPreciseTargetLocation(NativeLocation loc);
+    public void setPreciseTargetLocation(NativeLocation loc);
 }
