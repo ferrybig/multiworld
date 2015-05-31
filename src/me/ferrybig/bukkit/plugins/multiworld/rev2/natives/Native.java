@@ -1,5 +1,6 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
 
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGenerator;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeConsoleCommandSender;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeGenerator;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGenerator;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePermissionsHolder;
 import org.bukkit.plugin.java.JavaPlugin;
 
