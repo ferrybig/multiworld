@@ -3,53 +3,62 @@ worlds:
         name: world_main
         loader: manual
         ignoreifmissing: false
+        difficulty: 0
         gamerule:
             DoMobGriefing: false
             DoTileDrops: false
     2:
         name: world_example
+        difficulty: 1
         loader: generate
         seed: 12345seed54321
         dimension: normal
         generator: 'vanila:default'
     3:
         name: world_example_nether
+        difficulty: 1
         loader: generate
         seed: 12345seed54321
         dimension: nether
         generator: 'vanila:default'
     4:
         name: world_example_the_end
+        difficulty: 1
         loader: generate
         seed: 12345seed54321
         dimension: the_end
         generator: 'vanila:default'
     5:
         name: world_factions
+        difficulty: 3
         loader: generate
         seed: 12345seed54321
         dimension: normal
         generator: 'vanila:default'
     6:
         name: world_factions_nether
+        difficulty: 3
         loader: generate
         seed: 12345seed54321
         dimension: nether
         generator: 'vanila:default'
     7:
         name: world_factions_the_end
+        difficulty: 3
         loader: generate
         seed: 12345seed54321
         dimension: the_end
         generator: 'vanila:default'
     8:
         name: world_creative
+        difficulty: 0
         loader: generate
         seed: 12345seed54321
         dimension: Normal
         generator: 'Bukkit:PlotMe'
     7:
         name: world_showcase
+        difficulty: 1
         loader: generate
         seed: 12345seed54321
         dimension: normal
