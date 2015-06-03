@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeConsoleCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePermissionsHolder;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGenerator;
 
@@ -19,9 +20,52 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGener
  */
 public class BukkitLoader implements Native {
     private final BukkitMain plugin;
+    private final NativeConsoleCommandSender console;
 
     public BukkitLoader(BukkitMain plugin) {
         this.plugin = plugin;
+        this.console = new NativeConsoleCommandSender() {
+
+            @Override
+            public void sendMessage(String message) {
+                plugin.getServer().getConsoleSender().sendMessage(message);
+            }
+
+            @Override
+            public String getName() {
+                return plugin.getServer().getConsoleSender().getName();
+            }
+
+            @Override
+            public Native getNative() {
+                return BukkitLoader.this;
+            }
+
+            @Override
+            public boolean hasPermision(String permission) {
+                return plugin.getServer().getConsoleSender().hasPermission(permission);
+            }
+
+            @Override
+            public boolean hasLocation() {
+                return false;
+            }
+
+            @Override
+            public NativeLocation getLocation() {
+                return null;
+            }
+
+            @Override
+            public boolean canTeleport() {
+                return false;
+            }
+
+            @Override
+            public boolean teleport(NativeLocation location) {
+                return false;
+            }
+        };
     }
 
     @Override
@@ -46,7 +90,11 @@ public class BukkitLoader implements Native {
 
     @Override
     public NativeConsoleCommandSender getConsoleCommandSender() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.console;
+    }
+    
+    public void close() {
+        
     }
     
     
