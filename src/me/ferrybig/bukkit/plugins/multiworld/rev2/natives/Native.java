@@ -15,4 +15,6 @@ public interface Native {
     public Collection<? extends NativePermissionsHolder> getOps();
     
     public NativeConsoleCommandSender getConsoleCommandSender();
+    
+    public NativePluginManager getPluginManager();
 }
