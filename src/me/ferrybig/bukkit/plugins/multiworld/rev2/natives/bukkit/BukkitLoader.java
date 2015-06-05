@@ -6,6 +6,8 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.bukkit;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
@@ -22,6 +24,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGener
 public class BukkitLoader implements Native {
     private final BukkitMain plugin;
     private final NativeConsoleCommandSender console;
+    private final Map<String, NativeGenerator> generators = new HashMap<>();
 
     public BukkitLoader(BukkitMain plugin) {
         this.plugin = plugin;
@@ -67,6 +70,7 @@ public class BukkitLoader implements Native {
                 return false;
             }
         };
+        // prepopulate generators here
     }
 
     @Override
@@ -76,7 +80,7 @@ public class BukkitLoader implements Native {
 
     @Override
     public Map<String, NativeGenerator> getRegisteredGenerators() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Collections.unmodifiableMap(generators);
     }
 
     @Override
