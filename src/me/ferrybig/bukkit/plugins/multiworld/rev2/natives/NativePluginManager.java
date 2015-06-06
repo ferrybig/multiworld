@@ -5,6 +5,8 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
 
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
+
 /**
  *
  * @author Fernando

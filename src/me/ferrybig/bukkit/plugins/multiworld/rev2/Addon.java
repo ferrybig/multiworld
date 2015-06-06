@@ -7,7 +7,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2;
 
 import java.util.Collection;
 import java.util.Map;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeListener;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
 
 /**
  *
