@@ -5,6 +5,7 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities;
 
+import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeCommandSender;
 
 /**
@@ -12,5 +13,6 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeCommandSender;
  * @author Fernando
  */
 public interface NativePlayer extends NativeCommandSender, NativeLivingEntity {
+    public UUID getUUID();
     
 }
