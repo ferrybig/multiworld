@@ -10,12 +10,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.WeakHashMap;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeConsoleCommandSender;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePermissionsHolder;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePluginManager;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePlayer;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGenerator;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -25,6 +28,7 @@ public class BukkitLoader implements Native {
     private final BukkitMain plugin;
     private final NativeConsoleCommandSender console;
     private final Map<String, NativeGenerator> generators = new HashMap<>();
+    private final Map<Player, NativePlayer> players = new WeakHashMap<>();
 
     public BukkitLoader(BukkitMain plugin) {
         this.plugin = plugin;
