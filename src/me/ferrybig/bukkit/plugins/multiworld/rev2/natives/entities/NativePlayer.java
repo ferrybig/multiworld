@@ -15,4 +15,5 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeCommandSender;
 public interface NativePlayer extends NativeCommandSender, NativeLivingEntity {
     public UUID getUUID();
     
+    public Object getNativeObject();
 }
