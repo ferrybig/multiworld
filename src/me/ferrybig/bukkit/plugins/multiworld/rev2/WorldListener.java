@@ -5,18 +5,12 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2;
 
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
-
 /**
  *
  * @author Fernando
  */
-public interface MultiWorldMod {
-    public Native getNative();
-    
-    public String getVersion();
-    
-    public String getLastGitCommit();
-    
-    public boolean isBeta();
+public class WorldListener {
+    public void onWorldNameChange() {
+        
+    }
 }

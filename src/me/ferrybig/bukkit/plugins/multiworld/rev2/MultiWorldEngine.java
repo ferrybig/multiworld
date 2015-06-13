@@ -16,13 +16,9 @@ public interface MultiWorldEngine {
     
     public Native getNativePlugin();
     
-    public WorldDefinition getWorld(UUID uuid);
-    
-    public void registerNewGenerator(WorldGenerator gen);
-    
-    public Collection<? extends WorldDefinition> getWorlds();
-    
     public AddonRegistery getPluginManager();
     
     public boolean sendCommand(CommandStack stack);
+    
+    public WorldManager getWorlds();
 }
