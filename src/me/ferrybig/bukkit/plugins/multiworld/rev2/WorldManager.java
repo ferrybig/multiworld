@@ -14,7 +14,12 @@ import java.util.UUID;
  * @author Fernando
  */
 public interface WorldManager {
+
     public File getWorldDirectory();
-    
-    public Collection<? extends Addon> getAddonsWithWorldSettings();
+
+    public WorldDefinition getWorld(UUID uuid);
+
+    public void registerNewGenerator(WorldGenerator gen);
+
+    public Collection<? extends WorldDefinition> getWorlds();
 }
