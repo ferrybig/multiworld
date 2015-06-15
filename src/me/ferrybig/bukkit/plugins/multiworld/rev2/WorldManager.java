@@ -20,6 +20,8 @@ public interface WorldManager {
     public WorldDefinition getWorld(UUID uuid);
 
     public void registerNewGenerator(WorldGenerator gen);
+    
+    public Collection<? extends WorldGenerator> getGenerators();
 
     public Collection<? extends WorldDefinition> getWorlds();
 }
