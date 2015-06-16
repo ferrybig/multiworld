@@ -18,6 +18,14 @@ public interface WorldManager {
     public File getWorldDirectory();
 
     public WorldDefinition getWorld(UUID uuid);
+    
+    public Collection<? extends WorldDefinition> getWorld(String name);
+    
+    public Collection<? extends WorldDefinition> getWorld(int dimension);
+    
+    public boolean unloadWorld(WorldDefinition def);
+    
+    public boolean loadWorld(WorldDefinition def);
 
     public void registerNewGenerator(WorldGenerator gen);
     
