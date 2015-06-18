@@ -24,4 +24,8 @@ public interface NativeWorld {
     public String getGameRuleValue(String gamerule);
 
     public String setGameRuleValue(String gamerule, String value);
+    
+    public enum Environment {
+        UNKNOWN, NORMAL, NETHER, END
+    }
 }
