@@ -18,6 +18,8 @@ public interface NativeWorld {
     public String getName();
 
     public int getDimension();
+    
+    public Environment getEnvironment();
 
     public Object getNative();
 
