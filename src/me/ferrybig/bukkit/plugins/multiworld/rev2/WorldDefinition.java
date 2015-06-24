@@ -11,5 +11,5 @@ public interface WorldDefinition {
         
         public UUID getUUID();
         
-        
+        public Map<String,String> getGamerules();
 }

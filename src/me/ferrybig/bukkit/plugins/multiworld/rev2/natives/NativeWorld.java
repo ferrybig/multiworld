@@ -5,6 +5,7 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -22,6 +23,8 @@ public interface NativeWorld {
     public Environment getEnvironment();
 
     public Object getNative();
+    
+    public Map<String,String> getGamerules();
 
     public String getGameRuleValue(String gamerule);
 
