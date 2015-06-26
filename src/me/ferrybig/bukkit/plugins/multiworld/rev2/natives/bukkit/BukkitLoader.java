@@ -17,6 +17,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePermissionsHolder;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePluginManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePlayer;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGenerator;
 import org.bukkit.entity.Player;
 
@@ -108,7 +109,14 @@ public class BukkitLoader implements Native {
 
     @Override
     public NativePluginManager getPluginManager() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new NativePluginManager() {
+
+            @Override
+            public void registerEvents(NativeListener listener) {
+                
+            }
+            
+        };
     }
     
     
