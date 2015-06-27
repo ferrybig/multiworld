@@ -118,6 +118,16 @@ public class BukkitLoader implements Native {
             
         };
     }
+
+    @Override
+    public NativePlayer getPlayer(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public NativePlayer getPlayer(UUID uuid) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

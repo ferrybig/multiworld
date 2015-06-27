@@ -4,6 +4,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGener
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePlayer;
 
 public interface Native {
     public void registerWorldGenerator(NativeGenerator generator);
@@ -17,4 +18,8 @@ public interface Native {
     public NativeConsoleCommandSender getConsoleCommandSender();
     
     public NativePluginManager getPluginManager();
+    
+    public NativePlayer getPlayer(String name);
+    
+    public NativePlayer getPlayer(UUID uuid);
 }
