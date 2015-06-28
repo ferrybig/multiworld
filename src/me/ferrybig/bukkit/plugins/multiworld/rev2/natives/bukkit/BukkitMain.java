@@ -8,6 +8,10 @@ public class BukkitMain extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if(!this.getDataFolder().exists()) {
+            // copy config example
+            // generate default config
+        }
         main = new BukkitLoader(this);
     }
 
