@@ -5,6 +5,8 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2;
 
+import java.util.Collection;
+
 /**
  *
  * @author Fernando
@@ -18,4 +20,5 @@ public interface ConfigurationHandler {
     
     public void saveWorld(WorldDefinition world);
     
+    public Collection<? extends WorldDefinition> loadWorlds();
 }
