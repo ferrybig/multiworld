@@ -5,10 +5,22 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.config;
 
+import java.util.Set;
+
 /**
  *
  * @author Fernando
  */
-public class FileBasedConfiguration {
+public interface FileBasedConfiguration {
+    public Object get(String path);
     
+    public void set(String path, Object opject);
+    
+    public String getString(String path);
+    
+    public int getInt(String path);
+    
+    public FileBasedConfiguration getSection(String path);
+    
+    public Set<String> getKeys(String path);
 }
