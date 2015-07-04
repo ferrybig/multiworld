@@ -5,6 +5,7 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.core;
 
+import me.ferrybig.bukkit.plugins.multiworld.rev2.CommandManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.AddonRegistery;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.ConfigManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.MultiWorldEngine;
@@ -23,6 +24,7 @@ public class MultiWorldCore implements MultiWorldEngine {
     private Native nativeCore;
     private AddonRegistery addons;
     private ConfigManager config;
+    private CommandManager commands;
     
     @Override
     public void saveConfig() {
