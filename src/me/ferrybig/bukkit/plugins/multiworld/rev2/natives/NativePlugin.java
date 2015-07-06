@@ -5,15 +5,10 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
 
-import java.util.Collection;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
-
 /**
  *
  * @author Fernando
  */
-public interface NativePluginManager {
-    public void registerEvents(NativeListener listener);
+public interface NativePlugin {
     
-    public Collection<? extends NativePlugin> getInstalledPlugin();
 }
