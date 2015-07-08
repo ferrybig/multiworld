@@ -6,6 +6,7 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.command.CommandStack;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePlugin;
 
 /**
  *
@@ -13,4 +14,6 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.command.CommandStack;
  */
 public interface CommandManager {
     public boolean sendCommandStack(CommandStack stack);
+    
+    public void addCommand(String name, MultiWorldSubCommand command, NativePlugin provider);
 }
