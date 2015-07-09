@@ -8,13 +8,16 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.bukkit;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeConsoleCommandSender;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePermissionsHolder;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePlugin;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePluginManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePlayer;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
@@ -110,10 +113,17 @@ public class BukkitLoader implements Native {
     @Override
     public NativePluginManager getPluginManager() {
         return new NativePluginManager() {
+            
+            Set<NativePlugin> localPlugins = new HashSet<>();
 
             @Override
             public void registerEvents(NativeListener listener) {
                 
+            }
+
+            @Override
+            public Collection<? extends NativePlugin> getInstalledPlugin() {
+                return localPlugins;
             }
             
         };
