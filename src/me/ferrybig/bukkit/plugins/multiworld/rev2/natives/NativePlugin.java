@@ -10,5 +10,12 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
  * @author Fernando
  */
 public interface NativePlugin {
+    public String getPluginName();
+    
+    public Object getUnderlyingObject();
+    
+    public String getVersion();
+    
+    public boolean isEnabled();
     
 }
