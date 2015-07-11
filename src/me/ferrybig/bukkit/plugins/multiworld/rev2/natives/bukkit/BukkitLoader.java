@@ -36,48 +36,7 @@ public class BukkitLoader implements Native {
 
     public BukkitLoader(BukkitMain plugin) {
         this.plugin = plugin;
-        this.console = new NativeConsoleCommandSender() {
-
-            @Override
-            public void sendMessage(String message) {
-                plugin.getServer().getConsoleSender().sendMessage(message);
-            }
-
-            @Override
-            public String getName() {
-                return plugin.getServer().getConsoleSender().getName();
-            }
-
-            @Override
-            public Native getNative() {
-                return BukkitLoader.this;
-            }
-
-            @Override
-            public boolean hasPermision(String permission) {
-                return plugin.getServer().getConsoleSender().hasPermission(permission);
-            }
-
-            @Override
-            public boolean hasLocation() {
-                return false;
-            }
-
-            @Override
-            public NativeLocation getLocation() {
-                return null;
-            }
-
-            @Override
-            public boolean canTeleport() {
-                return false;
-            }
-
-            @Override
-            public boolean teleport(NativeLocation location) {
-                return false;
-            }
-        };
+        this.console = new BukkitConsoleSender(plugin, this);
         // prepopulate generators here
     }
 
@@ -112,21 +71,7 @@ public class BukkitLoader implements Native {
 
     @Override
     public NativePluginManager getPluginManager() {
-        return new NativePluginManager() {
-            
-            Set<NativePlugin> localPlugins = new HashSet<>();
-
-            @Override
-            public void registerEvents(NativeListener listener) {
-                
-            }
-
-            @Override
-            public Collection<? extends NativePlugin> getInstalledPlugin() {
-                return localPlugins;
-            }
-            
-        };
+        return new BukkitPluginManager(this);
     }
 
     @Override
