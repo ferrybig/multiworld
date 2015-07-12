@@ -33,6 +33,7 @@ public class BukkitLoader implements Native {
     private final NativeConsoleCommandSender console;
     private final Map<String, NativeGenerator> generators = new HashMap<>();
     private final Map<Player, NativePlayer> players = new WeakHashMap<>();
+    private final NativePluginManager plugins = new BukkitPluginManager(this);
 
     public BukkitLoader(BukkitMain plugin) {
         this.plugin = plugin;
@@ -71,7 +72,7 @@ public class BukkitLoader implements Native {
 
     @Override
     public NativePluginManager getPluginManager() {
-        return new BukkitPluginManager(this);
+        return plugins;
     }
 
     @Override
@@ -83,6 +84,11 @@ public class BukkitLoader implements Native {
     public NativePlayer getPlayer(UUID uuid) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public BukkitMain getPlugin() {
+        return this.plugin;
+    }
+
     
     
 }

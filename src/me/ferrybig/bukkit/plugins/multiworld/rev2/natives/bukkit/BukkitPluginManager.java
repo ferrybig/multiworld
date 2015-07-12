@@ -11,6 +11,7 @@ import java.util.Set;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePlugin;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePluginManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
+import org.bukkit.plugin.Plugin;
 
 /**
  *
@@ -20,9 +21,14 @@ public class BukkitPluginManager implements NativePluginManager {
 
     private final BukkitLoader bukkitLoader;
     private final Set<NativePlugin> localPlugins = new HashSet<>();
+    private final NativePlugin me;
 
     public BukkitPluginManager(final BukkitLoader bukkitLoader) {
         this.bukkitLoader = bukkitLoader;
+        this.me = new BukkitPlugin(bukkitLoader.getPlugin().getDescription().getName(),bukkitLoader.getPlugin().getDescription().getVersion(), bukkitLoader.getPlugin());
+        for(Plugin plugin: bukkitLoader.getPlugin().getServer().getPluginManager().getPlugins()) {
+            localPlugins.add(new BukkitPlugin(plugin.getDescription().getName(), plugin.getDescription().getVersion(), plugin));
+        }
     }
 
     @Override
@@ -33,5 +39,9 @@ public class BukkitPluginManager implements NativePluginManager {
     public Collection<? extends NativePlugin> getInstalledPlugin() {
         return localPlugins;
     }
-
+    
+    public NativePlugin getUs() {
+        return me;
+    }
+    
 }
