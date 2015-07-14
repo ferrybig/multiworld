@@ -14,6 +14,8 @@ import java.util.UUID;
  */
 public interface NativeWorld {
 
+    public long getSeed();
+    
     public UUID getID();
 
     public String getName();
