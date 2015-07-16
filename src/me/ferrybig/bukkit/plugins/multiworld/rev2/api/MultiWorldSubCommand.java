@@ -20,9 +20,7 @@ public abstract class MultiWorldSubCommand {
     private final String perm;
     private final String description;
     private final Native natives;
-    public final static String RESET = new String(new char[]{
-        org.bukkit.ChatColor.COLOR_CHAR, 'z'
-    });
+    public final static String RESET = ChatColor.RESET.toString();
 
     /**
      * The 1 arg contructor

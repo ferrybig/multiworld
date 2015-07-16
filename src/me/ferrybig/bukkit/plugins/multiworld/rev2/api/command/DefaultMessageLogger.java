@@ -185,13 +185,13 @@ public class DefaultMessageLogger implements MessageLogger {
             }
             return;
         }
-        final int prefixSubstract = countOccurrences(prefix, org.bukkit.ChatColor.COLOR_CHAR) * 2;
+        final int prefixSubstract = countOccurrences(prefix, '\u00A7') * 2;
         final int prefixLength = prefix.length() - prefixSubstract;
         final int maxLineLenght = 60;
         if ((msg.length() + (addPrefixToFirstOutput ? prefixLength : 0)) > maxLineLenght) {
             char color;
             {
-                final int lastIndexOf = prefix.lastIndexOf(org.bukkit.ChatColor.COLOR_CHAR);
+                final int lastIndexOf = prefix.lastIndexOf('\u00A7');
                 if (lastIndexOf != -1) {
                     color = prefix.charAt(lastIndexOf + 1);
                 } else {
@@ -219,7 +219,7 @@ public class DefaultMessageLogger implements MessageLogger {
                     b.append('\u00A7').append(color);
                 }
                 charsLeft -= i.length() + 1;
-                charsLeft += countOccurrences(i, org.bukkit.ChatColor.COLOR_CHAR) * 2;
+                charsLeft += countOccurrences(i, '\u00A7') * 2;
                 b.append(i).append(" ");
             }
             if (b.length() != 0) {
