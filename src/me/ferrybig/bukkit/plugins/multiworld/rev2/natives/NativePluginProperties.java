@@ -18,4 +18,8 @@ public interface NativePluginProperties {
 
     public URL getOrigin();
 
+    public String getPluginName();
+
+    public String getVersion();
+
 }

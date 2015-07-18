@@ -5,14 +5,18 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.impl.bukkit;
 
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePlugin;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePluginProperties;
 import org.bukkit.plugin.Plugin;
 
 /**
  *
  * @author Fernando
  */
-public class BukkitPlugin implements NativePlugin {
+public class BukkitPlugin implements NativePlugin, NativePluginProperties {
     private final String name;
     private final String version;
     private final Plugin underlying;
@@ -41,6 +45,21 @@ public class BukkitPlugin implements NativePlugin {
     @Override
     public boolean isEnabled() {
         return underlying.isEnabled();
+    }
+
+    @Override
+    public NativePluginProperties getProperties() {
+        return this;
+    }
+
+    @Override
+    public Collection<String> getCreators() {
+        return Collections.<String>emptyList();
+    }
+
+    @Override
+    public URL getOrigin() {
+        return null;
     }
     
 }
