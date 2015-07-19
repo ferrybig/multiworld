@@ -21,7 +21,7 @@ public class BukkitPlugin implements NativePlugin, NativePluginProperties {
     private final String version;
     private final Plugin underlying;
 
-    public BukkitPlugin(String name, String version, Plugin underlying) {
+    public BukkitPlugin(String name, String version, Plugin underlying, URL website) {
         this.name = name;
         this.version = version;
         this.underlying = underlying;

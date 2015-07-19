@@ -25,9 +25,13 @@ public class BukkitPluginManager implements NativePluginManager {
 
     public BukkitPluginManager(final BukkitLoader bukkitLoader) {
         this.bukkitLoader = bukkitLoader;
-        this.me = new BukkitPlugin(bukkitLoader.getPlugin().getDescription().getName(),bukkitLoader.getPlugin().getDescription().getVersion(), bukkitLoader.getPlugin());
+        this.me = new BukkitPlugin(bukkitLoader.getPlugin().getDescription().getName(),bukkitLoader.getPlugin().getDescription().getVersion(), bukkitLoader.getPlugin(), bukkitLoader.getPlugin().getDescription().getWebsite());
         for(Plugin plugin: bukkitLoader.getPlugin().getServer().getPluginManager().getPlugins()) {
-            localPlugins.add(new BukkitPlugin(plugin.getDescription().getName(), plugin.getDescription().getVersion(), plugin));
+            if(bukkitLoader.getPlugin() == plugin) {
+                localPlugins.add(me);
+            } else {
+                localPlugins.add(new BukkitPlugin(plugin.getDescription().getName(), plugin.getDescription().getVersion(), plugin, plugin.getDescription().getWebsite()));
+            }
         }
     }
 
