@@ -7,6 +7,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities;
 
 import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeGamemode;
 
 /**
  *
@@ -16,4 +17,8 @@ public interface NativePlayer extends NativeCommandSender, NativeLivingEntity {
     public UUID getUUID();
     
     public Object getNativeObject();
+    
+    public void setGamemode(NativeGamemode gamemode);
+    
+    public NativeGamemode getGamemode();
 }
