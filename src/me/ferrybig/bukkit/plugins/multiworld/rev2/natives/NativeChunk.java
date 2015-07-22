@@ -15,4 +15,6 @@ public interface NativeChunk {
     public int getZ();
     
     public NativeWorld getWorld();
+    
+    public boolean isPopulated();
 }
