@@ -31,6 +31,8 @@ public interface NativeWorld {
     public String getGameRuleValue(String gamerule);
 
     public String setGameRuleValue(String gamerule, String value);
+
+    public NativeBlock getBlockAt(int x, int y, int z);
     
     public enum Environment {
         UNKNOWN, NORMAL, NETHER, END

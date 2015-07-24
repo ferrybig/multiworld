@@ -9,24 +9,18 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
  *
  * @author Fernando
  */
-public interface NativeLocation {
-
+public interface NativeBlock {
+    public NativeChunk getChunk();
+    
     public NativeWorld getWorld();
-
-    public double getX();
-
-    public double getY();
-
-    public double getZ();
     
     public int getBlockX();
 
     public int getBlockY();
 
     public int getBlockZ();
+    
+    public NativeLocation asLocation();
 
-    public double distance(NativeLocation loc);
-    
-    public NativeBlock asBlock();
-    
+    public void setTypeIdAndData(byte blockTop, byte b, boolean b0);
 }
