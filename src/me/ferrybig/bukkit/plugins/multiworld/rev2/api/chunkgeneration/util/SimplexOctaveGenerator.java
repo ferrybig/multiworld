@@ -1,7 +1,7 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.util;
 
 import java.util.Random;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeWorld;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorld;
 
 /**
  * 
