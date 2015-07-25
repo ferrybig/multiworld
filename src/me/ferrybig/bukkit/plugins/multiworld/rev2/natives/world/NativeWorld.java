@@ -7,6 +7,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
 
 import java.util.Map;
 import java.util.UUID;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 
 /**
  *
@@ -15,18 +16,20 @@ import java.util.UUID;
 public interface NativeWorld {
 
     public long getSeed();
-    
+
     public UUID getID();
 
     public String getName();
 
     public int getDimension();
-    
+
     public Environment getEnvironment();
 
-    public Object getNative();
-    
-    public Map<String,String> getGamerules();
+    public Object getUnderlying();
+
+    public Native getNative();
+
+    public Map<String, String> getGamerules();
 
     public String getGameRuleValue(String gamerule);
 
@@ -37,8 +40,12 @@ public interface NativeWorld {
     public int getSeaLevel();
 
     public int getMaxHeight();
-    
+
     public enum Environment {
+
         UNKNOWN, NORMAL, NETHER, END
     }
+
+    public NativeBiome getBiome(int x, int z);
+
 }

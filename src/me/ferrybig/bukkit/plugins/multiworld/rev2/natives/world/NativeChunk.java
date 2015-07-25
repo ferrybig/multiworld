@@ -21,4 +21,6 @@ public interface NativeChunk {
     public int getHighestBlockYAt(int x, int z);
 
     public NativeBlock getBlock(int x, int highestBlockYAt, int z);
+    
+    public NativeBiome getBiome(int x, int z);
 }
