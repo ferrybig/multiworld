@@ -1,0 +1,115 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.populators;
+
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.generation.NativeBlockPopulator;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorld;
+import multiworld.worldgen.BlockConstants;
+
+/**
+ * The abstract class thats the base class of al planet gens
+ *
+ * @author Fernando
+ */
+public abstract class AbstractPlanetPopulator implements BlockConstants, NativeBlockPopulator {
+
+    /**
+     * Numbers used to make X^2 faster
+     */
+    public static final int[] SQUARES
+            = {
+                0, 1, 4, 9, 16,
+                25, 36, 49, 64, 81, 100, 121, 144, 169, 196,
+                225, 256, 289, 324, 361,
+                400, 441, 484, 529, 576,
+                625, 676, 729, 784, 841,
+                900
+            };
+
+    /**
+     * Makes the input positive
+     *
+     * @param i the input
+     * @return The positive input
+     */
+    private int makePositive(int i) {
+        if (i < 0) {
+            return 0 - i;
+        }
+        return i;
+    }
+
+    /**
+     * Makes an planet whit the given options
+     *
+     * @param loc The location
+     * @param size The size
+     * @param blockTop The block to use as top layer
+     * @param blockDown The block to use as the base block
+     * @param blockSpecial The hidden tressure at the middle
+     */
+    protected void makePlanet(final NativeLocation loc, final int size, final byte blockTop, final byte blockDown, final byte blockSpecial) {
+        this.makePlanet(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), size, blockTop, blockDown, blockSpecial);
+    }
+
+    /**
+     * Makes an planet whit the given options
+     *
+     * @param workingWorld The world to genarate at
+     * @param planetX the X cordinate
+     * @param planetY the Y cordinate
+     * @param planetZ the Z cordinate
+     * @param size The size of the plenet
+     * @param blockTop The block to use as top layer
+     * @param blockDown The block to use as base
+     * @param blockSpecial The hidden tressure inside
+     */
+    protected void makePlanet(final NativeWorld workingWorld,
+            final int planetX,
+            final int planetY,
+            final int planetZ,
+            final int size,
+            final byte blockTop,
+            final byte blockDown,
+            final byte blockSpecial) {
+        int mainDistance;
+        boolean isTop;
+        NativeBlock workingBlock;
+
+        int posAX = planetX - size;
+        int posAY = planetY - size;
+        int posAZ = planetZ - size;
+        int posBX = planetX + size;
+        int posBY = planetY + size;
+        int posBZ = planetZ + size;
+        int comparatorSize = SQUARES[size];
+        for (int x = posAX; x < posBX; x++) {
+            for (int z = posAZ; z < posBZ; z++) {
+                mainDistance = SQUARES[this.makePositive(x - planetX)] + SQUARES[this.makePositive(z - planetZ)];
+                if (mainDistance <= comparatorSize) {
+                    isTop = true;
+                    for (int y = posBY; y > posAY; y--) {
+                        if (comparatorSize < mainDistance + SQUARES[this.makePositive(y - planetY)]) {
+                            continue;
+                        }
+                        workingBlock = workingWorld.getBlockAt(x, y, z);
+                        if (isTop) {
+                            workingBlock.setTypeIdAndData(blockTop, (byte) 0, false);
+                            isTop = false;
+                        } else {
+                            workingBlock.setTypeIdAndData(blockDown, (byte) 0, false);
+                        }
+
+                    }
+                }
+
+            }
+        }
+        workingWorld.getBlockAt(planetX, planetY, planetZ).setTypeIdAndData(blockSpecial, (byte) 0, false);
+
+    }
+}
