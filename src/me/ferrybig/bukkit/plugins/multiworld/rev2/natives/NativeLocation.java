@@ -5,6 +5,9 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
 
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorld;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;
+
 /**
  *
  * @author Fernando
