@@ -3,18 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
+package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.generation;
 
 /**
  *
  * @author Fernando
  */
-public interface NativeChunk {
-    public int getX();
+public interface NativeChunkPartGenerator {
     
-    public int getZ();
-    
-    public NativeWorld getWorld();
-    
-    public boolean isPopulated();
 }

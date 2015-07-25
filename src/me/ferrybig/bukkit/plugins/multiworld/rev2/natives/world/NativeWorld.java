@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
+package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
 
 import java.util.Map;
 import java.util.UUID;
@@ -33,6 +33,10 @@ public interface NativeWorld {
     public String setGameRuleValue(String gamerule, String value);
 
     public NativeBlock getBlockAt(int x, int y, int z);
+
+    public int getSeaLevel();
+
+    public int getMaxHeight();
     
     public enum Environment {
         UNKNOWN, NORMAL, NETHER, END
