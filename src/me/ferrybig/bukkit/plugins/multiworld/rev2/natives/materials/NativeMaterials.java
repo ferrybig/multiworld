@@ -5,6 +5,8 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials;
 
+import java.util.Collection;
+
 /**
  *
  * @author Fernando
@@ -24,5 +26,7 @@ public interface NativeMaterials {
     public boolean hasDynamicItems();
 
     public boolean canRegisterItems();
+    
+    public Collection<? extends NativeMaterial> getAllItems();
 
 }
