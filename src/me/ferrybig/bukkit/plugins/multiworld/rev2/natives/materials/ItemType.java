@@ -32,4 +32,4 @@ public enum ItemType {
     SHOVEL,
     HOE,
     USEABLE,
-    
+}
