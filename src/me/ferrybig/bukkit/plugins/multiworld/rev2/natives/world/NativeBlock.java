@@ -7,6 +7,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterial;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.state.NativeBlockState;
 
 /**
  *
@@ -30,4 +31,6 @@ public interface NativeBlock {
     public NativeMaterial getType();
 
     public void setType(NativeMaterial requireMaterial);
+    
+    public NativeBlockState getBlockState();
 }
