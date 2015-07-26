@@ -8,8 +8,8 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.impl.bukkit;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePlugin;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePluginProperties;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePluginProperties;
 import org.bukkit.plugin.Plugin;
 
 /**

@@ -6,7 +6,7 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.api;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.command.CommandStack;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePlugin;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
 
 /**
  *

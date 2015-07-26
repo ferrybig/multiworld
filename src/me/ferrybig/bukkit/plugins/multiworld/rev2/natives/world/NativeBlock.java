@@ -33,4 +33,6 @@ public interface NativeBlock {
     public void setType(NativeMaterial requireMaterial);
     
     public NativeBlockState getBlockState();
+
+    public NativeBiome getBiome();
 }

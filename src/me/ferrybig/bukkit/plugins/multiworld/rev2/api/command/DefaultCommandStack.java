@@ -6,9 +6,9 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.api.command;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.command.message.PackedMessageData;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeCommandSender;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePermissionsHolder;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePermissionsHolder;
 
 /**
  *

@@ -8,8 +8,8 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.impl.bukkit;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePlugin;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePluginManager;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePluginManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
 import org.bukkit.plugin.Plugin;
 

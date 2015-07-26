@@ -6,7 +6,7 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.impl.bukkit;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeConsoleCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeConsoleCommandSender;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
 
 /**

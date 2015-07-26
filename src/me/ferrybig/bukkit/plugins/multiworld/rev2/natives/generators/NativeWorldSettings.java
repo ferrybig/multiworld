@@ -5,7 +5,7 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators;
 
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeGamemode;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeGamemode;
 import java.util.Map;
 import java.util.UUID;
 

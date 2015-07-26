@@ -11,10 +11,10 @@ import java.util.Collection;
 import java.util.Set;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.command.message.PackedMessageData;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeCommandBlockCommandSender;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeCommandSender;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeConsoleCommandSender;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativePermissionsHolder;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeCommandBlockCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeConsoleCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePermissionsHolder;
 
 /**
  *
