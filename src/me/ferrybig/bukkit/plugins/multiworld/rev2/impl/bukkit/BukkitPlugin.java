@@ -5,9 +5,10 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.impl.bukkit;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePluginProperties;
 import org.bukkit.plugin.Plugin;
@@ -20,11 +21,21 @@ public class BukkitPlugin implements NativePlugin, NativePluginProperties {
     private final String name;
     private final String version;
     private final Plugin underlying;
+    private final URL website;
+    private final List<String> creators;
 
-    public BukkitPlugin(String name, String version, Plugin underlying, URL website) {
+    public BukkitPlugin(String name, String version, Plugin underlying, String website, List<String> creators) {
         this.name = name;
         this.version = version;
         this.underlying = underlying;
+        URL url;
+        try {
+            url = new URL(website);
+        } catch(MalformedURLException ex) {
+            url = null;
+        }
+        this.website = url;
+        this.creators = creators;
     }
 
     @Override
@@ -34,7 +45,7 @@ public class BukkitPlugin implements NativePlugin, NativePluginProperties {
 
     @Override
     public Object getUnderlyingObject() {
-        return null;
+        return underlying;
     }
 
     @Override
@@ -54,12 +65,12 @@ public class BukkitPlugin implements NativePlugin, NativePluginProperties {
 
     @Override
     public Collection<String> getCreators() {
-        return Collections.<String>emptyList();
+        return creators;
     }
 
     @Override
     public URL getOrigin() {
-        return null;
+        return website;
     }
     
 }

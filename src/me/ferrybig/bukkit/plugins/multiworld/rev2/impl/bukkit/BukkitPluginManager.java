@@ -12,6 +12,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePluginManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 /**
  *
@@ -25,12 +26,21 @@ public class BukkitPluginManager implements NativePluginManager {
 
     public BukkitPluginManager(final BukkitLoader bukkitLoader) {
         this.bukkitLoader = bukkitLoader;
-        this.me = new BukkitPlugin(bukkitLoader.getPlugin().getDescription().getName(),bukkitLoader.getPlugin().getDescription().getVersion(), bukkitLoader.getPlugin(), bukkitLoader.getPlugin().getDescription().getWebsite());
-        for(Plugin plugin: bukkitLoader.getPlugin().getServer().getPluginManager().getPlugins()) {
-            if(bukkitLoader.getPlugin() == plugin) {
+        BukkitMain pluginOfMe = bukkitLoader.getPlugin();
+        PluginDescriptionFile descriptionOfMe = pluginOfMe.getDescription();
+        this.me = new BukkitPlugin(descriptionOfMe.getName(),
+                descriptionOfMe.getVersion(), pluginOfMe,
+                descriptionOfMe.getWebsite(),
+                descriptionOfMe.getAuthors());
+        for (Plugin plugin : pluginOfMe.getServer().getPluginManager().getPlugins()) {
+            if (pluginOfMe == plugin) {
                 localPlugins.add(me);
             } else {
-                localPlugins.add(new BukkitPlugin(plugin.getDescription().getName(), plugin.getDescription().getVersion(), plugin, plugin.getDescription().getWebsite()));
+                PluginDescriptionFile descriptionOfPlugin = plugin.getDescription();
+                localPlugins.add(new BukkitPlugin(descriptionOfPlugin.getName(),
+                        descriptionOfPlugin.getVersion(), plugin,
+                        descriptionOfPlugin.getWebsite(),
+                        descriptionOfPlugin.getAuthors()));
             }
         }
     }
@@ -43,9 +53,9 @@ public class BukkitPluginManager implements NativePluginManager {
     public Collection<? extends NativePlugin> getInstalledPlugin() {
         return localPlugins;
     }
-    
+
     public NativePlugin getUs() {
         return me;
     }
-    
+
 }
