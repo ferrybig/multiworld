@@ -32,7 +32,8 @@ public enum NativeDirection {
     NORTH_WEST_WEST(-0.382683, 0, 0.923880),
     WEST(-0.000000, 0, 1.000000),
     UP(0, 1, 0),
-    DOWN(0, -1, 0),;
+    DOWN(0, -1, 0),
+    SELF(0, 0, 0),;
 
     private static final Collection<NativeDirection> ALL
             = Collections.unmodifiableList(Arrays.asList(values()));
