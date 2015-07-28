@@ -8,6 +8,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
 import java.util.Map;
 import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterial;
 
 /**
  *
@@ -40,6 +41,8 @@ public interface NativeWorld {
     public int getSeaLevel();
 
     public int getMaxHeight();
+
+    public NativeMaterial getBlockTypeIdAt(int i3, int i4, int i5);
 
     public enum Environment {
 

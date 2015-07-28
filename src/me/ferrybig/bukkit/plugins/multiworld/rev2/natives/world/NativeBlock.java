@@ -8,6 +8,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterial;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.state.NativeBlockState;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.state.NativeDirection;
 
 /**
  *
@@ -26,7 +27,7 @@ public interface NativeBlock {
     
     public NativeLocation asLocation();
 
-    public void setTypeIdAndData(byte blockTop, byte b, boolean b0);
+    public void setTypeIdAndData(short block, byte data, boolean fullupdate);
 
     public NativeMaterial getType();
 
@@ -35,4 +36,8 @@ public interface NativeBlock {
     public NativeBlockState getBlockState();
 
     public NativeBiome getBiome();
+
+    public NativeBlock getRelative(NativeDirection counter);
+
+    public void setTypeIdAndData(NativeMaterial block, byte data, boolean fullupdate);
 }
