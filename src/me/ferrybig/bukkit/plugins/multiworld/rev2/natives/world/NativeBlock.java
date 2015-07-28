@@ -40,4 +40,6 @@ public interface NativeBlock {
     public NativeBlock getRelative(NativeDirection counter);
 
     public void setTypeIdAndData(NativeMaterial block, byte data, boolean fullupdate);
+
+    public int getLightLevel();
 }
