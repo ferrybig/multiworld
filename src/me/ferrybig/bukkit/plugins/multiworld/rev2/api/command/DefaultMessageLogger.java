@@ -80,10 +80,10 @@ public class DefaultMessageLogger implements MessageLogger {
         message = message.replace(ChatColor.RESET.toString(), ChatColor.getLastColors(prefix));
         String result = prefix + reciever.getName() + ": " + message;
         if (reciever instanceof NativeCommandBlockCommandSender && ((NativeCommandBlockCommandSender) reciever).getLocation().getWorld().getGameRuleValue("commandBlockOutput").equalsIgnoreCase("false")) {
-            reciever.getNative().getConsoleCommandSender().sendMessage(result);
+            nativez.getEntityManager().getConsoleCommandSender().sendMessage(result);
             return;
         }
-        Collection<? extends NativePermissionsHolder> users = nativez.getOps();
+        Collection<? extends NativePermissionsHolder> users = nativez.getEntityManager().getOps();
         String colored = prefix + ChatColor.GRAY + ChatColor.ITALIC + "[" + reciever.getName() + ": " + ChatColor.getLastColors(prefix) + message + ChatColor.GRAY + ChatColor.ITALIC + "]";
         if (!(reciever instanceof NativeConsoleCommandSender)) {
             reciever.sendMessage(prefix + message);
@@ -92,7 +92,7 @@ public class DefaultMessageLogger implements MessageLogger {
             if (user instanceof NativeCommandSender) {
                 NativeCommandSender target = (NativeCommandSender) user;
                 if (target instanceof NativeConsoleCommandSender) {
-                    if (!sendToConsole && target.equals(reciever.getNative().getConsoleCommandSender())) {
+                    if (!sendToConsole && target.equals(nativez.getEntityManager().getConsoleCommandSender())) {
                         continue;
 
                     }
