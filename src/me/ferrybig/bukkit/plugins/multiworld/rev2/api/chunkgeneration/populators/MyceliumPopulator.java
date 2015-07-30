@@ -18,18 +18,14 @@ public class MyceliumPopulator extends SurfacePopulator {
 
     public MyceliumPopulator(NativeMaterials materials) {
         this.materials = materials;
-        
     }
 
     @Override
     public void chanceBlock(int x, int z, NativeBlock block) {
-        
         if ((block.getBiome().name().contains("mushroom"))) {
             if ((block.getType().name().equals("minecraft:grass"))) {
                 block.setType(materials.requireMaterial("minecraft:mycelium"));
             }
         }
-        
     }
-    
 }
