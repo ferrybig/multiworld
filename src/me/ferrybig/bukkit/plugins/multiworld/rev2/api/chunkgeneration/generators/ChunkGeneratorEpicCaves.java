@@ -4,7 +4,6 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.generators;
 
-import java.util.List;
 import java.util.Random;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.util.ChunkMaker;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.util.DefaultChunkMaker;
@@ -19,15 +18,17 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.generation.Nativ
 public class ChunkGeneratorEpicCaves implements NativeChunkGenerator {
 
     private static final int OCTAVES = 8;
-    private static final double AMP = 0.7;
+    private static final double AMP = 0.5;
+    private static final double FREQ = 0.5;
     private final SimplexOctaveGenerator gen;
-    private final double scale = 32.0; //how far apart the tops of the hills are
+    private static final double SCALE = 32.0; //how far apart the tops of the hills are
     private final double max;
 
     public ChunkGeneratorEpicCaves(long seed) {
         gen = new SimplexOctaveGenerator(new Random(seed), OCTAVES);
-        gen.setScale(1 / scale); //The distance between peaks of the terrain. Scroll down more to see what happens when you play with this
+        gen.setScale(1 / SCALE); //The distance between peaks of the terrain. Scroll down more to see what happens when you play with this
 
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
         double max = 0;
         double amp = 1;
         for (int i = 0; i < OCTAVES; i++) {
@@ -47,7 +48,7 @@ public class ChunkGeneratorEpicCaves implements NativeChunkGenerator {
                 int real_x = x + ChunkX * 16;
                 for (int z = 0; z < 16; z++) {
                     int real_z = z + ChunkZ * 16;
-                    if (gen.noise(real_x, y, real_z, 0.5, AMP) > threshold) {
+                    if (gen.noise(real_x, y, real_z, FREQ, AMP) > threshold) {
                         chunk.setBlock(x, y, z, (short) 1); // 1 should be stone on most platforms
                     }
                 }
