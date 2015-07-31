@@ -19,4 +19,9 @@ public interface MultiWorldEngine {
     public boolean sendCommand(CommandStack stack);
     
     public WorldManager getWorlds();
+
+    /**
+     * This method stops multiworld
+     */
+    public void close();
 }
