@@ -16,8 +16,10 @@ public class BukkitMain extends JavaPlugin {
             // copy config example
             // generate default config
         }
-        main = new BukkitLoader(this);
-        me = main.getPluginManager().getUs();
+        main = new BukkitLoader(this, this.getServer());
+        BukkitPluginManager m = new BukkitPluginManager(main);
+        main.setPluginManager(m);
+        me = m.getUs();
         main = null/* ... */;
     }
 

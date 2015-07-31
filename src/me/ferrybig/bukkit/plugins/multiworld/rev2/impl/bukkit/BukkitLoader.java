@@ -5,90 +5,104 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.impl.bukkit;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.WeakHashMap;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeConsoleCommandSender;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePermissionsHolder;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeEntityManager;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.inventory.NativeItemManager;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterials;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePluginManager;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePlayer;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events.NativeListener;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGenerator;
-import org.bukkit.entity.Player;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBiomes;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorldManager;
+import org.bukkit.Server;
 
 /**
  *
  * @author Fernando
  */
 public class BukkitLoader implements Native {
+
     private final BukkitMain plugin;
-    private final NativeConsoleCommandSender console;
-    private final Map<String, NativeGenerator> generators = new HashMap<>();
-    private final Map<Player, NativePlayer> players = new WeakHashMap<>();
-    private final NativePluginManager plugins = new BukkitPluginManager(this);
+//    private final NativeConsoleCommandSender console;
+//    private final Map<String, NativeGenerator> generators = new HashMap<>();
+//    private final Map<Player, NativePlayer> players = new WeakHashMap<>();
+    private NativePluginManager pluginManager;
+    private NativeWorldManager worldManager;
+    private NativeEntityManager entityManager;
+    private NativeMaterials materialManager;
+    private NativeBiomes biomeManager;
+    private NativeItemManager itemManager;
+    private final Server server;
 
-    public BukkitLoader(BukkitMain plugin) {
+    public BukkitLoader(BukkitMain plugin, Server server) {
         this.plugin = plugin;
-        this.console = new BukkitConsoleSender(plugin, this);
-        // prepopulate generators here
+//        this.console = new BukkitConsoleSender(plugin, this);
+        this.server = server;
     }
 
-    @Override
-    public void registerWorldGenerator(NativeGenerator generator) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Map<String, NativeGenerator> getRegisteredGenerators() {
-        return Collections.unmodifiableMap(generators);
-    }
-
-    @Override
-    public void createWorld(NativeGenerator generator, UUID uuid, String name, long seed) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Collection<? extends NativePermissionsHolder> getOps() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public NativeConsoleCommandSender getConsoleCommandSender() {
-        return this.console;
-    }
-    
     public void close() {
-        
+
     }
 
     @Override
     public NativePluginManager getPluginManager() {
-        return plugins;
-    }
-
-    @Override
-    public NativePlayer getPlayer(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public NativePlayer getPlayer(UUID uuid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return pluginManager;
     }
 
     public BukkitMain getPlugin() {
         return this.plugin;
     }
 
-    
-    
+    @Override
+    public NativeWorldManager getWorldManager() {
+        return worldManager;
+    }
+
+    @Override
+    public NativeEntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    @Override
+    public NativeMaterials getMaterialManager() {
+        return materialManager;
+    }
+
+    @Override
+    public NativeBiomes getBiomeManager() {
+        return biomeManager;
+    }
+
+    @Override
+    public NativeItemManager getItemManager() {
+        return itemManager;
+    }
+
+    @Override
+    public Object getUnderlying() {
+        return server;
+    }
+
+    public void setWorldManager(NativeWorldManager worldManager) {
+        this.worldManager = worldManager;
+    }
+
+    public void setEntityManager(NativeEntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    public void setMaterialManager(NativeMaterials materialManager) {
+        this.materialManager = materialManager;
+    }
+
+    public void setBiomeManager(NativeBiomes biomeManager) {
+        this.biomeManager = biomeManager;
+    }
+
+    public void setItemManager(NativeItemManager itemManager) {
+        this.itemManager = itemManager;
+    }
+
+    public void setPluginManager(BukkitPluginManager pluginManager) {
+        this.pluginManager = pluginManager;
+    }
+
 }
