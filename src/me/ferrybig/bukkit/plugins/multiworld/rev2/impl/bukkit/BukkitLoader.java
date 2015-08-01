@@ -21,9 +21,7 @@ import org.bukkit.Server;
 public class BukkitLoader implements Native {
 
     private final BukkitMain plugin;
-//    private final NativeConsoleCommandSender console;
 //    private final Map<String, NativeGenerator> generators = new HashMap<>();
-//    private final Map<Player, NativePlayer> players = new WeakHashMap<>();
     private NativePluginManager pluginManager;
     private NativeWorldManager worldManager;
     private NativeEntityManager entityManager;
@@ -34,7 +32,6 @@ public class BukkitLoader implements Native {
 
     public BukkitLoader(BukkitMain plugin, Server server) {
         this.plugin = plugin;
-//        this.console = new BukkitConsoleSender(plugin, this);
         this.server = server;
     }
 

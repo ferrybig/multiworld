@@ -5,24 +5,26 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BukkitMain extends JavaPlugin {
-
+    
     private BukkitLoader main;
     private NativePlugin me;
     private MultiWorldEngine core;
-
+    
     @Override
     public void onEnable() {
-        if(!this.getDataFolder().exists()) {
+        if (!this.getDataFolder().exists()) {
             // copy config example
             // generate default config
         }
         main = new BukkitLoader(this, this.getServer());
         BukkitPluginManager m = new BukkitPluginManager(main);
         main.setPluginManager(m);
+        BukkitEntityManager ent = new BukkitEntityManager(this, main);
+        main.setEntityManager(ent);
         me = m.getUs();
         main = null/* ... */;
     }
-
+    
     @Override
     public void onDisable() {
         core.close();
@@ -32,7 +34,7 @@ public class BukkitMain extends JavaPlugin {
         main = null;
         
     }
-
+    
     public MultiWorldEngine getMultiworld() {
         return core;
     }
