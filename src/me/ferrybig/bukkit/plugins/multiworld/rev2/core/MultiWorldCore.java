@@ -20,11 +20,19 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 public class MultiWorldCore implements MultiWorldEngine {
 
     
-    private WorldManager manager;
-    private Native nativeCore;
-    private AddonRegistery addons;
-    private ConfigManager config;
-    private CommandManager commands;
+    private final WorldManager manager;
+    private final Native nativeCore;
+    private final AddonRegistery addons;
+    private final ConfigManager config;
+    private final CommandManager commands;
+
+    public MultiWorldCore(WorldManager manager, Native nativeCore, AddonRegistery addons, ConfigManager config, CommandManager commands) {
+        this.manager = manager;
+        this.nativeCore = nativeCore;
+        this.addons = addons;
+        this.config = config;
+        this.commands = commands;
+    }
     
     @Override
     public void saveConfig() {
@@ -49,6 +57,11 @@ public class MultiWorldCore implements MultiWorldEngine {
     @Override
     public WorldManager getWorlds() {
         return manager;
+    }
+
+    @Override
+    public void close() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
