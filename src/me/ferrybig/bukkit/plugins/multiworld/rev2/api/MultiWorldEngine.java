@@ -2,6 +2,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.api;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.command.CommandStack;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
 
 /**
  *
@@ -12,11 +13,13 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 public interface MultiWorldEngine {
     public void saveConfig();
     
-    public Native getNativePlugin();
+    public Native getNativeStack();
+    
+    public NativePlugin getNativePlugin();
     
     public AddonRegistery getPluginManager();
     
-    public boolean sendCommand(CommandStack stack);
+    public CommandManager getCommandManager();
     
     public WorldManager getWorlds();
 

@@ -12,6 +12,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.api.MultiWorldEngine;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.WorldManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.command.CommandStack;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
 
 /**
  *
@@ -25,13 +26,16 @@ public class MultiWorldCore implements MultiWorldEngine {
     private final AddonRegistery addons;
     private final ConfigManager config;
     private final CommandManager commands;
+    private final NativePlugin plugin;
 
-    public MultiWorldCore(WorldManager manager, Native nativeCore, AddonRegistery addons, ConfigManager config, CommandManager commands) {
+    public MultiWorldCore(WorldManager manager, Native nativeCore, AddonRegistery addons, 
+            ConfigManager config, CommandManager commands, NativePlugin plugin) {
         this.manager = manager;
         this.nativeCore = nativeCore;
         this.addons = addons;
         this.config = config;
         this.commands = commands;
+        this.plugin = plugin;
     }
     
     @Override
@@ -40,7 +44,7 @@ public class MultiWorldCore implements MultiWorldEngine {
     }
 
     @Override
-    public Native getNativePlugin() {
+    public Native getNativeStack() {
         return nativeCore;
     }
 
@@ -50,8 +54,8 @@ public class MultiWorldCore implements MultiWorldEngine {
     }
 
     @Override
-    public boolean sendCommand(CommandStack stack) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public CommandManager getCommandManager() {
+        return commands;
     }
 
     @Override
@@ -62,6 +66,11 @@ public class MultiWorldCore implements MultiWorldEngine {
     @Override
     public void close() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public NativePlugin getNativePlugin() {
+        return plugin;
     }
     
 }
