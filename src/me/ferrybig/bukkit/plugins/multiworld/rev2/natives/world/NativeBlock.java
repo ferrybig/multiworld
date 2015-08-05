@@ -42,4 +42,15 @@ public interface NativeBlock {
     public void setTypeIdAndData(NativeMaterial block, byte data, boolean fullupdate);
 
     public int getLightLevel();
+
+    /**
+     * Apply snow biome effects to this block.
+     * normal block -> block on top will be snow
+     * water -> ice
+     * leaves -> snow on top + repeat for blocks below
+     * transparent -> no effect
+     * @return 
+     */
+    public boolean applySnowBiomeEffects();
+
 }
