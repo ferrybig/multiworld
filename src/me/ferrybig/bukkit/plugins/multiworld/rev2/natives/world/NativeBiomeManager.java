@@ -5,6 +5,10 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
 /**
  *
  * @author Fernando
@@ -17,4 +21,10 @@ public interface NativeBiomeManager {
     public NativeBiome requireOrDefaultBiome(String fullname);
     
     public NativeBiome getDefault();
+    
+    public Collection<? extends NativeBiome> getBiomes();
+    
+    public Set<NativeBiome> getEmptyBiomeSet();
+    
+    public <T> Map<NativeBiome,T> getEmptyBiomeMap();
 }
