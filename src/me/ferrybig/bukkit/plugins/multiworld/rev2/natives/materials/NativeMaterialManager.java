@@ -11,7 +11,7 @@ import java.util.Collection;
  *
  * @author Fernando
  */
-public interface NativeMaterials {
+public interface NativeMaterialManager {
 
     public NativeMaterial requireMaterial(String fullname);
 

@@ -4,7 +4,7 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.populators;
 
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterials;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterialManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;
 
 /**
@@ -14,9 +14,9 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;
  */
 public class MyceliumPopulator extends SurfacePopulator {
 
-    private final NativeMaterials materials;
+    private final NativeMaterialManager materials;
 
-    public MyceliumPopulator(NativeMaterials materials) {
+    public MyceliumPopulator(NativeMaterialManager materials) {
         this.materials = materials;
     }
 

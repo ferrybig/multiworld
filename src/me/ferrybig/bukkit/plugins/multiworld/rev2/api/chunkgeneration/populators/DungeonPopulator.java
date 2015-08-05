@@ -12,7 +12,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.inventory.NativeInvent
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.inventory.NativeItemManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.inventory.NativeItemStack;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterial;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterials;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterialManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeChunk;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorld;
@@ -27,18 +27,18 @@ public class DungeonPopulator implements NativeBlockPopulator {
 
     private final Native nativeStack;
     private final NativeItemManager items;
-    private final NativeMaterials materials;
+    private final NativeMaterialManager materials;
     private final Random random;
     private final int maxWidth;
     private final int maxLength;
     private final int height;
 
-    public DungeonPopulator(Native nativeStack, NativeItemManager items, NativeMaterials materials,
+    public DungeonPopulator(Native nativeStack, NativeItemManager items, NativeMaterialManager materials,
             Random random) {
         this(nativeStack, items, materials, random, 2, 2, 4);
     }
 
-    public DungeonPopulator(Native nativeStack, NativeItemManager items, NativeMaterials materials,
+    public DungeonPopulator(Native nativeStack, NativeItemManager items, NativeMaterialManager materials,
             Random random, int maxWidth, int maxLength, int height) {
         this.nativeStack = nativeStack;
         this.items = items;

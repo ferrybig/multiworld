@@ -6,7 +6,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.populator
 
 import java.util.Random;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterial;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterials;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterialManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeChunk;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.generation.NativeBlockPopulator;
 
@@ -19,7 +19,7 @@ public class LiquidPopulator implements NativeBlockPopulator {
     private final NativeMaterial lava;
     private final NativeMaterial air;
 
-    public LiquidPopulator(NativeMaterials materials) {
+    public LiquidPopulator(NativeMaterialManager materials) {
         this.water = materials.requireMaterial("minecraft:water");
         this.lava = materials.requireMaterial("minecraft:lava");
         this.air = materials.requireMaterial("minecraft:air");

@@ -2,7 +2,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeEntityManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.inventory.NativeItemManager;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterials;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterialManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePluginManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBiomeManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorldManager;
@@ -15,7 +15,7 @@ public interface Native {
 
     public NativePluginManager getPluginManager();
 
-    public NativeMaterials getMaterialManager();
+    public NativeMaterialManager getMaterialManager();
 
     public NativeBiomeManager getBiomeManager();
 
