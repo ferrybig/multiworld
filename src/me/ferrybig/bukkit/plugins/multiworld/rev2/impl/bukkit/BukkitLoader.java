@@ -10,7 +10,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeEntityM
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.inventory.NativeItemManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterials;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePluginManager;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBiomes;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBiomeManager;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorldManager;
 import org.bukkit.Server;
 
@@ -26,7 +26,7 @@ public class BukkitLoader implements Native {
     private NativeWorldManager worldManager;
     private NativeEntityManager entityManager;
     private NativeMaterials materialManager;
-    private NativeBiomes biomeManager;
+    private NativeBiomeManager biomeManager;
     private NativeItemManager itemManager;
     private final Server server;
 
@@ -64,7 +64,7 @@ public class BukkitLoader implements Native {
     }
 
     @Override
-    public NativeBiomes getBiomeManager() {
+    public NativeBiomeManager getBiomeManager() {
         return biomeManager;
     }
 
@@ -90,7 +90,7 @@ public class BukkitLoader implements Native {
         this.materialManager = materialManager;
     }
 
-    public void setBiomeManager(NativeBiomes biomeManager) {
+    public void setBiomeManager(NativeBiomeManager biomeManager) {
         this.biomeManager = biomeManager;
     }
 

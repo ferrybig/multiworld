@@ -9,7 +9,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
  *
  * @author Fernando
  */
-public interface NativeBiomes {
+public interface NativeBiomeManager {
     public NativeBiome getBiome(String fullname);
     
     public NativeBiome requireBiome(String fullname);
