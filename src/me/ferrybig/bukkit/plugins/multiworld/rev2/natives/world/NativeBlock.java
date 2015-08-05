@@ -5,28 +5,18 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
 
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeLocation;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeBlockLocationReadonly;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterial;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.state.NativeBlockState;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.state.NativeDirection;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeDirection;
 
 /**
  *
  * @author Fernando
  */
-public interface NativeBlock {
-    public NativeChunk getChunk();
+public interface NativeBlock extends NativeBlockLocationReadonly {
     
-    public NativeWorld getWorld();
-    
-    public int getBlockX();
-
-    public int getBlockY();
-
-    public int getBlockZ();
-    
-    public NativeLocation asLocation();
-
     public void setTypeIdAndData(short block, byte data, boolean fullupdate);
 
     public NativeMaterial getType();

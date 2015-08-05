@@ -5,6 +5,7 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.state;
 
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeDirection;
 import java.util.Collection;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.inventory.NativeInventory;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;

@@ -5,7 +5,7 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities;
 
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeLocation;
 
 /**
  *

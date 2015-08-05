@@ -6,7 +6,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.populator
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.generation.NativeBlockPopulator;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.NativeLocation;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeLocation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorld;
 import multiworld.worldgen.BlockConstants;
 

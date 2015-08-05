@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.state;
+package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location;
 
 import java.util.Arrays;
 import java.util.Collection;

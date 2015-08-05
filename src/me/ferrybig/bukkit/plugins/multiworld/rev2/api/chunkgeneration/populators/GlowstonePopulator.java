@@ -9,7 +9,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMateri
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeChunk;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.generation.NativeBlockPopulator;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.state.NativeDirection;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeDirection;
 
 /**
  *
