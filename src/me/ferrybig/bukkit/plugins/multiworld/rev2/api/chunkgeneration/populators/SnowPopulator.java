@@ -4,10 +4,6 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration.populators;
 
-import java.util.Set;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterials;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBiome;
-import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBiomes;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeBlock;
 
 /**
