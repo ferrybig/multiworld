@@ -80,9 +80,29 @@ public interface NativeMaterial {
      */
     public boolean isBreakableByLiquid();
 
+    /**
+     * What is the friction of this block?
+     *
+     * Note: may be undefined for items
+     *
+     * @return the friction
+     */
     public double getFriction();
 
+    /**
+     * What is the hardness of this block?
+     *
+     * Note: may be undefined for items
+     *
+     * @return the hardness
+     */
     public double getHardness();
 
+    /**
+     * What are the item categories of this block/item?
+     * returns all item types that are on this item.
+     *
+     * @return the item types
+     */
     public Set<ItemType> getItemTypes();
 }
