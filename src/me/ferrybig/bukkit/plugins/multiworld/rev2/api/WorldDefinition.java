@@ -6,11 +6,11 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorld;
 
 public interface WorldDefinition {
 
-        public NativeWorld getWorld();
-        
-        public String getName();
-        
-        public UUID getUUID();
-        
-        public Map<String,String> getGamerules();
+    public NativeWorld getWorld();
+
+    public String getName();
+
+    public UUID getUUID();
+
+    public Map<String, String> getGamerules();
 }
