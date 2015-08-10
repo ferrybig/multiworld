@@ -27,4 +27,6 @@ public interface MultiWorldEngine {
      * This method stops multiworld
      */
     public void close();
+
+    public void enable();
 }

@@ -72,5 +72,10 @@ public class MultiWorldCore implements MultiWorldEngine {
     public NativePlugin getNativePlugin() {
         return plugin;
     }
+
+    @Override
+    public void enable() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
