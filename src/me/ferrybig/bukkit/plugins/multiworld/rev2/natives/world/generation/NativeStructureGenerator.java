@@ -16,5 +16,5 @@ public interface NativeStructureGenerator {
     
     public boolean shouldGenerateAt(int chunkX, int chunkZ);
     
-    public void generateStructure(int chunkX, int chunkZ, ChunkGrid grid);
+    public void generateStructure(int chunkX, int chunkZ, NativeChunkGrid grid);
 }
