@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.api.command.CommandStack;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeEntityManager;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePlayer;
 
 /**
  *
@@ -52,21 +54,21 @@ public abstract class MultiWorldSubCommand {
     }
 
     //TODO: edit this
-    protected final String[] calculateMissingArgumentsPlayer(String playerName, CommandStack executer) {
+    protected final String[] calculateMissingArgumentsPlayer(String playerName, CommandStack executer, NativeEntityManager entities) {
         //Collection<? extends Player> players = natives.getOnlinePlayers();
 
         Set<String> found = new HashSet<>(0);
         String lowerName = playerName.toLowerCase();
-//        for (Player player : players) {
-//            if (executer != null) {
-//                if (!executer.canSee(player)) {
-//                    continue;
-//                }
-//            }
-//            if (player.getName().toLowerCase().startsWith(lowerName)) {
-//                found.add(player.getName());
-//            }
-//        }
+        for (NativePlayer player : entities.getPlayers()) {
+            if (executer != null) {
+                if (!executer.canSee(player)) {
+                    continue;
+                }
+            }
+            if (player.getName().toLowerCase().startsWith(lowerName)) {
+                found.add(player.getName());
+            }
+        }
         return found.toArray(new String[found.size()]);
     }
 
