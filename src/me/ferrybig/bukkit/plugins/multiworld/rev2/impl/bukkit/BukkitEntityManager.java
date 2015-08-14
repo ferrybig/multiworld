@@ -47,4 +47,9 @@ public class BukkitEntityManager implements NativeEntityManager {
     public NativeConsoleCommandSender getConsoleCommandSender() {
         return console;
     }
+
+    @Override
+    public Collection<? extends NativePlayer> getPlayers() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

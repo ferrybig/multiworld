@@ -9,6 +9,7 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.api.command.message.PackedMess
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeCommandSender;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeLocation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePermissionsHolder;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePlayer;
 
 /**
  *
@@ -134,6 +135,14 @@ public class DefaultCommandStack implements CommandStack
 	{
 		messages.sendMessageUsage(commandLabel, types);
 	}
+
+    @Override
+    public boolean canSee(NativePlayer player) {
+        if(this.sender instanceof NativePlayer) {
+            return ((NativePlayer)this.sender).canSee(player);
+        }
+        return true;
+    }
 
 	public static class Builder implements CommandStack.Builder
 	{
