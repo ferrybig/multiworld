@@ -36,6 +36,14 @@ public abstract class MultiWorldSubCommand {
         this.natives = natives;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Native getNative() {
+        return natives;
+    }
+
     public void excute(CommandStack stack) {
         if (this.getPermissions() != null) {
             if (!stack.hasPermission(perm)) {
