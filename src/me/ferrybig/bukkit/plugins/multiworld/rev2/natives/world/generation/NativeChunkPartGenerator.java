@@ -8,7 +8,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.generation;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world.NativeWorld;
 
 /**
- *
+ * This class provides support for a chunk generator that is run after the main generator has changed a chunk.
  * @author Fernando
  */
 public interface NativeChunkPartGenerator {
