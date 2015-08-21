@@ -32,6 +32,10 @@ public interface NativeBlock extends NativeBlockLocationReadonly {
     public void setTypeIdAndData(NativeMaterial block, byte data, boolean fullupdate);
 
     public int getLightLevel();
+    
+    public int getBlockLightLevel();
+    
+    public int getSkyLightLevel();
 
     /**
      * Apply snow biome effects to this block.
