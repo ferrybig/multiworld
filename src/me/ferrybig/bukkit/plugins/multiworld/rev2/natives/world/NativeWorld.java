@@ -37,12 +37,16 @@ public interface NativeWorld {
     public String setGameRuleValue(String gamerule, String value);
 
     public NativeBlock getBlockAt(int x, int y, int z);
+    
+    public NativeMaterial getBlockTypeIdAt(int i3, int i4, int i5);
+    
+    public NativeChunk getChunkAt(int x, int z);
 
     public int getSeaLevel();
 
     public int getMaxHeight();
 
-    public NativeMaterial getBlockTypeIdAt(int i3, int i4, int i5);
+    
 
     public enum Environment {
 
