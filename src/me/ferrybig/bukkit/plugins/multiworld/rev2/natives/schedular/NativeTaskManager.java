@@ -6,6 +6,7 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.schedular;
 
 import java.util.Collection;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
 
 /**
  *
@@ -30,6 +31,8 @@ public interface NativeTaskManager {
     public NativeTaskDefinition scheduleAsyncTaskDelay(NativeTask task, int delay);
     
     public Collection<? extends NativeTaskDefinition> getTasks();
+    
+    public Collection<? extends NativeTaskDefinition> getTasks(NativePlugin owner);
 
     public static interface NativeTaskDefinition {
 
@@ -38,6 +41,8 @@ public interface NativeTaskManager {
         public boolean isRunning();
         
         public NativeTask getTask();
+        
+        public NativePlugin getOwner();
 
         public int getInterval();
 
