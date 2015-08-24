@@ -5,6 +5,7 @@
  */
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities;
 
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeAbsoluteLocationReadonly;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeLocation;
 
 /**
@@ -18,5 +19,5 @@ public interface NativeTeleportable {
     
     public boolean canTeleport();
     
-    public boolean teleport(NativeLocation location);
+    public boolean teleport(NativeAbsoluteLocationReadonly location);
 }
