@@ -11,6 +11,6 @@ import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeEntity;
  *
  * @author Fernando
  */
-public interface EntityEvent extends Event {
+public interface EntityEvent extends NativeEvent {
     public NativeEntity getEntity();
 }

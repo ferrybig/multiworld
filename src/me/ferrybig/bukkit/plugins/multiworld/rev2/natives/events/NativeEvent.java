@@ -9,6 +9,6 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.events;
  *
  * @author Fernando
  */
-public interface Event {
+public interface NativeEvent {
     
 }
