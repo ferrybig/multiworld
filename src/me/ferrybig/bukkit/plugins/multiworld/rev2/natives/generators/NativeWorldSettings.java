@@ -15,11 +15,15 @@ import java.util.UUID;
  */
 public interface NativeWorldSettings {
     long getSeed();
-    String getName();
+    void setSeed(long seed);
     boolean spawnMonsters();
+    void spawnMonsters(boolean monsters);
     boolean spawnAnimals();
-    Map<String,String> gameRules();
+    void spawnAnimals(boolean animals);
+    Map<String,String> gamerules();
+    void gamerules(Map<String,String> rules);
     int difficulty();
+    void difficulty(int difficulty);
     NativeGamemode forcedGamemode();
-    Map<UUID, NativeGamemode> gamemodeOverrides();
+    void forcedGamemode(NativeGamemode game);
 }
