@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials.NativeMaterial;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.plugin.NativePlugin;
 
 /**
  *
@@ -29,6 +30,8 @@ public interface NativeWorld {
     public Object getUnderlying();
 
     public Native getNative();
+    
+    public NativePlugin getProvidingPlugin();
 
     public Map<String, String> getGamerules();
 
@@ -46,13 +49,13 @@ public interface NativeWorld {
 
     public int getMaxHeight();
 
-    
-
     public enum Environment {
 
         UNKNOWN, NORMAL, NETHER, END
     }
 
     public NativeBiome getBiome(int x, int z);
+    
+    public void unloadWorld();
 
 }

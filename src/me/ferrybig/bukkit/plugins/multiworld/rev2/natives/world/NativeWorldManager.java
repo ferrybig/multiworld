@@ -6,6 +6,7 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.world;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeGenerator;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.generators.NativeWorldSettings;
@@ -23,4 +24,6 @@ public interface NativeWorldManager {
     public NativeWorldSettings createEmptySettings();
 
     public void createWorld(NativeGenerator generator, UUID uuid, String name, long seed, int dimension, NativeWorldSettings settings);
+    
+    public Set<? extends NativeWorld> getLoadedWorlds();
 }
