@@ -1,0 +1,24 @@
+# Eclipse stuff
+/.classpath
+/.project
+/.settings
+
+#ant
+/dist
+/build
+
+#netbeans
+/nbproject/private/
+
+# vim
+.*.sw[a-p]
+
+# Mac filesystem dust
+.DS_Store
+
+# intellij
+*.iml
+*.ipr
+*.iws
+.idea/
+
