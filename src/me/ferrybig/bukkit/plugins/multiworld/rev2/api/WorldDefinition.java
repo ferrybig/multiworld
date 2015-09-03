@@ -11,6 +11,8 @@ public interface WorldDefinition {
     public String getName();
 
     public UUID getUUID();
+    
+    public NativeWorld.Environment getEnviroment();
 
     public Map<String, String> getGamerules();
 }

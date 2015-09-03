@@ -21,4 +21,6 @@ public interface NativeEntityManager {
     public Collection<? extends NativePermissionsHolder> getOps();
     
     public NativeConsoleCommandSender getConsoleCommandSender();
+
+    public Collection<? extends NativePlayer> getPlayers();
 }

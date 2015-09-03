@@ -9,7 +9,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.natives.materials;
  *
  * @author Fernando
  */
-public enum ItemType {
+public enum NativeItemType {
     ENCHANTABLE,
     BLOCK,
     ITEM,

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package multiworld.worldgen;
+package me.ferrybig.bukkit.plugins.multiworld.rev2.api.chunkgeneration;
 
 /**
  *

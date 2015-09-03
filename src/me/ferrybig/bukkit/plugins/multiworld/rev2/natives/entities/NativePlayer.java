@@ -19,4 +19,6 @@ public interface NativePlayer extends NativeCommandSender, NativeLivingEntity {
     public void setGamemode(NativeGamemode gamemode);
     
     public NativeGamemode getGamemode();
+    
+    public boolean canSee(NativePlayer other);
 }

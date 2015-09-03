@@ -6,6 +6,7 @@
 package me.ferrybig.bukkit.plugins.multiworld.rev2.api.command;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativePlayer;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeLocation;
 
 
@@ -38,6 +39,8 @@ public interface CommandStack extends MessageLogger
 	public Builder newStack();
 
 	public Builder editStack();
+
+    public boolean canSee(NativePlayer player);
 
 	public interface Builder
 	{

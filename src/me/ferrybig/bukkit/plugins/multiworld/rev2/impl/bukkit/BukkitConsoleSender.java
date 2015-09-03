@@ -7,6 +7,7 @@ package me.ferrybig.bukkit.plugins.multiworld.rev2.impl.bukkit;
 
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.Native;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.entities.NativeConsoleCommandSender;
+import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeAbsoluteLocationReadonly;
 import me.ferrybig.bukkit.plugins.multiworld.rev2.natives.location.NativeLocation;
 
 /**
@@ -59,7 +60,7 @@ public class BukkitConsoleSender implements NativeConsoleCommandSender {
     }
 
     @Override
-    public boolean teleport(NativeLocation location) {
+    public boolean teleport(NativeAbsoluteLocationReadonly location) {
         return false;
     }
 

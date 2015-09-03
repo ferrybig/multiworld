@@ -104,5 +104,5 @@ public interface NativeMaterial {
      *
      * @return the item types
      */
-    public Set<ItemType> getItemTypes();
+    public Set<NativeItemType> getItemTypes();
 }
