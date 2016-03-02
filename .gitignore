@@ -1,24 +1,9 @@
-# Eclipse stuff
-/.classpath
-/.project
-/.settings
-
-#ant
-/dist
-/build
-
-#netbeans
-/nbproject/private/
-
-# vim
-.*.sw[a-p]
-
-# Mac filesystem dust
-.DS_Store
-
-# intellij
-*.iml
-*.ipr
-*.iws
-.idea/
-
+/server.properties
+/server.log.lck
+/server.log
+/lang_de_DE.properties
+/server/
+/lib/
+/nbproject/
+/build/
+/dist/
