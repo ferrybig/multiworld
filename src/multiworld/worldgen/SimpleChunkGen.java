@@ -8,8 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import multiworld.InvalidWorldGenOptionsException;
 import multiworld.data.InternalWorld;
+import multiworld.worldgen.util.ChunkMaker;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.ChunkGenerator;
@@ -20,7 +23,7 @@ import org.bukkit.generator.ChunkGenerator;
  */
 public abstract class SimpleChunkGen extends MultiWorldChunkGen implements ChunkGen
 {
-	protected final Map<UUID, short[][]> chunk = new HashMap<UUID, short[][]>();
+	protected final Map<UUID, ChunkMaker> chunk = new HashMap<>();
 
 	/**
 	 * Shapes the basic shape of the chunk
@@ -32,23 +35,18 @@ public abstract class SimpleChunkGen extends MultiWorldChunkGen implements Chunk
 	 * @return The bytes of the chunk data
 	 */
 	@Override
-	public short[][] generateExtBlockSections(World world,
+	public ChunkData generateChunkData(World world,
 						  Random random,
 						  int x,
 						  int z,
 						  ChunkGenerator.BiomeGrid biomes)
 	{
 
-		short[][] tmp = this.chunk.get(world.getUID());
+		ChunkMaker tmp = this.chunk.get(world.getUID());
 		if (tmp == null)
 		{
 			this.chunk.put(world.getUID(), this.makeChunk(world));
 			tmp = this.chunk.get(world.getUID());
-		}
-		tmp = tmp.clone();
-		for (int i = 0; i < tmp.length; i++)
-		{
-			tmp[i] = tmp[i] == null ? null : tmp[i].clone();
 		}
 		Biome b = this.getBiome();
 		if (b != null)
@@ -61,7 +59,7 @@ public abstract class SimpleChunkGen extends MultiWorldChunkGen implements Chunk
 				}
 			}
 		}
-		return tmp;
+		return tmp.toChunkData(this.createChunkData(world));
 	}
 
 	/**
@@ -70,7 +68,7 @@ public abstract class SimpleChunkGen extends MultiWorldChunkGen implements Chunk
 	 * @param world
 	 * @return  
 	 */
-	protected abstract short[][] makeChunk(World world);
+	protected abstract ChunkMaker makeChunk(World world);
 
 	@Override
 	public void makeWorld(InternalWorld world) throws InvalidWorldGenOptionsException

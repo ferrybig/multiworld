@@ -36,49 +36,14 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 	 * 16 by 16 by 16 blocks.
 	 * @param material The material to set the block to.
 	 */
-	private void setBlock(int x, int y, int z, byte[][] chunk, Material material)
+	private void setBlock(int x, int y, int z, ChunkData chunk, Material material)
 	{
-		//if the Block section the block is in hasn't been used yet, allocate it
-		if (chunk[y >> 4] == null)
-		{
-			chunk[y >> 4] = new byte[16 * 16 * 16];
-		}
-		if (!(y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0))
-		{
-			return;
-		}
-		try
-		{
-			chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x] = (byte) material
-				.getId();
-		}
-		catch (Exception e)
-		{
-			// do nothing
-		}
+		chunk.setBlock(x, y, z, material);
 	}
 
-	private byte getBlock(int x, int y, int z, byte[][] chunk)
+	private Material getBlock(int x, int y, int z, ChunkData chunk)
 	{
-		if (!(y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0))
-		{
-			return 0;
-		}
-		//if the Block section the block is in hasn't been used yet, allocate it
-		if (chunk[y >> 4] == null)
-		{
-			return 0; //block is air as it hasnt been allocated
-		}
-
-		try
-		{
-			return chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x];
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			return 0;
-		}
+		return chunk.getType(x, y, z);
 	}
 
 	@Override
@@ -103,8 +68,7 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 						{
 							if (random.nextInt(16) == 1)
 							{
-								bl.getRelative(BlockFace.UP).setType(Material.SAPLING);
-								bl.getRelative(BlockFace.UP).setData((byte) 15);
+								bl.getRelative(BlockFace.UP).setType(Material.JUNGLE_SAPLING); // todo mark the sappling as ready to grow
 							}
 						}
 					}
@@ -118,9 +82,9 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 	}
 
 	@Override
-	public byte[][] generateBlockSections(World world, Random random, int ChunkX, int ChunkZ, ChunkGenerator.BiomeGrid biomes)
+	public ChunkData generateChunkData(World world, Random random, int ChunkX, int ChunkZ, ChunkGenerator.BiomeGrid biomes)
 	{
-		byte[][] chunk = new byte[world.getMaxHeight() / 16][];
+		ChunkData chunk = super.generateChunkData(world, random, ChunkX, ChunkZ, biomes);
 
 		SimplexOctaveGenerator overhangs = new SimplexOctaveGenerator(world, 8);
 		SimplexOctaveGenerator bottoms = new SimplexOctaveGenerator(world, 8);
@@ -181,33 +145,33 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 
 				for (int y = bottomHeight + 1; y < maxHeight; y++)
 				{
-					int thisblock = getBlock(x, y, z, chunk);
-					int blockabove = getBlock(x, y + 1, z, chunk);
+					Material thisblock = getBlock(x, y, z, chunk);
+					Material blockabove = getBlock(x, y + 1, z, chunk);
 
-					if (thisblock == Material.STONE.getId())
+					if (thisblock == Material.STONE)
 					{
-						if (blockabove == Material.AIR.getId())
+						if (blockabove == Material.AIR)
 						{
 							if (random.nextInt(8) == 0)
 							{
 								if (random.nextBoolean())
 								{
-									setBlock(x, y + 1, z, chunk, Material.YELLOW_FLOWER);
+									setBlock(x, y + 1, z, chunk, Material.SUNFLOWER);
 								}
 								else
 								{
-									setBlock(x, y + 1, z, chunk, Material.RED_ROSE);
+									setBlock(x, y + 1, z, chunk, Material.ROSE_BUSH);
 								}
 
 							}
 							setBlock(x, y, z, chunk, Material.GRASS);
-							if (getBlock(x, y - 1, z, chunk) == Material.STONE.getId())
+							if (getBlock(x, y - 1, z, chunk) == Material.STONE)
 							{
 								setBlock(x, y - 1, z, chunk, Material.DIRT);
-								if (getBlock(x, y - 2, z, chunk) == Material.STONE.getId())
+								if (getBlock(x, y - 2, z, chunk) == Material.STONE)
 								{
 									setBlock(x, y - 2, z, chunk, Material.DIRT);
-									if (getBlock(x, y - 3, z, chunk) == Material.STONE.getId())
+									if (getBlock(x, y - 3, z, chunk) == Material.STONE)
 									{
 										setBlock(x, y - 3, z, chunk, Material.DIRT);
 									}
@@ -216,7 +180,7 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 
 
 						}
-						if (blockabove == Material.WATER.getId())
+						if (blockabove == Material.WATER)
 						{
 							setBlock(x, y, z, chunk, Material.SAND);
 							setBlock(x, y - 1, z, chunk, Material.SAND);
@@ -229,9 +193,9 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 						}
 					}
 				}
-				int thisblock = getBlock(x, floodHeight, z, chunk);
-				int blockabove = getBlock(x, floodHeight + 1, z, chunk);
-				if (thisblock == Material.STONE.getId() && blockabove == Material.WATER.getId())
+				Material thisblock = getBlock(x, floodHeight, z, chunk);
+				Material blockabove = getBlock(x, floodHeight + 1, z, chunk);
+				if (thisblock == Material.STONE && blockabove == Material.WATER)
 				{
 					setBlock(x, floodHeight, z, chunk, Material.SAND);
 					setBlock(x, floodHeight - 1, z, chunk, Material.SAND);

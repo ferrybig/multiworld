@@ -19,11 +19,11 @@ public class MyceliumPopulator extends SurfacePopulator
 	public void chanceBlock(int x, int z, Block block)
 	{
 		
-		 if ((block.getBiome() == Biome.MUSHROOM_ISLAND))
+		 if ((block.getBiome() == Biome.MUSHROOM_FIELDS) || (block.getBiome() == Biome.MUSHROOM_FIELD_SHORE))
 		 {
 			if ((block.getType() == Material.GRASS))
 			{
-				block.setType(Material.MYCEL);
+				block.setType(Material.MYCELIUM);
 			}
 		}
 		 

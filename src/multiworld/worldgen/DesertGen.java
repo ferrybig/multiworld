@@ -105,7 +105,7 @@ public class DesertGen extends MultiWorldChunkGen
 	final double scale = 64.0; //how far apart the tops of the hills are
 
 	@Override
-	public short[][] generateExtBlockSections(World world, Random random, int x, int z, BiomeGrid biomes)
+	public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biomes)
 	{
 		ChunkMaker chunk = new ChunkMaker(world.getMaxHeight());
 		short maxHeight = getHeightMaxByWorldName(world.getName());
@@ -122,8 +122,8 @@ public class DesertGen extends MultiWorldChunkGen
 			for (int z1 = 0; z1 < 16; z1++)
 			{
 				biomes.setBiome(x1, z1, Biome.DESERT_HILLS);
-				chunk.setBlock(x1, 0, z1, (short) BEDROCK);
-				chunk.cuboid(chunk.getPointer(x1, 1, z1), chunk.getPointer(x1, minHeight, z1), (byte) Material.SAND.getId());
+				chunk.setBlock(x1, 0, z1, Material.BEDROCK);
+				chunk.cuboid(chunk.getPointer(x1, 1, z1), chunk.getPointer(x1, minHeight, z1), Material.SAND);
 				if (gen != null)
 				{
 					int height = maxHeight - minHeight;
@@ -133,11 +133,11 @@ public class DesertGen extends MultiWorldChunkGen
 					noise *= height;
 
 					height = minHeight + (int) Math.round(noise);
-					chunk.cuboid(chunk.getPointer(x1, minHeight, z1), chunk.getPointer(x1, height, z1), (byte) Material.SAND.getId());
+					chunk.cuboid(chunk.getPointer(x1, minHeight, z1), chunk.getPointer(x1, height, z1), Material.SAND);
 				}
 
 			}
 		}
-		return chunk.getRawChunk();
+		return chunk.toChunkData(super.generateChunkData(world, random, x, z, biomes));
 	}
 }

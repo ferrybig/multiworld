@@ -51,7 +51,7 @@ public class GlowstonePopulator extends BlockPopulator
 					Block tmp = mainBlock.getRelative(counter);
 					if (tmp.getType() != Material.AIR)
 					{
-						tmp.setTypeIdAndData(Material.GLOWSTONE.getId(), (byte) 0, true);
+						tmp.setType(Material.GLOWSTONE);
 					}
 				}
 				break;

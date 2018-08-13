@@ -7,6 +7,8 @@ package multiworld.worldgen.util;
 import java.io.Serializable;
 import java.util.Arrays;
 import org.bukkit.World;
+import org.bukkit.Material;
+import org.bukkit.generator.ChunkGenerator;
 
 /**
  * An basic class to make an chunk whit no data
@@ -18,7 +20,7 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	/**
 	 * The internal saved chunk
 	 */
-	private final short[][] chunk;
+	private final Material[][] chunk;
 	private final int ySize;
 
 	public ChunkMaker(World world) throws NullPointerException
@@ -27,30 +29,10 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	}
 	public ChunkMaker(int maxHeight) throws IllegalArgumentException, NullPointerException
 	{
-		this(new short[maxHeight / 16][], maxHeight);
+		this(new Material[maxHeight / 16][], maxHeight);
 	}
 
-	@Deprecated
-	public ChunkMaker(byte[] chunk, int maxHeight) throws IllegalArgumentException, NullPointerException
-	{
-		this(new short[maxHeight / 16][], maxHeight);
-		if (chunk.length != (maxHeight * 16 * 16))
-		{
-			throw new IllegalArgumentException("Input must be byte[32768]");
-		}
-		for (int x = 0; x < 16; x++)
-		{
-			for (int y = 0; y < maxHeight; y++)
-			{
-				for (int z = 0; z < 16; z++)
-				{
-					this.setB(x, y, z, chunk[(x * 16 + z) * 128 + y]);
-				}
-			}
-		}
-	}
-
-	public ChunkMaker(short[][] chunk, int maxHeight)
+	public ChunkMaker(Material[][] chunk, int maxHeight)
 	{
 		this.chunk = chunk;
 		this.ySize = maxHeight;
@@ -114,17 +96,11 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 		}
 	}
 
-	@Deprecated
-	private void set(int x, int y, int z, byte block)
-	{
-		this.setB(x, y, z, block);
-	}
-
-	private void setB(int x, int y, int z, short blkid)
+	private void setB(int x, int y, int z, Material blkid)
 	{
 		if (chunk[y >> 4] == null)
 		{
-			chunk[y >> 4] = new short[4096];
+			chunk[y >> 4] = new Material[4096];
 		}
 		chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x] = blkid;
 
@@ -137,25 +113,8 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @param z The z to set
 	 * @param block The block id of the new block
 	 * @throws IllegalArgumentException when the given x,y,z are not valid locations
-	 * 
-	 * @deprecated block id are no longer bytes
 	 */
-	@Deprecated
-	public void setBlock(int x, int y, int z, byte block) throws IllegalArgumentException
-	{
-		this.checkAccess(x, y, z);
-		this.set(x, y, z, block);
-	}
-
-	/**
-	 * Sets the block at the given cordiantes
-	 * @param x The x to set
-	 * @param y The y to set
-	 * @param z The z to set
-	 * @param block The block id of the new block
-	 * @throws IllegalArgumentException when the given x,y,z are not valid locations
-	 */
-	public void setBlock(int x, int y, int z, short block) throws IllegalArgumentException
+	public void setBlock(int x, int y, int z, Material block) throws IllegalArgumentException
 	{
 		this.checkAccess(x, y, z);
 		this.setB(x, y, z, block);
@@ -167,38 +126,18 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @param block The blok to set
 	 * @throws IllegalArgumentException If the location are not inside this chunk
 	 * @throws NullPointerException If loc == null
-	 * 
-	 * @deprecated use an short as block id
 	 */
-	@Deprecated
-	public void setBlock(Pointer loc, byte block) throws IllegalArgumentException, NullPointerException
+	public void setBlock(Pointer loc, Material block) throws IllegalArgumentException, NullPointerException
 	{
 		this.setB(loc.x, loc.y, loc.z, block);
 	}
 
-	/**
-	 * Sets an block on the given location
-	 * @param loc the location to set on
-	 * @param block The blok to set
-	 * @throws IllegalArgumentException If the location are not inside this chunk
-	 * @throws NullPointerException If loc == null
-	 */
-	public void setBlock(Pointer loc, short block) throws IllegalArgumentException, NullPointerException
-	{
-		this.setB(loc.x, loc.y, loc.z, block);
-	}
 
-	@Deprecated
-	private byte get(int x, int y, int z)
-	{
-		return (byte) this.getB(x, y, z);
-	}
-
-	private short getB(int x, int y, int z)
+	private Material getB(int x, int y, int z)
 	{
 		if (chunk[y >> 4] == null)
 		{
-			return (short) 0;
+			return Material.AIR;
 		}
 
 		return chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x];
@@ -212,10 +151,10 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @return The block at the given locations
 	 * @throws IllegalArgumentException
 	 */
-	public byte getBlock(int x, int y, int z) throws IllegalArgumentException
+	public Material getBlock(int x, int y, int z) throws IllegalArgumentException
 	{
 		this.checkAccess(x, y, z);
-		return this.get(x, y, z);
+		return this.getB(x, y, z);
 	}
 
 	/**
@@ -225,10 +164,10 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @throws IllegalArgumentException If loc.getMainChunk != this
 	 * @throws NullPointerException If loc == null
 	 */
-	public byte getBlock(Pointer loc) throws IllegalArgumentException, NullPointerException
+	public Material getBlock(Pointer loc) throws IllegalArgumentException, NullPointerException
 	{
 		this.checkPointer(loc);
-		return this.get(loc.x, loc.y, loc.z);
+		return this.getB(loc.x, loc.y, loc.z);
 	}
 
 	/**
@@ -252,7 +191,6 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -266,20 +204,20 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @param block The block to fill it whit
 	 * @throws IllegalArgumentException if the cordinatews given dont give an good area
 	 */
-	public void cuboid(int x1, int y1, int z1, int x2, int y2, int z2, byte block) throws IllegalArgumentException
+	public void cuboid(int x1, int y1, int z1, int x2, int y2, int z2, Material block) throws IllegalArgumentException
 	{
 		this.cuboid(this.getPointer(x1, y1, z1), this.getPointer(x2, y2, z2), block);
 	}
 
 	/**
-	 * Fills an area whit blocks
+	 * Fills an area with blocks
 	 * @param loc1 Location 1
 	 * @param loc2 Location 2
 	 * @param block The block to fill it whit
 	 * @throws IllegalArgumentException If the location arguments dont cover an proer location
 	 * @throws NullPointerException if loc1 == null, or loc2 == null
 	 */
-	public void cuboid(Pointer loc1, Pointer loc2, final byte block) throws IllegalArgumentException, NullPointerException
+	public void cuboid(Pointer loc1, Pointer loc2, final Material block) throws IllegalArgumentException, NullPointerException
 	{
 		this.action(loc1, loc2, new ChunkHelper()
 		{
@@ -303,7 +241,7 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @param blockTo the block to replace to
 	 * @throws IllegalArgumentException
 	 */
-	public void replace(int x1, int y1, int z1, int x2, int y2, int z2, byte blockFrom, byte blockTo) throws IllegalArgumentException
+	public void replace(int x1, int y1, int z1, int x2, int y2, int z2, Material blockFrom, Material blockTo) throws IllegalArgumentException
 	{
 		this.replace(this.getPointer(x1, y1, z1), this.getPointer(x2, y2, z2), blockFrom, blockTo);
 	}
@@ -317,7 +255,7 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @throws IllegalArgumentException
 	 * @throws NullPointerException
 	 */
-	public void replace(Pointer loc1, Pointer loc2, final byte from, final byte to) throws IllegalArgumentException, NullPointerException
+	public void replace(Pointer loc1, Pointer loc2, final Material from, final Material to) throws IllegalArgumentException, NullPointerException
 	{
 		this.action(loc1, loc2, new ChunkHelper()
 		{
@@ -340,7 +278,7 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @throws IllegalArgumentException
 	 * @throws NullPointerException
 	 */
-	public void walls(Pointer loc1, Pointer loc2, final byte block) throws IllegalArgumentException, NullPointerException
+	public void walls(Pointer loc1, Pointer loc2, final Material block) throws IllegalArgumentException, NullPointerException
 	{
 		this.action(loc1, loc2, new ChunkHelper()
 		{
@@ -367,7 +305,7 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * @param block
 	 * @throws IllegalArgumentException
 	 */
-	public void walls(int x1, int y1, int z1, int x2, int y2, int z2, byte block) throws IllegalArgumentException
+	public void walls(int x1, int y1, int z1, int x2, int y2, int z2, Material block) throws IllegalArgumentException
 	{
 		this.walls(this.getPointer(x1, y1, z1), this.getPointer(x2, y2, z2), block);
 	}
@@ -389,7 +327,7 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	 * Gets the raw chunk data
 	 * @return the chunk data
 	 */
-	public short[][] getRawChunk()
+	public Material[][] getRawChunk()
 	{
 		return this.chunk;
 	}
@@ -484,24 +422,14 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 		 * Sets the block on this location
 		 * @param block the block id to place on the location
 		 */
-		public void setBlock(short block)
+		public void setBlock(Material block)
 		{
 			ChunkMaker.this.setB(this.x, this.y, this.z, block);
 		}
 
-		/**
-		 * Gets the block on this location
-		 * @return the block
-		 * @deprecated 
-		 */
-		@Deprecated
-		public byte getBlock()
+		public Material getBlock()
 		{
-			return ChunkMaker.this.get(this.x, this.y, this.z);
-		}
-		public short getBlockId()
-		{
-			return ChunkMaker.this.get(this.x, this.y, this.z);
+			return ChunkMaker.this.getB(this.x, this.y, this.z);
 		}
 
 		private int getIndex()
@@ -600,5 +528,19 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 	public String toString()
 	{
 		return "ChunkMaker:" + this.hashCode();
+	}
+
+	public ChunkGenerator.ChunkData toChunkData(ChunkGenerator.ChunkData chunkData) {
+		for (int x = 0; x < 16; x++)
+		{
+			for (int z = 0; z < 16; z++)
+			{
+				for (int y = 0; y < 256; y++)
+				{
+					chunkData.setBlock(x, y, z, getB(x, y, z));
+				}
+			}
+		}
+		return chunkData;
 	}
 }
