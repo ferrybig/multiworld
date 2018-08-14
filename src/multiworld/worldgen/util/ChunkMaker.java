@@ -101,6 +101,7 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 		if (chunk[y >> 4] == null)
 		{
 			chunk[y >> 4] = new Material[4096];
+			Arrays.fill(chunk[y >> 4], Material.AIR);
 		}
 		chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x] = blkid;
 
@@ -537,7 +538,9 @@ public final class ChunkMaker extends Object implements Cloneable, Serializable
 			{
 				for (int y = 0; y < 256; y++)
 				{
-					chunkData.setBlock(x, y, z, getB(x, y, z));
+					if (chunk[y >> 4] != null) {
+						chunkData.setBlock(x, y, z, getB(x, y, z));
+					}
 				}
 			}
 		}

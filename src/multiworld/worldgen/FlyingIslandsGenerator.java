@@ -84,7 +84,7 @@ public class FlyingIslandsGenerator extends ChunkGenerator implements ChunkGen
 	@Override
 	public ChunkData generateChunkData(World world, Random random, int ChunkX, int ChunkZ, ChunkGenerator.BiomeGrid biomes)
 	{
-		ChunkData chunk = super.generateChunkData(world, random, ChunkX, ChunkZ, biomes);
+		ChunkData chunk = super.createChunkData(world);
 
 		SimplexOctaveGenerator overhangs = new SimplexOctaveGenerator(world, 8);
 		SimplexOctaveGenerator bottoms = new SimplexOctaveGenerator(world, 8);

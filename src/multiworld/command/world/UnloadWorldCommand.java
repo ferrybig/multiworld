@@ -2,12 +2,14 @@ package multiworld.command.world;
 
 import multiworld.command.ArgumentType;
 import multiworld.command.Command;
+import static multiworld.command.Command.EMPTY_STRING_ARRAY;
 import multiworld.command.CommandStack;
 import multiworld.command.MessageType;
 import multiworld.data.DataHandler;
 import multiworld.data.WorldHandler;
 import multiworld.translation.Translation;
 import multiworld.translation.message.MessageCache;
+import org.bukkit.command.CommandSender;
 
 /**
  *
@@ -23,6 +25,16 @@ public class UnloadWorldCommand extends Command
 		super("world.unload","Unloads a world");
 		this.data = data;
 		this.worlds = worlds;
+	}
+
+	@Override
+	public String[] calculateMissingArguments(CommandSender sender, String commandName, String[] split)
+	{
+		if (split.length < 2) {
+			return this.calculateMissingArgumentsWorld("");
+		} else {
+			return EMPTY_STRING_ARRAY;
+		}
 	}
 
 	@Override

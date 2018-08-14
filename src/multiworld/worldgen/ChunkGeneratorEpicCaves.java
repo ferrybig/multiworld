@@ -91,7 +91,7 @@ public class ChunkGeneratorEpicCaves extends MultiWorldChunkGen
 		}
 
 
-		return chunk.toChunkData(super.generateChunkData(world, random, chunkZ, chunkZ, biome));
+		return chunk.toChunkData(super.createChunkData(world));
 	}
 
 	@Override

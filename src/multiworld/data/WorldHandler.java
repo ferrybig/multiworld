@@ -98,27 +98,9 @@ public class WorldHandler
 			{
 				loader = new WorldLoadCatcher(magicPrefix, magicSuffix, name, debugger);
 			}
-			catch (NoSuchMethodException ex) // TODO: when java 7 comes out, fix this mess
-			{
-				logCraftBukkitException(ex, debugger);
-			}
-			catch (InvocationTargetException ex)
-			{
-				logCraftBukkitException(ex, debugger);
-			}
-			catch (IllegalArgumentException ex)
-			{
-				logCraftBukkitException(ex, debugger);
-			}
-			catch (InstantiationException ex)
-			{
-				logCraftBukkitException(ex, debugger);
-			}
-			catch (IllegalAccessException ex)
-			{
-				logCraftBukkitException(ex, debugger);
-			}
-			catch (ClassNotFoundException ex)
+			catch (NoSuchMethodException | InvocationTargetException |
+				IllegalArgumentException | InstantiationException |
+				IllegalAccessException | ClassNotFoundException ex)
 			{
 				logCraftBukkitException(ex, debugger);
 			}
@@ -136,19 +118,7 @@ public class WorldHandler
 				{
 					loader.close();
 				}
-				catch (NoSuchMethodException ex)
-				{
-					logCraftBukkitException(ex, debugger);
-				}
-				catch (IllegalAccessException ex)
-				{
-					logCraftBukkitException(ex, debugger);
-				}
-				catch (IllegalArgumentException ex)
-				{
-					logCraftBukkitException(ex, debugger);
-				}
-				catch (InvocationTargetException ex)
+				catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
 				{
 					logCraftBukkitException(ex, debugger);
 				}

@@ -138,6 +138,6 @@ public class DesertGen extends MultiWorldChunkGen
 
 			}
 		}
-		return chunk.toChunkData(super.generateChunkData(world, random, x, z, biomes));
+		return chunk.toChunkData(super.createChunkData(world));
 	}
 }
