@@ -273,13 +273,7 @@ public class WorldHandler
 			layout = Class.forName("org.apache.logging.log4j.core.Layout", true, classLoader);
 			message = Class.forName("org.apache.logging.log4j.message.Message", true, classLoader);
 			layoutInstance = Class.forName("org.apache.logging.log4j.core.layout.PatternLayout", true, classLoader)
-				.getMethod("createLayout",
-					   String.class,
-					   Class.forName("org.apache.logging.log4j.core.config.Configuration", true, classLoader),
-					   Class.forName("org.apache.logging.log4j.core.pattern.RegexReplacement", true, classLoader),
-					   String.class,
-					   String.class
-				).invoke(null, new Object[5]);
+				.getMethod("createDefaultLayout").invoke(null, new Object[0]);
 			Class<?> appenderCustom = proxy == null ? proxy = Proxy.getProxyClass(appender.getClassLoader(), appender) : proxy;
 			appenderInstance = appenderCustom.getConstructor(InvocationHandler.class).newInstance(handler);
 			loggerInstance = logManager.getMethod("getRootLogger").invoke(null);
