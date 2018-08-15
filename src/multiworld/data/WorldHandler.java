@@ -138,8 +138,7 @@ public class WorldHandler
 
 	}
 
-	private static class WorldLoadCatcher implements AutoCloseable
-	{
+	private static class WorldLoadCatcher implements AutoCloseable {
 		private final String magicPrefix;
 		private final String magicSuffix;
 		private final String worldName;
@@ -154,46 +153,34 @@ public class WorldHandler
 		private final Object loggerInstance;
 		private static Class<?> proxy;
 
-		public WorldLoadCatcher(String magicPrefix, String magicSuffix, String worldName, final CommandStack output) throws NoSuchMethodException, InvocationTargetException, IllegalArgumentException, InstantiationException, IllegalAccessException, ClassNotFoundException
-		{
+		public WorldLoadCatcher(String magicPrefix, String magicSuffix, String worldName, final CommandStack output) throws NoSuchMethodException, InvocationTargetException, IllegalArgumentException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 			this.magicPrefix = magicPrefix;
 			this.magicSuffix = magicSuffix;
 			this.worldName = worldName;
-			InvocationHandler handler = new InvocationHandler()
-			{
+			InvocationHandler handler = new InvocationHandler() {
 
 				boolean started = true;
 				Object errorHandler;
 
 				@Override
-				public Object invoke(Object proxy, Method method, Object[] arguments) throws Throwable
-				{
-					if (Object.class == method.getDeclaringClass())
-					{
+				public Object invoke(Object proxy, Method method, Object[] arguments) throws Throwable {
+					if (Object.class == method.getDeclaringClass()) {
 						String name = method.getName();
-						if ("equals".equals(name))
-						{
+						switch (name) {
+						case "equals":
 							return proxy == arguments[0];
-						}
-						else if ("hashCode".equals(name))
-						{
+						case "hashCode":
 							return System.identityHashCode(proxy);
-						}
-						else if ("toString".equals(name))
-						{
+						case "toString":
 							return proxy.getClass().getName() + "@"
 								+ Integer.toHexString(System.identityHashCode(proxy))
 								+ ", with InvocationHandler " + this;
-						}
-						else
-						{
+						default:
 							throw new IllegalStateException(String.valueOf(method));
 						}
-					}
-					else
-					{
-						if (method.getName().equals("append"))
-						{
+					} else {
+						switch (method.getName()) {
+						case "append":
 							String messageData;
 
 							final Object logEventInstance = arguments[0];
@@ -213,59 +200,41 @@ public class WorldHandler
 							}
 
 							return null;
-						}
-						else if (method.getName().equals("getHandler"))
-						{
+						case "getHandler":
 							output.sendMessageDebug("getHandler called", DebugLevel.VVVVV);
 							return this.errorHandler;
-						}
-						else if (method.getName().equals("setHandler"))
-						{
+						case "setHandler":
 							this.errorHandler = arguments[0];
 							output.sendMessageDebug("setHandler called", DebugLevel.VVVVV);
 							return null;
-						}
-						else if (method.getName().equals("getLayout"))
-						{
+						case "getLayout":
 							output.sendMessageDebug("getLayout called", DebugLevel.VVVVV);
 							return layoutInstance;
-						}
-						else if (method.getName().equals("getName"))
-						{
+						case "getName":
 							output.sendMessageDebug("getName called", DebugLevel.VVVVV);
 							return "Multiworld load message catcher";
-						}
-						else if (method.getName().equals("ignoreExceptions"))
-						{
+						case "ignoreExceptions":
 							output.sendMessageDebug("ignoreExceptions called", DebugLevel.VVVVV);
 							return true;
-						}
-						else if (method.getName().equals("start"))
-						{
+						case "start":
 							output.sendMessageDebug("start called", DebugLevel.VVVVV);
 							this.started = true;
 							return null;
-						}
-						else if (method.getName().equals("stop"))
-						{
+						case "stop":
 							output.sendMessageDebug("stop called", DebugLevel.VVVVV);
 							this.started = false;
 							return null;
-						}
-						else if (method.getName().equals("isStarted"))
-						{
+						case "isStarted":
 							output.sendMessageDebug("isStarted called", DebugLevel.VVVVV);
 							return started;
-						}
-						else
-						{
+						default:
 							output.sendMessageDebug("unknown method called: method", DebugLevel.VVVVV);
-							throw new IllegalStateException(String.valueOf(method));
+							throw new AssertionError(String.valueOf(method));
 						}
 					}
 				}
 			};
-                        final ClassLoader classLoader = Bukkit.getServer().getClass().getClassLoader();
+            final ClassLoader classLoader = Bukkit.getServer().getClass().getClassLoader();
 			logManager = Class.forName("org.apache.logging.log4j.LogManager", true, classLoader);
 			logger = Class.forName("org.apache.logging.log4j.core.Logger", true, classLoader);
 			appender = Class.forName("org.apache.logging.log4j.core.Appender", true, classLoader);
