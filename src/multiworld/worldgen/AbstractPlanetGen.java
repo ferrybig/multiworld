@@ -26,12 +26,12 @@ public abstract class AbstractPlanetGen extends EmptyWorldGenerator
 		Block highest = world.getHighestBlockAt(x, z);
 		if (highest.getType() == Material.AIR || highest.getType() == Material.WATER || highest.getType() == Material.LAVA)
 		{
-			highest.setTypeId(GRASS);
-			highest.getRelative(BlockFace.EAST).setTypeId(GRASS);
-			highest.getRelative(BlockFace.WEST).setTypeId(GRASS);
-			highest.getRelative(BlockFace.NORTH).setTypeId(GRASS);
-			highest.getRelative(BlockFace.SOUTH).setTypeId(GRASS);
-			highest.getRelative(BlockFace.DOWN).setTypeId(DIRT);
+			highest.setType(Material.GRASS);
+			highest.getRelative(BlockFace.EAST).setType(Material.GRASS);
+			highest.getRelative(BlockFace.WEST).setType(Material.GRASS);
+			highest.getRelative(BlockFace.NORTH).setType(Material.GRASS);
+			highest.getRelative(BlockFace.SOUTH).setType(Material.GRASS);
+			highest.getRelative(BlockFace.DOWN).setType(Material.DIRT);
 		}
 		return true;
 	}

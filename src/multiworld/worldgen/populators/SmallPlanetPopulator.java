@@ -3,6 +3,8 @@ package multiworld.worldgen.populators;
 import java.util.Random;
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.Material;
+import static org.bukkit.Material.*;
 
 /**
  * Use the planet gen to make mutch, small planets
@@ -14,30 +16,30 @@ public class SmallPlanetPopulator extends AbstractPlanetPopulator
 	/**
 	 * The main block where an planet from exists
 	 */
-	public static final byte[] ALLOWED_BLOCKS =
+	public static final Material[] ALLOWED_BLOCKS =
 	{
-		AIR, STONE, DIRT, 4, 5, 87, 20, 17, 43, 45, 82
+		AIR, STONE, DIRT, COBBLESTONE, OAK_PLANKS, NETHERRACK, GLASS, OAK_LOG, BRICKS, CLAY
 	};
 	/**
 	 * The materials where the top layer of an planet from exists
 	 */
-	public static final byte[] TOP_LAYER_BLOCK =
+	public static final Material[] TOP_LAYER_BLOCK =
 	{
-		GRASS, GLOW_STONE, 17, 20, 24, 44
+		GRASS, GLOWSTONE, OAK_LOG, GLASS, SANDSTONE
 	};
 	/**
-	 * The special bloks only at the middle of an planet
+	 * The special blocks only at the middle of an planet
 	 */
-	public static final byte[] SPECIAL_BLOCKS =
+	public static final Material[] SPECIAL_BLOCKS =
 	{
-		AIR, 14, 15, 16, 21, 56, 92, 41, 42, DIAMOND_BLOCK, 22, 73
+		AIR, GOLD_ORE, IRON_ORE, REDSTONE_ORE, LAPIS_ORE, CAKE, GOLD_BLOCK, IRON_BLOCK, DIAMOND_BLOCK, LAPIS_BLOCK, EMERALD_BLOCK
 	};
 	/**
 	 * The number of planets it tries to make
 	 */
 	public static final int NUMBER_OFF_PLANETS = 4;
 	/**
-	 * The maximun size of an planet
+	 * The maximum size of an planet
 	 */
 	public static final int MAX_SIZE = 7;
 	/**
@@ -54,7 +56,7 @@ public class SmallPlanetPopulator extends AbstractPlanetPopulator
 	private int populateDepth;
 
 	/**
-	 * Populates the world whit planets
+	 * Populates the world with planets
 	 * @param world the world to work on
 	 * @param random the random to use
 	 * @param source the source chunk

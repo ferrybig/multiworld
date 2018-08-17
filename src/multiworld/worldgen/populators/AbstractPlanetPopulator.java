@@ -7,6 +7,7 @@ package multiworld.worldgen.populators;
 import multiworld.worldgen.BlockConstants;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 
@@ -52,7 +53,7 @@ public abstract class AbstractPlanetPopulator extends BlockPopulator implements 
 	 * @param blockDown The block to use as the base block
 	 * @param blockSpecial The hidden tressure at the middle
 	 */
-	protected void makePlanet(final Location loc, final int size, final byte blockTop, final byte blockDown, final byte blockSpecial)
+	protected void makePlanet(final Location loc, final int size, final Material blockTop, final Material blockDown, final Material blockSpecial)
 	{
 		this.makePlanet(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), size, blockTop, blockDown, blockSpecial);
 	}
@@ -73,9 +74,9 @@ public abstract class AbstractPlanetPopulator extends BlockPopulator implements 
 				  final int planetY,
 				  final int planetZ,
 				  final int size,
-				  final byte blockTop,
-				  final byte blockDown,
-				  final byte blockSpecial)
+				  final Material blockTop,
+				  final Material blockDown,
+				  final Material blockSpecial)
 	{
 		int mainDistance;
 		boolean isTop = true;
@@ -106,12 +107,12 @@ public abstract class AbstractPlanetPopulator extends BlockPopulator implements 
 						workingBlock = workingWorld.getBlockAt(x, y, z);
 						if (isTop)
 						{
-							workingBlock.setTypeIdAndData(blockTop,(byte)0,false);
+							workingBlock.setType(blockTop);
 							isTop = false;
 						}
 						else
 						{
-							workingBlock.setTypeIdAndData(blockDown,(byte)0,false);
+							workingBlock.setType(blockDown);
 						}
 
 					}
@@ -119,7 +120,7 @@ public abstract class AbstractPlanetPopulator extends BlockPopulator implements 
 
 			}
 		}
-		workingWorld.getBlockAt(planetX, planetY, planetZ).setTypeIdAndData(blockSpecial,(byte)0,false);
+		workingWorld.getBlockAt(planetX, planetY, planetZ).setType(blockSpecial);
 
 	}
 }

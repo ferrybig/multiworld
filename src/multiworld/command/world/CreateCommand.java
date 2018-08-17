@@ -40,11 +40,11 @@ public class CreateCommand extends Command
 	{
 		if (split.length == 0)
 		{
-			return this.calculateMissingArgumentsWorld("");
+			return EMPTY_STRING_ARRAY;
 		}
 		else if (split.length == 1)
 		{
-			return this.calculateMissingArgumentsWorld(split[0]);
+			return EMPTY_STRING_ARRAY;
 		}
 		else if (split.length == 2)
 		{

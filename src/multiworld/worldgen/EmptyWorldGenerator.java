@@ -29,7 +29,7 @@ public class EmptyWorldGenerator extends SimpleChunkGen
 			@Override
 			public void populate(World world, Random random, Chunk chunk)
 			{
-				chunk.getBlock(1, 1, 1).setTypeIdAndData(Material.SAND.getId(),(byte)0,false);
+				chunk.getBlock(1, 1, 1).setType(Material.SAND);
 			}
 		});return list;
 	}
@@ -41,8 +41,8 @@ public class EmptyWorldGenerator extends SimpleChunkGen
 	}
 
 	@Override
-	protected short[][] makeChunk(World w)
+	protected ChunkMaker makeChunk(World w)
 	{
-		return new ChunkMaker(w.getMaxHeight()).getRawChunk();
+		return new ChunkMaker(w.getMaxHeight());
 	}
 }
