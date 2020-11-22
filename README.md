@@ -1,3 +1,3 @@
-multiworld
+nl.ferrybig.multiworld
 ==========
-Poject for my multiworld plugin, created with netbeans
+Poject for my nl.ferrybig.multiworld plugin, created with netbeans
