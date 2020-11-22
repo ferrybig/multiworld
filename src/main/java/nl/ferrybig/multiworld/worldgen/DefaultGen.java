@@ -5,28 +5,26 @@ import org.bukkit.World;
 
 /**
  * The worldgen thet makes default minecraft worlds
+ *
  * @author Fernando
  */
-public class DefaultGen implements ChunkGen
-{
-	/**
-	 * the type of normal mc world this gen is simulating
-	 */
-	public final World.Environment type;
+public class DefaultGen implements ChunkGen {
 
-	public DefaultGen(World.Environment worldType)
-	{
-		this.type = worldType;
-	}
+  /**
+   * the type of normal mc world this gen is simulating
+   */
+  public final World.Environment type;
 
-	public DefaultGen()
-	{
-		this.type = World.Environment.NORMAL;
-	}
+  public DefaultGen(World.Environment worldType) {
+    this.type = worldType;
+  }
 
-	@Override
-	public void makeWorld(InternalWorld w)
-	{
-		w.setWorldType(type);
-	}
+  public DefaultGen() {
+    this.type = World.Environment.NORMAL;
+  }
+
+  @Override
+  public void makeWorld(InternalWorld w) {
+    w.setWorldType(type);
+  }
 }

@@ -6,9 +6,9 @@ package nl.ferrybig.multiworld.worldgen.populators;
 
 /**
  * Places trees at worlds
+ *
  * @author Fernando
  */
-public class TreePopulator
-{
-	
+public class TreePopulator {
+
 }

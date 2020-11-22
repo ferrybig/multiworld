@@ -6,145 +6,122 @@ import nl.ferrybig.multiworld.data.MyLogger;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
- *
- * @author ferrybig
  * @param <T> The type objects this config gives you
+ * @author ferrybig
  */
-public abstract class ConfigNode<T>
-{
-	protected final String configPath;
-	protected final T defaultValue;
-	protected final ConfigNode<ConfigurationSection> parent;
+public abstract class ConfigNode<T> {
 
-	protected ConfigNode(ConfigNode<ConfigurationSection> parent, String configPath, T defaultValue)
-	{
-		if (configPath.isEmpty())
-		{
-			throw new IllegalArgumentException("null configPath");
-		}
-		this.parent = parent;
-		this.configPath = configPath;
-		this.defaultValue = defaultValue;
-	}
+  protected final String configPath;
+  protected final T defaultValue;
+  protected final ConfigNode<ConfigurationSection> parent;
 
-	protected String getFullPath()
-	{
-		return (parent == null ? "" : (parent.getFullPath() + ".")) + this.configPath;
-	}
+  protected ConfigNode(ConfigNode<ConfigurationSection> parent, String configPath, T defaultValue) {
+    if (configPath.isEmpty()) {
+      throw new IllegalArgumentException("null configPath");
+    }
+    this.parent = parent;
+    this.configPath = configPath;
+    this.defaultValue = defaultValue;
+  }
 
-	protected void set1(ConfigurationSection to, Object value)
-	{
-		to.set(this.configPath, value);
-	}
+  protected String getFullPath() {
+    return (parent == null ? "" : (parent.getFullPath() + ".")) + this.configPath;
+  }
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		@SuppressWarnings(value = "unchecked")
-		final DefaultConfigNode<?> other = (DefaultConfigNode<?>) obj;
-		if ((this.configPath == null) ? (other.configPath != null) : !this.configPath.equals(other.configPath))
-		{
-			return false;
-		}
-		if (this.defaultValue != other.defaultValue && (this.defaultValue == null || !this.defaultValue.equals(other.defaultValue)))
-		{
-			return false;
-		}
-		return true;
-	}
+  protected void set1(ConfigurationSection to, Object value) {
+    to.set(this.configPath, value);
+  }
 
-	public T get(ConfigurationSection from)
-	{
-		MyLogger logger = null;
-		DataHandler d = MultiWorldPlugin.getInstance().getDataManager();
-		if (d != null)
-		{
-			logger = d.getLogger();
-		}
-		if (this.parent != null)
-		{
-			from = this.parent.get(from);
-		}
-		if (!from.contains(configPath))
-		{
-			if (logger != null)
-			{
-				logger.fine("Adding missing config node: " + this.getFullPath());
-			}
-			this.set1(from, pack(defaultValue));
-			return defaultValue;
-		}
-		else
-		{
-			Object get = from.get(configPath, this.pack(defaultValue));
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    @SuppressWarnings(value = "unchecked") final DefaultConfigNode<?> other = (DefaultConfigNode<?>) obj;
+    if ((this.configPath == null) ? (other.configPath != null)
+        : !this.configPath.equals(other.configPath)) {
+      return false;
+    }
+    if (this.defaultValue != other.defaultValue && (this.defaultValue == null || !this.defaultValue
+        .equals(other.defaultValue))) {
+      return false;
+    }
+    return true;
+  }
 
-			try
-			{
-				return this.unpack(get);
-			}
-			catch (DataPackException error)
-			{
-				if (logger != null)
-				{
-					logger.warning("Error with node \"" + this.getFullPath() + "\" plz fix it, it has been replaced by the default value, cause was: " + error.getMessage());
-				}
-				this.set1(from, this.pack(defaultValue));
-				return defaultValue;
-			}
-		}
+  public T get(ConfigurationSection from) {
+    MyLogger logger = null;
+    DataHandler d = MultiWorldPlugin.getInstance().getDataManager();
+    if (d != null) {
+      logger = d.getLogger();
+    }
+    if (this.parent != null) {
+      from = this.parent.get(from);
+    }
+    if (!from.contains(configPath)) {
+      if (logger != null) {
+        logger.fine("Adding missing config node: " + this.getFullPath());
+      }
+      this.set1(from, pack(defaultValue));
+      return defaultValue;
+    } else {
+      Object get = from.get(configPath, this.pack(defaultValue));
 
-	}
+      try {
+        return this.unpack(get);
+      } catch (DataPackException error) {
+        if (logger != null) {
+          logger.warning("Error with node \"" + this.getFullPath()
+              + "\" plz fix it, it has been replaced by the default value, cause was: " + error
+              .getMessage());
+        }
+        this.set1(from, this.pack(defaultValue));
+        return defaultValue;
+      }
+    }
 
-	/**
-	 * @return the configName
-	 */
-	public String getConfigPath()
-	{
-		return configPath;
-	}
+  }
 
-	/**
-	 * @return the defaultValue
-	 */
-	public T getDefaultValue()
-	{
-		return defaultValue;
-	}
+  /**
+   * @return the configName
+   */
+  public String getConfigPath() {
+    return configPath;
+  }
 
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 59 * hash + (this.configPath != null ? this.configPath.hashCode() : 0);
-		hash = 59 * hash + (this.defaultValue != null ? this.defaultValue.hashCode() : 0);
-		return hash;
-	}
+  /**
+   * @return the defaultValue
+   */
+  public T getDefaultValue() {
+    return defaultValue;
+  }
 
-	public void set(ConfigurationSection to, T value)
-	{
-		if (this.parent != null)
-		{
-			to = this.parent.get(to);
-		}
-		this.set1(to, this.pack(value));
-	}
+  @Override
+  public int hashCode() {
+    int hash = 7;
+    hash = 59 * hash + (this.configPath != null ? this.configPath.hashCode() : 0);
+    hash = 59 * hash + (this.defaultValue != null ? this.defaultValue.hashCode() : 0);
+    return hash;
+  }
 
-	@Override
-	public String toString()
-	{
-		return this.getClass().getName() + "{" + "configPath=" + configPath + ", defaultValue=" + defaultValue + '}';
-	}
+  public void set(ConfigurationSection to, T value) {
+    if (this.parent != null) {
+      to = this.parent.get(to);
+    }
+    this.set1(to, this.pack(value));
+  }
 
-	protected abstract T unpack(Object rawConfigValue) throws DataPackException;
+  @Override
+  public String toString() {
+    return this.getClass().getName() + "{" + "configPath=" + configPath + ", defaultValue="
+        + defaultValue + '}';
+  }
 
-	protected abstract Object pack(T data);
+  protected abstract T unpack(Object rawConfigValue) throws DataPackException;
+
+  protected abstract Object pack(T data);
 
 }

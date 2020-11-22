@@ -9,45 +9,40 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
 /**
- *
  * @author Fernando
  */
-public class GameModeChanceByWorldEvent extends MultiWorldEvent
-{
-	private final Player player;
-	private final GameMode newMode;
-	public GameModeChanceByWorldEvent(Player player,GameMode newMode)
-	{
-		super();
-		this.player = player;
-		this.newMode = newMode;
-	}
-	private static final HandlerList handlers = new HandlerList();
+public class GameModeChanceByWorldEvent extends MultiWorldEvent {
 
-	@Override
-	public HandlerList getHandlers()
-	{
-		return handlers;
-	}
+  private static final HandlerList handlers = new HandlerList();
+  private final Player player;
+  private final GameMode newMode;
 
-	public static HandlerList getHandlerList()
-	{
-		return handlers;
-	}
+  public GameModeChanceByWorldEvent(Player player, GameMode newMode) {
+    super();
+    this.player = player;
+    this.newMode = newMode;
+  }
 
-	/**
-	 * @return the player
-	 */
-	public Player getPlayer()
-	{
-		return player;
-	}
+  public static HandlerList getHandlerList() {
+    return handlers;
+  }
 
-	/**
-	 * @return the newMode
-	 */
-	public GameMode getNewMode()
-	{
-		return newMode;
-	}
+  @Override
+  public HandlerList getHandlers() {
+    return handlers;
+  }
+
+  /**
+   * @return the player
+   */
+  public Player getPlayer() {
+    return player;
+  }
+
+  /**
+   * @return the newMode
+   */
+  public GameMode getNewMode() {
+    return newMode;
+  }
 }

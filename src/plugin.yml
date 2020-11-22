@@ -6,146 +6,143 @@ website: http://dev.bukkit.org/server-mods/nl.ferrybig.multiworld-v-2-0/
 author: ferrybig
 api-version: 1.13
 description: >
-             Provides multiworld support
+  Provides multiworld support
 commands:
-   multiworld:
-      description: all the commands
-      usage:
-           /<command> <commandaction> <arg1> <arg2>
-      aliases: [nl.ferrybig.multiworld-v, nl.ferrybig.multiworld-vv, nl.ferrybig.multiworld-vvv, nl.ferrybig.multiworld-vvvv, nl.ferrybig.multiworld-vvvvv, nl.ferrybig.multiworld-vvvvvv]
-   mw:
-      description: all the commands
-      usage:
-           /<command> <commandaction> <arg1> <arg2>
-      aliases: [mw-v, mw-vv, mw-vvv, mw-vvvv, mw-vvvvv, mw-vvvvvv]
-   multiworld-shortcut:
-      description: shortcuts to nl.ferrybig.multiworld commands
-      usage:
-           /<command> <world>
-      permission: nl.ferrybig.multiworld.command.goto
-      aliases: [goto]
+  multiworld:
+    description: all the commands
+    usage: /<command> <commandaction> <arg1> <arg2>
+    aliases: [ nl.ferrybig.multiworld-v, nl.ferrybig.multiworld-vv, nl.ferrybig.multiworld-vvv, nl.ferrybig.multiworld-vvvv, nl.ferrybig.multiworld-vvvvv, nl.ferrybig.multiworld-vvvvvv ]
+  mw:
+    description: all the commands
+    usage: /<command> <commandaction> <arg1> <arg2>
+    aliases: [ mw-v, mw-vv, mw-vvv, mw-vvvv, mw-vvvvv, mw-vvvvvv ]
+  multiworld-shortcut:
+    description: shortcuts to nl.ferrybig.multiworld commands
+    usage: /<command> <world>
+    permission: nl.ferrybig.multiworld.command.goto
+    aliases: [ goto ]
 permissions:
-    multiworld.*:
-        description: same as nl.ferrybig.multiworld.admin
-        children:
-            multiworld.admin: true
-    multiworld.minium:
-        description: The most used permissions
-        children:
-            multiworld.command.goto: true
-            multiworld.command.list: true
-    multiworld.basic:
-        description: Just the basic permissions
-        children:
-            multiworld.minium: true
-            multiworld.command.getflag: true
-            multiworld.command.flaglist: true
-            multiworld.command.help: true
-            multiworld.command.info: true
-            multiworld.creativemode: true
-    multiworld.moderate:
-        description: moderator settings
-        children:
-            multiworld.basic: true
-            multiworld.command.setflag: true
-            multiworld.command.save: true
-            multiworld.command.reload: true
-            multiworld.command.link: true
-            multiworld.command.move: true
-            multiworld.command.goto.cordinates: true
-            multiworld.command.warp.cordinates: true
-    multiworld.admin:
-        description: admin settings
-        children:
-            multiworld.moderate: true
-            multiworld.worldmaneger: true
-            multiworld.command.debug: true
-            multiworld.command.spawn: true
-            multiworld.command.setspawn: true
-            multiworld.command.listgens: true
-    multiworld.worldmaneger:
-        description: settings for world managers
-        children:
-            multiworld.command.world.create: true
-            multiworld.command.world.unload: true
-            multiworld.command.world.load: true
-            multiworld.command.world.delete: true
-            multiworld.command.list: true
-    multiworld.command.goto:
-        description: Teleport to a world.
-        default: op
-    multiworld.commang.goto.cordinates:
-        description: allows goto with cordinates
-        default: op
-    multiworld.command.list:
-        description: list al the worlds.
-        default: op
-    multiworld.command.unload:
-        description: unloads a world.
-        default: op
-    multiworld.command.load:
-        description: loads a world.
-        default: op
-    multiworld.command.create:
-        description: Creates a world.
-        default: op
-    multiworld.command.delete:
-        description: Deletes a world.
-        default: op
-    multiworld.command.save:
-        description: save the data.
-        default: op
-    multiworld.command.link:
-        description: chance the nether/end portals links.
-        children:
-            multiworld.command.link.*: true
-    multiworld.command.link.*:
-        description: chance the nether/end portals links.
-        children:
-            multiworld.command.link.nether: true
-            multiworld.command.link.end: true
-    multiworld.command.link.nether:
-        description: chance the Nether portals links.
-        default: op
-    multiworld.command.link.end:
-        description: chance the End portals links.
-        default: op
-    multiworld.command.reload:
-        description: reload the plugin.
-        default: op
-    multiworld.command.help:
-        description: shows the help text.
-        default: op
-    multiworld.command.setflag:
-        description: sets an world option.
-        default: op
-    multiworld.command.getflag:
-        description: get an world option.
-        default: op
-    multiworld.creativemode:
-        description: able to get the creative mode at creative worlds.
-        default: op
-    multiworld.command.debug:
-        description: shows debug information about the plugin.
-        default: op
-    multiworld.command.move:
-        description: move a player to another world.
-        default: op
-    multiworld.commang.move.cordinates:
-        description: allows move with cordinates
-        default: op
-    multiworld.command.spawn:
-        description: Go to the spawn of a world.
-        default: op
-    multiworld.command.setspawn:
-        description: Sets the spawn of a world.
-        default: op
-    multiworld.command.flaglist:
-        description: List al flags used by /mw getflag
-        default: op
-    multiworld.command.listgens:
-        description: List al useable world generators
-        default: op
-    multiworld.command.info:
-        description: List basic information from a world
-        default: op
+  multiworld.*:
+    description: same as nl.ferrybig.multiworld.admin
+    children:
+      multiworld.admin: true
+  multiworld.minium:
+    description: The most used permissions
+    children:
+      multiworld.command.goto: true
+      multiworld.command.list: true
+  multiworld.basic:
+    description: Just the basic permissions
+    children:
+      multiworld.minium: true
+      multiworld.command.getflag: true
+      multiworld.command.flaglist: true
+      multiworld.command.help: true
+      multiworld.command.info: true
+      multiworld.creativemode: true
+  multiworld.moderate:
+    description: moderator settings
+    children:
+      multiworld.basic: true
+      multiworld.command.setflag: true
+      multiworld.command.save: true
+      multiworld.command.reload: true
+      multiworld.command.link: true
+      multiworld.command.move: true
+      multiworld.command.goto.cordinates: true
+      multiworld.command.warp.cordinates: true
+  multiworld.admin:
+    description: admin settings
+    children:
+      multiworld.moderate: true
+      multiworld.worldmaneger: true
+      multiworld.command.debug: true
+      multiworld.command.spawn: true
+      multiworld.command.setspawn: true
+      multiworld.command.listgens: true
+  multiworld.worldmaneger:
+    description: settings for world managers
+    children:
+      multiworld.command.world.create: true
+      multiworld.command.world.unload: true
+      multiworld.command.world.load: true
+      multiworld.command.world.delete: true
+      multiworld.command.list: true
+  multiworld.command.goto:
+    description: Teleport to a world.
+    default: op
+  multiworld.commang.goto.cordinates:
+    description: allows goto with cordinates
+    default: op
+  multiworld.command.list:
+    description: list al the worlds.
+    default: op
+  multiworld.command.unload:
+    description: unloads a world.
+    default: op
+  multiworld.command.load:
+    description: loads a world.
+    default: op
+  multiworld.command.create:
+    description: Creates a world.
+    default: op
+  multiworld.command.delete:
+    description: Deletes a world.
+    default: op
+  multiworld.command.save:
+    description: save the data.
+    default: op
+  multiworld.command.link:
+    description: chance the nether/end portals links.
+    children:
+      multiworld.command.link.*: true
+  multiworld.command.link.*:
+    description: chance the nether/end portals links.
+    children:
+      multiworld.command.link.nether: true
+      multiworld.command.link.end: true
+  multiworld.command.link.nether:
+    description: chance the Nether portals links.
+    default: op
+  multiworld.command.link.end:
+    description: chance the End portals links.
+    default: op
+  multiworld.command.reload:
+    description: reload the plugin.
+    default: op
+  multiworld.command.help:
+    description: shows the help text.
+    default: op
+  multiworld.command.setflag:
+    description: sets an world option.
+    default: op
+  multiworld.command.getflag:
+    description: get an world option.
+    default: op
+  multiworld.creativemode:
+    description: able to get the creative mode at creative worlds.
+    default: op
+  multiworld.command.debug:
+    description: shows debug information about the plugin.
+    default: op
+  multiworld.command.move:
+    description: move a player to another world.
+    default: op
+  multiworld.commang.move.cordinates:
+    description: allows move with cordinates
+    default: op
+  multiworld.command.spawn:
+    description: Go to the spawn of a world.
+    default: op
+  multiworld.command.setspawn:
+    description: Sets the spawn of a world.
+    default: op
+  multiworld.command.flaglist:
+    description: List al flags used by /mw getflag
+    default: op
+  multiworld.command.listgens:
+    description: List al useable world generators
+    default: op
+  multiworld.command.info:
+    description: List basic information from a world
+    default: op

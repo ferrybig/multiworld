@@ -5,14 +5,17 @@
 package nl.ferrybig.multiworld.addons;
 
 /**
- *
  * @author Fernando
  */
-public interface PluginList
-{
-	public boolean isLoaded(String plugin);
-	public boolean isEnabled(String plugin);
-	public String[] getPlugins();
-	public void disableAll();
-	public boolean enabledInsideConfig(String plugin);
+public interface PluginList {
+
+  public boolean isLoaded(String plugin);
+
+  public boolean isEnabled(String plugin);
+
+  public String[] getPlugins();
+
+  public void disableAll();
+
+  public boolean enabledInsideConfig(String plugin);
 }

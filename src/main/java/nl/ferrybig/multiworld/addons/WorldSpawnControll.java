@@ -12,27 +12,25 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 /**
- *
  * @author Fernando
  */
-public class WorldSpawnControll extends AddonBase implements MultiworldAddon, Listener
-{
-	public WorldSpawnControll(DataHandler data)
-	{
-		super(data);
-	}
+public class WorldSpawnControll extends AddonBase implements MultiworldAddon, Listener {
 
-	@EventHandler(priority = EventPriority.LOWEST,ignoreCancelled = true)
-	public void onRespawn(PlayerRespawnEvent event)
-	{
-		this.data.getLogger().fine("Got player respawn event");
-		if (!isEnabled())
-		{
-			return;
-		}
-		assert this.data.getSpawns() != null; // This class may not be initized when the spawn if turned to false
-		World to = this.data.getSpawns().resolveWorld(event.getPlayer().getWorld().getName());
-		this.data.getLogger().fine("Chanced spawn of player "+event.getPlayer().getName()+" to world "+to.getName());
-		event.setRespawnLocation(to.getSpawnLocation());
-	}
+  public WorldSpawnControll(DataHandler data) {
+    super(data);
+  }
+
+  @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+  public void onRespawn(PlayerRespawnEvent event) {
+    this.data.getLogger().fine("Got player respawn event");
+    if (!isEnabled()) {
+      return;
+    }
+    assert this.data.getSpawns()
+        != null; // This class may not be initized when the spawn if turned to false
+    World to = this.data.getSpawns().resolveWorld(event.getPlayer().getWorld().getName());
+    this.data.getLogger().fine(
+        "Chanced spawn of player " + event.getPlayer().getName() + " to world " + to.getName());
+    event.setRespawnLocation(to.getSpawnLocation());
+  }
 }

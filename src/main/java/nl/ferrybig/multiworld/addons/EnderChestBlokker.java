@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.ferrybig.multiworld.addons;
 
 import nl.ferrybig.multiworld.api.flag.FlagName;
@@ -12,49 +8,38 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-/**
- *
- * @author Fernando
- */
-public class EnderChestBlokker implements MultiworldAddon, Listener
-{
-	final DataHandler data;
+public class EnderChestBlokker implements MultiworldAddon, Listener {
 
-	public EnderChestBlokker(DataHandler data)
-	{
-		this.data = data;
-	}
+  final DataHandler data;
+  private boolean enabled = false;
 
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onBlockPlace(BlockPlaceEvent evt)
-	{
-		if (enabled)
-		{
-			if (this.data.getWorldManager().getFlag(evt.getPlayer().getWorld().getName(), FlagName.CREATIVEWORLD).getAsBoolean())
-			{
-				if (evt.getBlockPlaced().getType() == Material.ENDER_CHEST)
-				{
-					evt.setCancelled(true);
-				}
-			}
-		}
-	}
+  public EnderChestBlokker(DataHandler data) {
+    this.data = data;
+  }
 
-	@Override
-	public void onDisable()
-	{
-		enabled = false;
-	}
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onBlockPlace(BlockPlaceEvent evt) {
+    if (enabled) {
+      if (this.data.getWorldManager()
+          .getFlag(evt.getPlayer().getWorld().getName(), FlagName.CREATIVEWORLD).getAsBoolean()) {
+        if (evt.getBlockPlaced().getType() == Material.ENDER_CHEST) {
+          evt.setCancelled(true);
+        }
+      }
+    }
+  }
 
-	@Override
-	public void onEnable()
-	{
-		enabled = true;
-	}
-	private boolean enabled = false;
+  @Override
+  public void onDisable() {
+    enabled = false;
+  }
 
-	public boolean isEnabled()
-	{
-		return enabled;
-	}
+  @Override
+  public void onEnable() {
+    enabled = true;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
 }

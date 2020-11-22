@@ -9,20 +9,18 @@ package nl.ferrybig.multiworld.data.config;
 import nl.ferrybig.multiworld.MultiWorldException;
 
 /**
- *
  * @author ferrybig
  */
 public class DataPackException extends MultiWorldException {
-	private static final long serialVersionUID = 1L;
 
-	public DataPackException(String msg)
-	{
-		super(msg);
-	}
+  private static final long serialVersionUID = 1L;
 
-	public DataPackException(String msg, Throwable cause)
-	{
-		super(msg, cause);
-	}
+  public DataPackException(String msg) {
+    super(msg);
+  }
+
+  public DataPackException(String msg, Throwable cause) {
+    super(msg, cause);
+  }
 
 }

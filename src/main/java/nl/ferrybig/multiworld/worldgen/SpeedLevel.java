@@ -5,10 +5,8 @@
 package nl.ferrybig.multiworld.worldgen;
 
 /**
- *
  * @author Fernando
  */
-public enum SpeedLevel
-{
-	SLOW,NORMAL,FAST,UNKNOWN;
+public enum SpeedLevel {
+  SLOW, NORMAL, FAST, UNKNOWN;
 }

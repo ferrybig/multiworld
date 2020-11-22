@@ -2,41 +2,41 @@ package nl.ferrybig.multiworld;
 
 /**
  * Throwed when a command is used wrong
+ *
  * @author Fernando
  */
-public class ArgumentException extends CommandException
-{
-	private static final long serialVersionUID = 22355441L;
-	/**
-	 * The correct usage of the command
-	 */
-	private final String usage;
+public class ArgumentException extends CommandException {
 
-	/**
-	 * No argument constructor
-	 */
-	public ArgumentException()
-	{
-		super("Illegal arguments specified");
-		this.usage = null;
-	}
+  private static final long serialVersionUID = 22355441L;
+  /**
+   * The correct usage of the command
+   */
+  private final String usage;
 
-	/**
-	 * The contructor were you can specify the correct usage for the command
-	 * @param correctUsage
-	 */
-	public ArgumentException(String correctUsage)
-	{
-		super("Illegal arguments specified, usage: " + correctUsage);
-		this.usage = correctUsage;
-	}
+  /**
+   * No argument constructor
+   */
+  public ArgumentException() {
+    super("Illegal arguments specified");
+    this.usage = null;
+  }
 
-	/**
-	 * Return the correct usage of this command
-	 * @return the correct usage
-	 */
-	public String correctUsage()
-	{
-		return this.usage;
-	}
+  /**
+   * The contructor were you can specify the correct usage for the command
+   *
+   * @param correctUsage
+   */
+  public ArgumentException(String correctUsage) {
+    super("Illegal arguments specified, usage: " + correctUsage);
+    this.usage = correctUsage;
+  }
+
+  /**
+   * Return the correct usage of this command
+   *
+   * @return the correct usage
+   */
+  public String correctUsage() {
+    return this.usage;
+  }
 }

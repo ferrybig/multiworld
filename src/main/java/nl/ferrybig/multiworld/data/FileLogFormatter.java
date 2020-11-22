@@ -12,20 +12,19 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- *
  * @author Fernando
  */
-public class FileLogFormatter extends Formatter
-{
-	private final SimpleDateFormat date;
-public FileLogFormatter()
-  {
+public class FileLogFormatter extends Formatter {
+
+  private final SimpleDateFormat date;
+
+  public FileLogFormatter() {
     this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
   }
-@Override
-  public String format(LogRecord record)
-  {
+
+  @Override
+  public String format(LogRecord record) {
     StringBuilder b = new StringBuilder();
     Throwable ex = record.getThrown();
 
@@ -43,14 +42,15 @@ public FileLogFormatter()
     }
 
     return b.toString();
-  }@Override
-  public String getHead(Handler h)
-  {
-	  return "Logging started";
   }
+
   @Override
-  public String getTail(Handler h)
-  {
-	  return "Logging ended";
+  public String getHead(Handler h) {
+    return "Logging started";
+  }
+
+  @Override
+  public String getTail(Handler h) {
+    return "Logging ended";
   }
 }

@@ -12,21 +12,21 @@ import org.bukkit.generator.BlockPopulator;
 
 /**
  * Make an world whit planets
+ *
  * @author Fernando
  */
 public class SmallPlanetGen extends AbstractPlanetGen implements ChunkGen {
 
 
+  public SmallPlanetGen() {
+  }
 
-	public SmallPlanetGen() {
-	}
-
-	@Override
-	public List<BlockPopulator> getDefaultPopulators(World world) {
-		List<BlockPopulator> list = new ArrayList<BlockPopulator>();
-		list.add(Populators.PLANET.get());
-		list.add(Populators.SNOW.get());
-		list.add(Populators.MYCELIUM.get());
-		return list;
-	}
+  @Override
+  public List<BlockPopulator> getDefaultPopulators(World world) {
+    List<BlockPopulator> list = new ArrayList<BlockPopulator>();
+    list.add(Populators.PLANET.get());
+    list.add(Populators.SNOW.get());
+    list.add(Populators.MYCELIUM.get());
+    return list;
+  }
 }

@@ -5,10 +5,8 @@
 package nl.ferrybig.multiworld.command.wizards;
 
 /**
- *
  * @author Fernando
  */
-public class FixNetherPortals
-{
-	
+public class FixNetherPortals {
+
 }

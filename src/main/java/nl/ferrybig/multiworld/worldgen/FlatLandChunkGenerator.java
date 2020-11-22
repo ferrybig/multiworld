@@ -5,78 +5,70 @@ import java.util.Map;
 import nl.ferrybig.multiworld.InvalidWorldGenOptionsException;
 import nl.ferrybig.multiworld.data.InternalWorld;
 import nl.ferrybig.multiworld.worldgen.util.ChunkMaker;
-import org.bukkit.World;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 /**
  * This worldgen makes chunks of the type flat
+ *
  * @author Fernando
  */
-public class FlatLandChunkGenerator extends SimpleChunkGen
-{
-	private final Map<String, Byte> heightMap = new HashMap<String, Byte>();
+public class FlatLandChunkGenerator extends SimpleChunkGen {
 
-	@Override
-	public org.bukkit.Location getFixedSpawnLocation(World world, java.util.Random random)
-	{
-		return null;
-	}
+  private final Map<String, Byte> heightMap = new HashMap<String, Byte>();
 
-	/**
-	 * makes the internal chunk that wil be copied to the new chunks made
-	 *
-	 * @param w
-	 * @return
-	 */
-	@Override
-	protected ChunkMaker makeChunk(World w)
-	{
-		ChunkMaker chunk = new ChunkMaker(w.getMaxHeight());
-		int seeLevel = w.getSeaLevel();
-		int lowestDirt = seeLevel - 3;
-		chunk.cuboid(0, 0,0, 15,0,15,Material.BEDROCK);
-		chunk.cuboid(0, 1,0, 15,lowestDirt-1,15,Material.STONE);
-		chunk.cuboid(0, lowestDirt,0, 15,seeLevel-1,15,Material.DIRT);
-		chunk.cuboid(0, seeLevel, 0, 15, seeLevel, 15, Material.GRASS);
-		return chunk;
-	}
+  @Override
+  public org.bukkit.Location getFixedSpawnLocation(World world, java.util.Random random) {
+    return null;
+  }
 
-	/**
-	 * Makes the world and save the height
-	 * @param world the o<code>InternalWorld</code> obj to modify
-	 * @throws InvalidWorldGenOptionsException  If the world dont give valid options
-	 */
-	@Override
-	public void makeWorld(InternalWorld world) throws InvalidWorldGenOptionsException
-	{
-		super.makeWorld(world);
-		this.heightMap.put(world.getName(), parseOptions(world.getOptions()));
+  /**
+   * makes the internal chunk that wil be copied to the new chunks made
+   *
+   * @param w
+   * @return
+   */
+  @Override
+  protected ChunkMaker makeChunk(World w) {
+    ChunkMaker chunk = new ChunkMaker(w.getMaxHeight());
+    int seeLevel = w.getSeaLevel();
+    int lowestDirt = seeLevel - 3;
+    chunk.cuboid(0, 0, 0, 15, 0, 15, Material.BEDROCK);
+    chunk.cuboid(0, 1, 0, 15, lowestDirt - 1, 15, Material.STONE);
+    chunk.cuboid(0, lowestDirt, 0, 15, seeLevel - 1, 15, Material.DIRT);
+    chunk.cuboid(0, seeLevel, 0, 15, seeLevel, 15, Material.GRASS);
+    return chunk;
+  }
 
-	}
+  /**
+   * Makes the world and save the height
+   *
+   * @param world the o<code>InternalWorld</code> obj to modify
+   * @throws InvalidWorldGenOptionsException If the world dont give valid options
+   */
+  @Override
+  public void makeWorld(InternalWorld world) throws InvalidWorldGenOptionsException {
+    super.makeWorld(world);
+    this.heightMap.put(world.getName(), parseOptions(world.getOptions()));
 
-	private byte parseOptions(String options) throws InvalidWorldGenOptionsException
-	{
-		if (options.isEmpty())
-		{
-			return 64;
-		}
-		try
-		{
-			byte number = Byte.parseByte(options);
-			if (number > 127 || number < 0)
-			{
-				throw new InvalidWorldGenOptionsException("Argument must be lower than 128");
-			}
-			return number;
-		}
-		catch (NumberFormatException e)
-		{
-			throw new InvalidWorldGenOptionsException(e.getLocalizedMessage());
-		}
-	}
+  }
 
-	protected final byte getHeightByWorldName(String name)
-	{
-		return this.heightMap.get(name);
-	}
+  private byte parseOptions(String options) throws InvalidWorldGenOptionsException {
+    if (options.isEmpty()) {
+      return 64;
+    }
+    try {
+      byte number = Byte.parseByte(options);
+      if (number > 127 || number < 0) {
+        throw new InvalidWorldGenOptionsException("Argument must be lower than 128");
+      }
+      return number;
+    } catch (NumberFormatException e) {
+      throw new InvalidWorldGenOptionsException(e.getLocalizedMessage());
+    }
+  }
+
+  protected final byte getHeightByWorldName(String name) {
+    return this.heightMap.get(name);
+  }
 }

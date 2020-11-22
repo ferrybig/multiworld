@@ -8,25 +8,22 @@ import nl.ferrybig.multiworld.api.MultiWorldWorldData;
 import org.bukkit.event.HandlerList;
 
 /**
- *
  * @author Fernando
  */
-public class WorldDeleteEvent extends WorldEvent
-{
-	public WorldDeleteEvent(MultiWorldWorldData world)
-	{
-		super(world);
-	}
-	private static final HandlerList handlers = new HandlerList();
+public class WorldDeleteEvent extends WorldEvent {
 
-	@Override
-	public HandlerList getHandlers()
-	{
-		return handlers;
-	}
+  private static final HandlerList handlers = new HandlerList();
 
-	public static HandlerList getHandlerList()
-	{
-		return handlers;
-	}
+  public WorldDeleteEvent(MultiWorldWorldData world) {
+    super(world);
+  }
+
+  public static HandlerList getHandlerList() {
+    return handlers;
+  }
+
+  @Override
+  public HandlerList getHandlers() {
+    return handlers;
+  }
 }

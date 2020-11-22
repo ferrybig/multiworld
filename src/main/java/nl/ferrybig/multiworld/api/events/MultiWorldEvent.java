@@ -8,16 +8,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 /**
- *
  * @author Fernando
  */
-public abstract class MultiWorldEvent extends Event
-{
-	
-	public MultiWorldEvent()
-	{
-		super();
-	}/*
+public abstract class MultiWorldEvent extends Event {
+
+  public MultiWorldEvent() {
+    super();
+  }/*
 private static final HandlerList handlers = new HandlerList();
 	@Override
 	public HandlerList getHandlers()
@@ -29,11 +26,11 @@ private static final HandlerList handlers = new HandlerList();
 	{
 		return handlers;
 	}*/
-	/**
-	 * Passes this event to PluginManager.callEvent();
-	 */
-	public void call()
-	{
-		Bukkit.getPluginManager().callEvent(this);
-	}
+
+  /**
+   * Passes this event to PluginManager.callEvent();
+   */
+  public void call() {
+    Bukkit.getPluginManager().callEvent(this);
+  }
 }

@@ -10,17 +10,16 @@ import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
 /**
- *
  * @author Fernando
  */
-public abstract class MultiWorldChunkGen extends org.bukkit.generator.ChunkGenerator implements ChunkGen, BlockConstants
-{
-	@Override
-	public List<BlockPopulator> getDefaultPopulators(World world)
-	{
-		List<BlockPopulator> list = super.getDefaultPopulators(world);
-		list.add(Populators.MYCELIUM.get());
-		list.add(Populators.SNOW.get());
-		return list;
-	}
+public abstract class MultiWorldChunkGen extends org.bukkit.generator.ChunkGenerator implements
+    ChunkGen, BlockConstants {
+
+  @Override
+  public List<BlockPopulator> getDefaultPopulators(World world) {
+    List<BlockPopulator> list = super.getDefaultPopulators(world);
+    list.add(Populators.MYCELIUM.get());
+    list.add(Populators.SNOW.get());
+    return list;
+  }
 }

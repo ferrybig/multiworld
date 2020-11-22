@@ -12,36 +12,29 @@ import nl.ferrybig.multiworld.data.ReloadHandler;
 import nl.ferrybig.multiworld.translation.Translation;
 
 /**
- *
  * @author Fernando
  */
-public class LoadCommand extends Command
-{
-	private final ReloadHandler r;
-	private final DataHandler d;
+public class LoadCommand extends Command {
 
-	public LoadCommand(DataHandler d, ReloadHandler r)
-	{
-		super("load","Reloads the nl.ferrybig.multiworld configuration file");
-		this.d = d;
-		this.r = r;
-	}
+  private final ReloadHandler r;
+  private final DataHandler d;
 
-	@Override
-	public void runCommand(CommandStack stack)
-	{
-		if (this.reloadCommand())
-		{
-			stack.sendMessage(MessageType.SUCCES, Translation.COMMAND_RELOAD_SUCCES);
-		}
-		else
-		{
-			stack.sendMessage(MessageType.ERROR, Translation.COMMAND_RELOAD_FAIL);
-		}
-	}
+  public LoadCommand(DataHandler d, ReloadHandler r) {
+    super("load", "Reloads the nl.ferrybig.multiworld configuration file");
+    this.d = d;
+    this.r = r;
+  }
 
-	private boolean reloadCommand()
-	{
-		return r.reload();
-	}
+  @Override
+  public void runCommand(CommandStack stack) {
+    if (this.reloadCommand()) {
+      stack.sendMessage(MessageType.SUCCES, Translation.COMMAND_RELOAD_SUCCES);
+    } else {
+      stack.sendMessage(MessageType.ERROR, Translation.COMMAND_RELOAD_FAIL);
+    }
+  }
+
+  private boolean reloadCommand() {
+    return r.reload();
+  }
 }

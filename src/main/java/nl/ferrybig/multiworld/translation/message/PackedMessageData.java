@@ -6,33 +6,29 @@
 package nl.ferrybig.multiworld.translation.message;
 
 /**
- *
  * @author ferrybig
  */
-public interface PackedMessageData
-{
-public static final PackedMessageData NO_CONSOLE_MESSAGE = new PackedMessageData()
-{
+public interface PackedMessageData {
 
-	@Override
-	public String getBinary()
-	{
-		return "No-Console";
-	}
+  public static final PackedMessageData NO_CONSOLE_MESSAGE = new PackedMessageData() {
 
-	@Override
-	public String transformMessage(String prevFormat)
-	{
-		return prevFormat;
-	}
-};
-	/**
-	 *
-	 * @param prevFormat the value of prevFormat
-	 * @return
-	 */
-	public abstract String transformMessage(String prevFormat);
+    @Override
+    public String getBinary() {
+      return "No-Console";
+    }
 
-	public abstract String getBinary();
+    @Override
+    public String transformMessage(String prevFormat) {
+      return prevFormat;
+    }
+  };
+
+  /**
+   * @param prevFormat the value of prevFormat
+   * @return
+   */
+  public abstract String transformMessage(String prevFormat);
+
+  public abstract String getBinary();
 
 }

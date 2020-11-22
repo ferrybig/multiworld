@@ -10,10 +10,9 @@ import nl.ferrybig.multiworld.command.DebugLevel;
 import org.bukkit.command.CommandSender;
 
 /**
- *
  * @author Fernando
  */
-public interface CommandStackBuilder
-{
-	public CommandStack build(CommandSender sender,DebugLevel level);
+public interface CommandStackBuilder {
+
+  public CommandStack build(CommandSender sender, DebugLevel level);
 }

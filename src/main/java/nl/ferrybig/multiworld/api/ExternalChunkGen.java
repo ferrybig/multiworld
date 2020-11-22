@@ -8,13 +8,15 @@ import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 
 /**
- *
  * @author Fernando
  */
-public interface ExternalChunkGen
-{
-	public String getDescription();
-	public String getName();
-	public ChunkGenerator getGen();
-	public World.Environment getEnvoiment();
+public interface ExternalChunkGen {
+
+  public String getDescription();
+
+  public String getName();
+
+  public ChunkGenerator getGen();
+
+  public World.Environment getEnvoiment();
 }

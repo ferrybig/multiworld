@@ -9,50 +9,52 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
 /**
- *
  * @author Fernando
  */
-public interface CommandStack extends MessageLogger
-{
-	public String getCommandLabel();
+public interface CommandStack extends MessageLogger {
 
-	public CommandSender getSender();
+  public String getCommandLabel();
 
-	public String[] getArguments();
+  public CommandSender getSender();
 
-	/**
-	 * Gets the commandStack of the parent, used for debugging purposes
-	 * @return
-	 */
-	public CommandStack getParent();
+  public String[] getArguments();
 
-	public boolean hasPermission(String permission);
-	/**
-	 * Gets the location, null if theres no location
-	 * <p>
-	 * @return
-	 */
-	public Location getLocation();
+  /**
+   * Gets the commandStack of the parent, used for debugging purposes
+   *
+   * @return
+   */
+  public CommandStack getParent();
 
-	public Builder newStack();
+  public boolean hasPermission(String permission);
 
-	public Builder editStack();
+  /**
+   * Gets the location, null if theres no location
+   * <p>
+   *
+   * @return
+   */
+  public Location getLocation();
 
-	public interface Builder
-	{
-		public Builder setSender(CommandSender sender);
+  public Builder newStack();
 
-		public Builder setLocation(Location loc);
+  public Builder editStack();
 
-		public Builder popArguments(int number);
+  public interface Builder {
 
-		public Builder setArguments(String[] args);
+    public Builder setSender(CommandSender sender);
 
-		public Builder setCommandLabel(String commandLabel);
+    public Builder setLocation(Location loc);
 
-		public Builder setMessageLogger(MessageLogger logger);
+    public Builder popArguments(int number);
 
-		public CommandStack build();
+    public Builder setArguments(String[] args);
 
-	}
+    public Builder setCommandLabel(String commandLabel);
+
+    public Builder setMessageLogger(MessageLogger logger);
+
+    public CommandStack build();
+
+  }
 }

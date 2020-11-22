@@ -5,9 +5,8 @@
 package nl.ferrybig.multiworld.worldgen;
 
 /**
- *
  * @author Fernando
  */
-public interface BlockConstants
-{
+public interface BlockConstants {
+
 }

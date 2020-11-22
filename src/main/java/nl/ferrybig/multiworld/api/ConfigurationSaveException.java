@@ -7,27 +7,22 @@ package nl.ferrybig.multiworld.api;
 import nl.ferrybig.multiworld.MultiWorldException;
 
 /**
- *
  * @author Fernando
  */
-public class ConfigurationSaveException extends MultiWorldException
-{
-	public ConfigurationSaveException()
-	{
-	}
+public class ConfigurationSaveException extends MultiWorldException {
 
-	public ConfigurationSaveException(String msg)
-	{
-		super(msg);
-	}
+  public ConfigurationSaveException() {
+  }
 
-	public ConfigurationSaveException(Throwable cause)
-	{
-		super(cause);
-	}
+  public ConfigurationSaveException(String msg) {
+    super(msg);
+  }
 
-	public ConfigurationSaveException(String msg, Throwable cause)
-	{
-		super(msg, cause);
-	}
+  public ConfigurationSaveException(Throwable cause) {
+    super(cause);
+  }
+
+  public ConfigurationSaveException(String msg, Throwable cause) {
+    super(msg, cause);
+  }
 }

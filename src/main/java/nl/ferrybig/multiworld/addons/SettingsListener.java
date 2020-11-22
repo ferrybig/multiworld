@@ -5,10 +5,9 @@
 package nl.ferrybig.multiworld.addons;
 
 /**
- *
  * @author Fernando
  */
-public interface SettingsListener
-{
-	public void onSettingsChance();
+public interface SettingsListener {
+
+  public void onSettingsChance();
 }

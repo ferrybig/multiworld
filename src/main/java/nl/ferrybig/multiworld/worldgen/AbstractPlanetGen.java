@@ -13,26 +13,26 @@ import org.bukkit.generator.BlockPopulator;
 
 /**
  * The base class for al world generators that make planets
+ *
  * @author Fernando
  */
-public abstract class AbstractPlanetGen extends EmptyWorldGenerator
-{
-	@Override
-	public abstract List<BlockPopulator> getDefaultPopulators(World world);
+public abstract class AbstractPlanetGen extends EmptyWorldGenerator {
 
-	@Override
-	public boolean canSpawn(World world, int x, int z)
-	{
-		Block highest = world.getHighestBlockAt(x, z);
-		if (highest.getType() == Material.AIR || highest.getType() == Material.WATER || highest.getType() == Material.LAVA)
-		{
-			highest.setType(Material.GRASS);
-			highest.getRelative(BlockFace.EAST).setType(Material.GRASS);
-			highest.getRelative(BlockFace.WEST).setType(Material.GRASS);
-			highest.getRelative(BlockFace.NORTH).setType(Material.GRASS);
-			highest.getRelative(BlockFace.SOUTH).setType(Material.GRASS);
-			highest.getRelative(BlockFace.DOWN).setType(Material.DIRT);
-		}
-		return true;
-	}
+  @Override
+  public abstract List<BlockPopulator> getDefaultPopulators(World world);
+
+  @Override
+  public boolean canSpawn(World world, int x, int z) {
+    Block highest = world.getHighestBlockAt(x, z);
+    if (highest.getType() == Material.AIR || highest.getType() == Material.WATER
+        || highest.getType() == Material.LAVA) {
+      highest.setType(Material.GRASS);
+      highest.getRelative(BlockFace.EAST).setType(Material.GRASS);
+      highest.getRelative(BlockFace.WEST).setType(Material.GRASS);
+      highest.getRelative(BlockFace.NORTH).setType(Material.GRASS);
+      highest.getRelative(BlockFace.SOUTH).setType(Material.GRASS);
+      highest.getRelative(BlockFace.DOWN).setType(Material.DIRT);
+    }
+    return true;
+  }
 }

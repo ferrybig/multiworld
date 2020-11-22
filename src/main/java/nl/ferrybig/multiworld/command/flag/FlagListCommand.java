@@ -10,21 +10,17 @@ import nl.ferrybig.multiworld.command.CommandStack;
 import nl.ferrybig.multiworld.command.MessageType;
 
 /**
- *
  * @author Fernando
  */
-public class FlagListCommand extends Command
-{
+public class FlagListCommand extends Command {
 
-	public FlagListCommand()
-	{
-		super("flaglist", "gets al flags on the server");
-	}
+  public FlagListCommand() {
+    super("flaglist", "gets al flags on the server");
+  }
 
-	@Override
-	public void runCommand(CommandStack stack)
-	{
-		stack.sendMessage(MessageType.SUCCES, FlagName.makeFlagList());
-	}
+  @Override
+  public void runCommand(CommandStack stack) {
+    stack.sendMessage(MessageType.SUCCES, FlagName.makeFlagList());
+  }
 
 }

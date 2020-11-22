@@ -13,59 +13,56 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 
 /**
- *
  * @author Fernando
  */
-public class OrePopulator extends BlockPopulator
-{
-	@Override
-	public void populate(World world, Random random, Chunk chunk)
-	{
-		applyOre(world, random, chunk, 1, Material.DIAMOND_ORE, 16);
-		applyOre(world, random, chunk, 16, Material.REDSTONE_ORE, 16);
-		applyOre(world, random, chunk, 32, Material.GOLD_ORE, 32);
-		applyOre(world, random, chunk, 32, Material.LAPIS_ORE, 32);
-		applyOre(world, random, chunk, 64, Material.IRON_ORE, 64);
-		applyOre(world, random, chunk, 128, Material.COAL_ORE, 128);
-	}
-	private static final BlockFace[] DEFAULT_SIDES = new BlockFace[]
-	{
-		BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.SELF
-	};
+public class OrePopulator extends BlockPopulator {
 
-	public void applyOre(World world, Random random, Chunk chunk, int tries, Material mat, int height)
-	{
-		this.applyOre(world, random, chunk, tries, mat, height, DEFAULT_SIDES);
-	}
+  private static final BlockFace[] DEFAULT_SIDES = new BlockFace[]
+      {
+          BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH,
+          BlockFace.UP, BlockFace.SELF
+      };
 
-	public void applyOre(World world, Random random, Chunk chunk, int tries, Material mat, int height, BlockFace[] sides)
-	{
-		for (int i = 0; i < tries; i++)
-		{
-			int x = random.nextInt(14) + 1;
-			int z = random.nextInt(14) + 1;
-			int y = random.nextInt(height - 2) + 1;
-			Block mainBlock = chunk.getBlock(x, y, z);
-			//skip if the block is air
-			if (mainBlock.getType() == Material.AIR)
-			{
-				continue;
-			}
-			// Place ore
-			for (BlockFace counter : new BlockFace[]
-				{
-					BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.SELF
-				})
-			{
-				Block tmp = mainBlock.getRelative(counter);
-				if (tmp.getType() == Material.STONE)
-				{
-					tmp.setType(mat);
-				}
-			}
+  @Override
+  public void populate(World world, Random random, Chunk chunk) {
+    applyOre(world, random, chunk, 1, Material.DIAMOND_ORE, 16);
+    applyOre(world, random, chunk, 16, Material.REDSTONE_ORE, 16);
+    applyOre(world, random, chunk, 32, Material.GOLD_ORE, 32);
+    applyOre(world, random, chunk, 32, Material.LAPIS_ORE, 32);
+    applyOre(world, random, chunk, 64, Material.IRON_ORE, 64);
+    applyOre(world, random, chunk, 128, Material.COAL_ORE, 128);
+  }
 
-		}
-	}
+  public void applyOre(World world, Random random, Chunk chunk, int tries, Material mat,
+      int height) {
+    this.applyOre(world, random, chunk, tries, mat, height, DEFAULT_SIDES);
+  }
+
+  public void applyOre(World world, Random random, Chunk chunk, int tries, Material mat, int height,
+      BlockFace[] sides) {
+    for (int i = 0; i < tries; i++) {
+      int x = random.nextInt(14) + 1;
+      int z = random.nextInt(14) + 1;
+      int y = random.nextInt(height - 2) + 1;
+      Block mainBlock = chunk.getBlock(x, y, z);
+      //skip if the block is air
+      if (mainBlock.getType() == Material.AIR) {
+        continue;
+      }
+      // Place ore
+      for (BlockFace counter : new BlockFace[]
+          {
+              BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH,
+              BlockFace.UP, BlockFace.SELF
+          }) {
+        Block tmp = mainBlock.getRelative(counter);
+        if (tmp.getType() == Material.STONE) {
+          tmp.setType(mat);
+        }
+      }
+
+    }
+  }
 	/*
 	// Minecraft implementation of ores:
 	private int a = 0;//Block id

@@ -32,76 +32,76 @@ import nl.ferrybig.multiworld.data.WorldHandler;
 /**
  * The class that handles the commands
  * <p>
+ *
  * @author Fernando
  */
-public class CommandHandler extends CommandMap
-{
-	public CommandHandler(DataHandler d, PlayerHandler p, WorldHandler w, ReloadHandler r, AddonHandler pm, VersionHandler de)
-	{
-		super(null, CommandHandler.createCommandMap(d, p, w, r, pm, de), getAliassesMap());
-	}
+public class CommandHandler extends CommandMap {
 
-	private static HashMap<String, Command> createCommandMap(DataHandler data, PlayerHandler player, WorldHandler worlds, ReloadHandler reload, AddonHandler plugin, VersionHandler debugger)
-	{
-		HashMap<String, Command> h = new HashMap<String, Command>(30,0.9f);
-		h.put("help", new HelpCommand(data));
-		h.put("goto", new GotoCommand(data, player, worlds));
-		h.put("create", new CreateCommand(data));
-		h.put("load", new LoadWorldCommand(data, worlds));
-		h.put("unload", new UnloadWorldCommand(data, worlds));
-		h.put("delete", new DeleteCommand(data, worlds));
-		h.put("generators", new ListWorldGensCommand());
-		h.put("move", new MoveCommand(data, player, worlds));
-		h.put("save", new SaveCommand(data, reload));
-		h.put("reload", new LoadCommand(data, reload));
-		h.put("debug", new DebugCommand(debugger));
-		h.put("list", new ListCommand(data));
-		h.put("setflag", new SetFlagCommand(data, plugin, worlds));
-		h.put("getflag", new GetFlagCommand(data, worlds));
-		h.put("link", new LinkCommand(data, worlds, plugin, false));
-		h.put("link-end", new LinkCommand(data, worlds, plugin, true));
-		h.put("snowman", new EasterEggCommand());
-		h.put("flags", new FlagListCommand());
-		h.put("spawn", new SpawnCommand(data, worlds, player));
-		h.put("setspawn", new SetSpawnCommand(data, worlds, player));
-		h.put("info", new InfoCommand(worlds));
-		return h;
-	}
+  public CommandHandler(DataHandler d, PlayerHandler p, WorldHandler w, ReloadHandler r,
+      AddonHandler pm, VersionHandler de) {
+    super(null, CommandHandler.createCommandMap(d, p, w, r, pm, de), getAliassesMap());
+  }
 
-	private static Map<String, String> getAliassesMap()
-	{
-		HashMap<String, String> h = new HashMap<String, String>(22, 0.9f);
-		h.put("gens", "listgens");
-		h.put("list-gens", "listgens");
+  private static HashMap<String, Command> createCommandMap(DataHandler data, PlayerHandler player,
+      WorldHandler worlds, ReloadHandler reload, AddonHandler plugin, VersionHandler debugger) {
+    HashMap<String, Command> h = new HashMap<String, Command>(30, 0.9f);
+    h.put("help", new HelpCommand(data));
+    h.put("goto", new GotoCommand(data, player, worlds));
+    h.put("create", new CreateCommand(data));
+    h.put("load", new LoadWorldCommand(data, worlds));
+    h.put("unload", new UnloadWorldCommand(data, worlds));
+    h.put("delete", new DeleteCommand(data, worlds));
+    h.put("generators", new ListWorldGensCommand());
+    h.put("move", new MoveCommand(data, player, worlds));
+    h.put("save", new SaveCommand(data, reload));
+    h.put("reload", new LoadCommand(data, reload));
+    h.put("debug", new DebugCommand(debugger));
+    h.put("list", new ListCommand(data));
+    h.put("setflag", new SetFlagCommand(data, plugin, worlds));
+    h.put("getflag", new GetFlagCommand(data, worlds));
+    h.put("link", new LinkCommand(data, worlds, plugin, false));
+    h.put("link-end", new LinkCommand(data, worlds, plugin, true));
+    h.put("snowman", new EasterEggCommand());
+    h.put("flags", new FlagListCommand());
+    h.put("spawn", new SpawnCommand(data, worlds, player));
+    h.put("setspawn", new SetSpawnCommand(data, worlds, player));
+    h.put("info", new InfoCommand(worlds));
+    return h;
+  }
 
-		h.put("link-nether", "link");
+  private static Map<String, String> getAliassesMap() {
+    HashMap<String, String> h = new HashMap<String, String>(22, 0.9f);
+    h.put("gens", "listgens");
+    h.put("list-gens", "listgens");
 
-		h.put("version", "debug");
+    h.put("link-nether", "link");
 
-		h.put("world-info", "info");
+    h.put("version", "debug");
 
-		h.put("flaglist", "flags");
-		h.put("flag-list", "flags");
+    h.put("world-info", "info");
 
-		h.put("worlds", "list");
+    h.put("flaglist", "flags");
+    h.put("flag-list", "flags");
 
-		h.put("store", "save");
+    h.put("worlds", "list");
 
-		h.put("move-player", "move");
+    h.put("store", "save");
 
-		h.put("listgens", "generators");
-		h.put("list-gens", "generators");
+    h.put("move-player", "move");
 
-		h.put("g", "goto");
-		h.put("i", "info");
-		h.put("d", "debug");
-		h.put("s", "spawn");
-		h.put("sf", "setflag");
-		h.put("gf", "getflag");
-		h.put("ss", "setspawn");
+    h.put("listgens", "generators");
+    h.put("list-gens", "generators");
 
-		h.put("ss", "setspawn");
-		return h;
-	}
+    h.put("g", "goto");
+    h.put("i", "info");
+    h.put("d", "debug");
+    h.put("s", "spawn");
+    h.put("sf", "setflag");
+    h.put("gf", "getflag");
+    h.put("ss", "setspawn");
+
+    h.put("ss", "setspawn");
+    return h;
+  }
 
 }

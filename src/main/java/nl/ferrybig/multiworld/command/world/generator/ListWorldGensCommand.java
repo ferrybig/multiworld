@@ -11,29 +11,25 @@ import nl.ferrybig.multiworld.command.MessageType;
 import nl.ferrybig.multiworld.worldgen.WorldGenerator;
 
 /**
- *
  * @author Fernando
  */
-public class ListWorldGensCommand extends Command
-{
-	public ListWorldGensCommand()
-	{
-		super("listgens","List al world generators installed inside this nl.ferrybig.multiworld build");
-	}
+public class ListWorldGensCommand extends Command {
 
-	@Override
-	public void runCommand(CommandStack stack)
-	{
-		WorldGenerator[] gens = WorldGenerator.values();
-		for (WorldGenerator g : gens)
-		{
-			if (!g.mayInList())
-			{
-				continue;
-			}
-			stack.sendMessage(MessageType.HIDDEN_SUCCES, g.getName());
-			stack.sendMessage(MessageType.HIDDEN_SUCCES, "+- "+g.getDestr());
-			stack.sendMessage(MessageType.HIDDEN_SUCCES, "+- "+Formatter.printSpeed(g.getSpeed()));
-		}
-	}
+  public ListWorldGensCommand() {
+    super("listgens",
+        "List al world generators installed inside this nl.ferrybig.multiworld build");
+  }
+
+  @Override
+  public void runCommand(CommandStack stack) {
+    WorldGenerator[] gens = WorldGenerator.values();
+    for (WorldGenerator g : gens) {
+      if (!g.mayInList()) {
+        continue;
+      }
+      stack.sendMessage(MessageType.HIDDEN_SUCCES, g.getName());
+      stack.sendMessage(MessageType.HIDDEN_SUCCES, "+- " + g.getDestr());
+      stack.sendMessage(MessageType.HIDDEN_SUCCES, "+- " + Formatter.printSpeed(g.getSpeed()));
+    }
+  }
 }

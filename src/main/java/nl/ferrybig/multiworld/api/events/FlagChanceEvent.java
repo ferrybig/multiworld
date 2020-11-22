@@ -9,55 +9,49 @@ import nl.ferrybig.multiworld.api.flag.FlagName;
 import org.bukkit.event.HandlerList;
 
 /**
- *
  * @author Fernando
  */
-public class FlagChanceEvent extends MultiWorldEvent
-{
-	private final MultiWorldWorldData world;
-	private final FlagName flag;
-	private final boolean newValue;
-	public FlagChanceEvent(MultiWorldWorldData world,FlagName flag,boolean newValue)
-	{
-		super();
-		this.world = world;
-		this.flag = flag;
-		this.newValue = newValue;
-	}
-	private static final HandlerList handlers = new HandlerList();
+public class FlagChanceEvent extends MultiWorldEvent {
 
-	@Override
-	public HandlerList getHandlers()
-	{
-		return handlers;
-	}
+  private static final HandlerList handlers = new HandlerList();
+  private final MultiWorldWorldData world;
+  private final FlagName flag;
+  private final boolean newValue;
 
-	public static HandlerList getHandlerList()
-	{
-		return handlers;
-	}
+  public FlagChanceEvent(MultiWorldWorldData world, FlagName flag, boolean newValue) {
+    super();
+    this.world = world;
+    this.flag = flag;
+    this.newValue = newValue;
+  }
 
-	/**
-	 * @return the flag
-	 */
-	public FlagName getFlag()
-	{
-		return flag;
-	}
+  public static HandlerList getHandlerList() {
+    return handlers;
+  }
 
-	/**
-	 * @return the newValue
-	 */
-	public boolean getNewValue()
-	{
-		return newValue;
-	}
+  @Override
+  public HandlerList getHandlers() {
+    return handlers;
+  }
 
-	/**
-	 * @return the world
-	 */
-	public MultiWorldWorldData getWorld()
-	{
-		return world;
-	}
+  /**
+   * @return the flag
+   */
+  public FlagName getFlag() {
+    return flag;
+  }
+
+  /**
+   * @return the newValue
+   */
+  public boolean getNewValue() {
+    return newValue;
+  }
+
+  /**
+   * @return the world
+   */
+  public MultiWorldWorldData getWorld() {
+    return world;
+  }
 }

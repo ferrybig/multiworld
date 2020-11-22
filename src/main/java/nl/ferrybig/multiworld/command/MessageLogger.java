@@ -8,46 +8,50 @@ package nl.ferrybig.multiworld.command;
 import nl.ferrybig.multiworld.translation.message.PackedMessageData;
 
 /**
- *
  * @author Fernando
  */
-public interface MessageLogger
-{
+public interface MessageLogger {
 
-	/**
-	 * Gets the debug level
-	 * <p>
-	 * @return
-	 */
-	public DebugLevel getDebugLevel();
+  /**
+   * Gets the debug level
+   * <p>
+   *
+   * @return
+   */
+  public DebugLevel getDebugLevel();
 
-	/**
-	 * Sends a normal message to an user
-	 * <p>
-	 * @param type the type of message to pass to the higher layer, may be null
-	 * @param message the message to send
-	 * @param options
-	 */
-	public void sendMessage(MessageType type, String message);
-	public void sendMessage(MessageType type, PackedMessageData ... message);
+  /**
+   * Sends a normal message to an user
+   * <p>
+   *
+   * @param type    the type of message to pass to the higher layer, may be null
+   * @param message the message to send
+   * @param options
+   */
+  public void sendMessage(MessageType type, String message);
 
-	/**
-	 * Sends the usage of the command for better processing inside other classes
-	 * <p>
-	 * @param commandLabel
-	 * @param types
-	 */
-	public void sendMessageUsage(String commandLabel, ArgumentType... types);
+  public void sendMessage(MessageType type, PackedMessageData... message);
 
-	/**
-	 * Sends a broadcast message to everone including the user user
-	 * <p>
-	 * @param type the type of message to pass to the higher layer, may be null
-	 * @param message the message to send
-	 * @param options
-	 */
-	public void sendMessageBroadcast(MessageType type, String message);
-	public void sendMessageBroadcast(MessageType type, PackedMessageData ... message);
+  /**
+   * Sends the usage of the command for better processing inside other classes
+   * <p>
+   *
+   * @param commandLabel
+   * @param types
+   */
+  public void sendMessageUsage(String commandLabel, ArgumentType... types);
 
-	public void sendMessageDebug(String message, DebugLevel level);
+  /**
+   * Sends a broadcast message to everone including the user user
+   * <p>
+   *
+   * @param type    the type of message to pass to the higher layer, may be null
+   * @param message the message to send
+   * @param options
+   */
+  public void sendMessageBroadcast(MessageType type, String message);
+
+  public void sendMessageBroadcast(MessageType type, PackedMessageData... message);
+
+  public void sendMessageDebug(String message, DebugLevel level);
 }

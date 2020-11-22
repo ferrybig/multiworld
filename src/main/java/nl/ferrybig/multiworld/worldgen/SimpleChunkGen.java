@@ -17,76 +17,69 @@ import org.bukkit.generator.ChunkGenerator;
 
 /**
  * the gen that gives support for worlds thats exsts only from 1 chunk
+ *
  * @author Fernando
  */
-public abstract class SimpleChunkGen extends MultiWorldChunkGen implements ChunkGen
-{
-	protected final Map<UUID, ChunkMaker> chunk = new HashMap<>();
+public abstract class SimpleChunkGen extends MultiWorldChunkGen implements ChunkGen {
 
-	/**
-	 * Shapes the basic shape of the chunk
-	 * @param world The world to make for
-	 * @param random The random to use
-	 * @param x The x of the chunk
-	 * @param z The Z of the chunk
-	 * @param biomes 
-	 * @return The bytes of the chunk data
-	 */
-	@Override
-	public ChunkData generateChunkData(World world,
-						  Random random,
-						  int x,
-						  int z,
-						  ChunkGenerator.BiomeGrid biomes)
-	{
+  protected final Map<UUID, ChunkMaker> chunk = new HashMap<>();
 
-		ChunkMaker tmp = this.chunk.get(world.getUID());
-		if (tmp == null)
-		{
-			this.chunk.put(world.getUID(), this.makeChunk(world));
-			tmp = this.chunk.get(world.getUID());
-		}
-		Biome b = this.getBiome();
-		if (b != null)
-		{
-			for (int xCounter = 0; xCounter < 16; xCounter++)
-			{
-				for (int zCounter = 0; zCounter < 16; zCounter++)
-				{
-					biomes.setBiome(x, z, b);
-				}
-			}
-		}
-		return tmp.toChunkData(this.createChunkData(world));
-	}
+  /**
+   * Shapes the basic shape of the chunk
+   *
+   * @param world  The world to make for
+   * @param random The random to use
+   * @param x      The x of the chunk
+   * @param z      The Z of the chunk
+   * @param biomes
+   * @return The bytes of the chunk data
+   */
+  @Override
+  public ChunkData generateChunkData(World world,
+      Random random,
+      int x,
+      int z,
+      ChunkGenerator.BiomeGrid biomes) {
 
-	/**
-	 * Makes the basic shape of chunk
-	 * 
-	 * @param world
-	 * @return  
-	 */
-	protected abstract ChunkMaker makeChunk(World world);
+    ChunkMaker tmp = this.chunk.get(world.getUID());
+    if (tmp == null) {
+      this.chunk.put(world.getUID(), this.makeChunk(world));
+      tmp = this.chunk.get(world.getUID());
+    }
+    Biome b = this.getBiome();
+    if (b != null) {
+      for (int xCounter = 0; xCounter < 16; xCounter++) {
+        for (int zCounter = 0; zCounter < 16; zCounter++) {
+          biomes.setBiome(x, z, b);
+        }
+      }
+    }
+    return tmp.toChunkData(this.createChunkData(world));
+  }
 
-	@Override
-	public void makeWorld(InternalWorld world) throws InvalidWorldGenOptionsException
-	{
-		world.setWorldGen(this);
-	}
+  /**
+   * Makes the basic shape of chunk
+   *
+   * @param world
+   * @return
+   */
+  protected abstract ChunkMaker makeChunk(World world);
 
-	@Override
-	public boolean canSpawn(World world, int x, int z)
-	{
-		return true;
-	}
+  @Override
+  public void makeWorld(InternalWorld world) throws InvalidWorldGenOptionsException {
+    world.setWorldGen(this);
+  }
 
-	public void gc()
-	{
-		this.chunk.clear();
-	}
+  @Override
+  public boolean canSpawn(World world, int x, int z) {
+    return true;
+  }
 
-	public Biome getBiome()
-	{
-		return null;
-	}
+  public void gc() {
+    this.chunk.clear();
+  }
+
+  public Biome getBiome() {
+    return null;
+  }
 }

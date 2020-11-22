@@ -7,12 +7,10 @@
 package nl.ferrybig.multiworld.command;
 
 /**
- *
  * @author Fernando
  */
-public enum MessageType
-{
-ERROR, SUCCES,
-HIDDEN_ERROR, HIDDEN_SUCCES,
-NORMAL;
+public enum MessageType {
+  ERROR, SUCCES,
+  HIDDEN_ERROR, HIDDEN_SUCCES,
+  NORMAL;
 }
