@@ -18,6 +18,7 @@ import multiworld.worldgen.util.ChunkMaker;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
+import org.bukkit.Material;
 
 /**
  *
@@ -25,9 +26,6 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
  */
 public class ChunkGeneratorEpicCaves extends MultiWorldChunkGen
 {
-	public ChunkGeneratorEpicCaves()
-	{
-	}
 	SimplexOctaveGenerator gen;
 
 	@Override
@@ -51,8 +49,7 @@ public class ChunkGeneratorEpicCaves extends MultiWorldChunkGen
 	final double scale = 32.0; //how far apart the tops of the hills are
 
 	@Override
-	public short[][] generateExtBlockSections(World world, Random random, int ChunkX, int ChunkZ, BiomeGrid biomes)
-	{
+	public ChunkData generateChunkData(World world, Random random, int chunkX, int chunkZ, BiomeGrid biome) {
 		if (this.gen == null)
 		{
 			gen = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
@@ -62,10 +59,10 @@ public class ChunkGeneratorEpicCaves extends MultiWorldChunkGen
 		double threshold = 0.0; //scroll down to see what happens when you play with this.
 		for (int x = 0; x < 16; x++)
 		{
-			int real_x = x + ChunkX * 16;
+			int real_x = x + chunkX * 16;
 			for (int z = 0; z < 16; z++)
 			{
-				int real_z = z + ChunkZ * 16;
+				int real_z = z + chunkZ * 16;
 				int grassCounter = 0;
 				for (int y = 255; y > 0; y--)
 				{
@@ -73,15 +70,15 @@ public class ChunkGeneratorEpicCaves extends MultiWorldChunkGen
 					{
 						if (grassCounter == 0)
 						{
-							chunk.setBlock(x, y, z, GRASS);
+							chunk.setBlock(x, y, z, Material.GRASS);
 						}
 						else if (grassCounter < 3)
 						{
-							chunk.setBlock(x, y, z, DIRT);
+							chunk.setBlock(x, y, z, Material.DIRT);
 						}
 						else
 						{
-							chunk.setBlock(x, y, z, (short)STONE);
+							chunk.setBlock(x, y, z, Material.STONE);
 						}
 						grassCounter++;
 					}
@@ -94,7 +91,7 @@ public class ChunkGeneratorEpicCaves extends MultiWorldChunkGen
 		}
 
 
-		return chunk.getRawChunk();
+		return chunk.toChunkData(super.createChunkData(world));
 	}
 
 	@Override

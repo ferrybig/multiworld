@@ -41,7 +41,7 @@ public class SapplingPopulator extends BlockPopulator
 			{
 				continue;
 			}
-			mainBlock.setType(Material.SAPLING);
+			mainBlock.setType(Material.OAK_SAPLING);
 			
 		}
 	}

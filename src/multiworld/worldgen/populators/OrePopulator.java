@@ -60,12 +60,14 @@ public class OrePopulator extends BlockPopulator
 				Block tmp = mainBlock.getRelative(counter);
 				if (tmp.getType() == Material.STONE)
 				{
-					tmp.setTypeIdAndData(mat.getId(), (byte) 0, false);
+					tmp.setType(mat);
 				}
 			}
 
 		}
 	}
+	/*
+	// Minecraft implementation of ores:
 	private int a = 0;//Block id
 	private int b = 0; //size
 
@@ -113,9 +115,9 @@ public class OrePopulator extends BlockPopulator
 							{
 								double d15 = (i5 + 0.5D - d9) / (d11 / 2.0D);
 								if ((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D)
-									&& (paramWorld.getBlockTypeIdAt(i3, i4, i5) == Material.STONE.getId()))
+									&& (paramWorld.getBlockAt(i3, i4, i5).getType() == Material.STONE))
 								{
-									paramWorld.getBlockAt(i3, i4, i5).setTypeId(this.a);
+									paramWorld.getBlockAt(i3, i4, i5).setType(this.a);
 								}
 							}
 						}
@@ -127,4 +129,5 @@ public class OrePopulator extends BlockPopulator
 		}
 		return true;
 	}
+*/
 }

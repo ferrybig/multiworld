@@ -1,6 +1,7 @@
 package multiworld.worldgen;
 
 import multiworld.data.InternalWorld;
+import multiworld.worldgen.util.ChunkMaker;
 import org.bukkit.World;
 
 /**
@@ -23,9 +24,9 @@ public class NullGen extends SimpleChunkGen
 	}
 
 	@Override
-	protected short[][] makeChunk(World w)
+	protected ChunkMaker makeChunk(World w)
 	{
-		return new short[16][];
+		return new ChunkMaker(w);
 	}
 
 }

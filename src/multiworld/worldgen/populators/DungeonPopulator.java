@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.EntityType;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -196,11 +197,11 @@ public class DungeonPopulator extends BlockPopulator
 			block = world.getBlockAt(dungeonX, dungeonY, dungeonZ);
 
 			// Place spawner
-			block.setType(Material.MOB_SPAWNER);
+			block.setType(Material.SPAWNER);
 
 			// Chance spawned mob
 			CreatureSpawner spawner = (CreatureSpawner) block.getState();
-			spawner.setCreatureTypeByName(this.getRandomMob(random));
+			spawner.setSpawnedType(this.getRandomMob(random));
 		}
 	}
 
@@ -225,7 +226,7 @@ public class DungeonPopulator extends BlockPopulator
 		}
 		if (i == 4)
 		{
-			return new ItemStack(Material.SULPHUR, paramRandom.nextInt(4) + 1);
+			return new ItemStack(Material.GUNPOWDER, paramRandom.nextInt(4) + 1);
 		}
 		if (i == 5)
 		{
@@ -245,36 +246,28 @@ public class DungeonPopulator extends BlockPopulator
 		}
 		if ((i == 9) && (paramRandom.nextInt(10) == 0))
 		{
-			return new ItemStack(Material.GOLD_RECORD);
+			return new ItemStack(Material.MUSIC_DISC_BLOCKS);
 		}
 		if (i == 10)
 		{
-			return new ItemStack(Material.INK_SACK, 1, (short) 3);
+			return new ItemStack(Material.LAPIS_LAZULI);
 		}
 
 		return null;
 	}
 
-	private String getRandomMob(Random paramRandom)
+	private EntityType getRandomMob(Random paramRandom)
 	{
 		int i = paramRandom.nextInt(4);
-		if (i == 0)
-		{
-			return "Skeleton";
+		switch (i) {
+			case 0:
+				return EntityType.SKELETON;
+			case 1:
+			case 2:
+				return EntityType.ZOMBIE;
+			default:
+				return EntityType.SPIDER;
 		}
-		if (i == 1)
-		{
-			return "Zombie";
-		}
-		if (i == 2)
-		{
-			return "Zombie";
-		}
-		if (i == 3)
-		{
-			return "Spider";
-		}
-		return "";
 	}
 
 	private boolean isBlock(Material mat)
@@ -293,6 +286,6 @@ public class DungeonPopulator extends BlockPopulator
 
 	public boolean isEmpty(World world, int x, int y, int z)
 	{
-		return world.getBlockTypeIdAt(x, y, z) == 0;
+		return world.getBlockAt(x, y, z).getType() == Material.AIR;
 	}
 }

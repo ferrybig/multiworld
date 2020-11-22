@@ -257,11 +257,11 @@ public abstract class PortalHandler implements Listener, MultiworldAddon, Settin
 		})
 		{
 			toCheck = mainBlock.getRelative(face).getType();
-			if (toCheck == Material.ENDER_PORTAL)
+			if (toCheck == Material.END_PORTAL)
 			{
 				return END_PORTAL;
 			}
-			else if (toCheck == Material.PORTAL)
+			else if (toCheck == Material.NETHER_PORTAL)
 			{
 				return NETHER_PORTAL;
 			}

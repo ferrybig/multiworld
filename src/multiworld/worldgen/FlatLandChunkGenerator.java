@@ -6,6 +6,7 @@ import multiworld.InvalidWorldGenOptionsException;
 import multiworld.data.InternalWorld;
 import multiworld.worldgen.util.ChunkMaker;
 import org.bukkit.World;
+import org.bukkit.Material;
 
 /**
  * This worldgen makes chunks of the type flat
@@ -28,16 +29,16 @@ public class FlatLandChunkGenerator extends SimpleChunkGen
 	 * @return
 	 */
 	@Override
-	protected short[][] makeChunk(World w)
+	protected ChunkMaker makeChunk(World w)
 	{
 		ChunkMaker chunk = new ChunkMaker(w.getMaxHeight());
 		int seeLevel = w.getSeaLevel();
 		int lowestDirt = seeLevel - 3;
-		chunk.cuboid(0, 0,0, 15,0,15,(byte)BEDROCK);
-		chunk.cuboid(0, 1,0, 15,lowestDirt-1,15,STONE);
-		chunk.cuboid(0, lowestDirt,0, 15,seeLevel-1,15,(byte)DIRT);
-		chunk.cuboid(0, seeLevel, 0, 15, seeLevel, 15, (byte)GRASS);
-		return chunk.getRawChunk();
+		chunk.cuboid(0, 0,0, 15,0,15,Material.BEDROCK);
+		chunk.cuboid(0, 1,0, 15,lowestDirt-1,15,Material.STONE);
+		chunk.cuboid(0, lowestDirt,0, 15,seeLevel-1,15,Material.DIRT);
+		chunk.cuboid(0, seeLevel, 0, 15, seeLevel, 15, Material.GRASS);
+		return chunk;
 	}
 
 	/**
